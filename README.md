@@ -1,5 +1,7 @@
-# ICS4UC Quad 2 CPT
+# ICS4UC Quad 2 CPT 
 
-Common git repo
-
-Added this from notepad locally
+Repl.it launch commands:
+```
+language = "java10"
+run = "javac *.java && java Main"
+```
