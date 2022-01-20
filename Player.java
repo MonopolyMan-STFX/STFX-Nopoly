@@ -1,17 +1,29 @@
 import java.util.*;
 
 /**
-    * @Author
-    * @Date 2022/01/20
-    * @Course ICS4UC
-*/
+ * @author SA
+ * @Date 2022/01/20
+ * @Course ICS4UC
+ */
 
+// CTRL + / to uncomment
 
-class Player
-{
+class Player {
+    // Attributes
     private String playerToken = "";
     private int money = 0;
-    private ArrayList<Property> propertys = new ArrayList<Property>();
+
+    // USE THIS
+    // private ArrayList<Property> propertys = new ArrayList<Property>();
+    
+    
+    // To stop errors, until property is finished
+    private ArrayList<Integer> propertys = new ArrayList<Integer>();
+
+
+
+
+
     private int position = 0;
     private boolean inJail = false;
     private short numDoubles = 0;
@@ -88,7 +100,7 @@ class Player
      * */
     public void addProperty(int indexOfProperty)
     {
-        propertys.add(indexOfProperty);
+        // propertys.add(indexOfProperty);
     }
 
     /**

@@ -1,6 +1,7 @@
+
 /**
- * Square parent class for our OOP Farm
- * @author Mr. Reid
+ * Square parent class for Monopoly Board
+ * @author JM
  * @course ICS4UC
  * @date 2022/01/22
  */
