@@ -4,7 +4,7 @@ import javax.swing.SwingConstants;
 
 /**
  * CPT - Main
- * @author  Mr. Reid, Craig
+ * @author  Mr. Reid, Craig, Kyle
  */
 
 class Main {
