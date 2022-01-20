@@ -11,7 +11,7 @@ class Player
 {
     private String playerToken = "";
     private int money = 0;
-    private ArrayList<Integer> propertys = new ArrayList<Integer>();
+    private ArrayList<Property> propertys = new ArrayList<Property>();
     private int position = 0;
     private boolean inJail = false;
     private short numDoubles = 0;
