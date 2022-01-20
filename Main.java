@@ -2,6 +2,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * CPT - Main
+ * @author  Mr. Reid
+ */
+
 class Main {
   public static void main(String[] args) 
   {
