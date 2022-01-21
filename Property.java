@@ -22,8 +22,8 @@ public class Property extends Square {
      * @param position
      * @param name
      */
-    public Property(int position, String name, String propertyName, int propertyCost, int[] rentPrices, int housesOwned, boolean hotelOwned, int housesCost, int hotelCost, String colour) {
-        super(position, name, "property");
+    public Property(int position, String propertyName, int propertyCost, int[] rentPrices, int housesOwned, boolean hotelOwned, int housesCost, int hotelCost, String colour) {
+        super(position, propertyName, "property");
         this.propertyName = propertyName;
         this.cost = propertyCost;
         this.rent = rentPrices;
@@ -48,9 +48,6 @@ public class Property extends Square {
                 ", housesCost=" + housesCost +
                 ", hotelCost=" + hotelCost +
                 ", colour='" + colour + '\'' +
-                ", position=" + position +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
                 "} ";
     }
 /**
@@ -60,3 +57,11 @@ public class Property extends Square {
 
 
 }
+
+
+
+
+
+//  ", position=" + position +
+//                 ", name='" + name + '\'' +
+//                 ", type='" + type + '\'' +

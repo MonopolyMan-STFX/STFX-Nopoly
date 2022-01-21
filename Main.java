@@ -8,8 +8,7 @@ import javax.swing.SwingConstants;
  */
 
 class Main {
-  public static void main(String[] args) 
-  {
+  public static void main(String[] args) {
     // // A change - who did this?
     // JFrame frame = new JFrame("ICS4UC Quad 2");
     // frame.setSize(300, 300);

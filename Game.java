@@ -18,9 +18,12 @@ class Game {
         // https://monopoly.fandom.com/wiki/Boardwalk
         //
         // Board walk property
-        Property boardWalk = new Property(0, "boardwalk", "Board Walk", 400, rent, 0, false, 200, 200, "blue" );
+        Property boardWalk = new Property(4, "Board Walk", 400, rent, 0, false, 200, 200, "blue" );
 
         System.out.println(boardWalk.toString());
+        // System.out.println(boardWalk.getPosition());
+
+
 
     }
 }
