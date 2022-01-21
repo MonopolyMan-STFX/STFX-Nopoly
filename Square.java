@@ -9,7 +9,6 @@ public class Square {
     // Attributes
     protected int position = -1;
     protected String name = "";
-    protected String type = "";
 
     /**
      * toString function
@@ -19,7 +18,6 @@ public class Square {
         return "Square{" +
                 "position=" + position +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -28,10 +26,9 @@ public class Square {
      * @param position
      * @param name
      */
-    public Square(int position, String name, String type) {
+    public Square(int position, String name) {
         this.position = position;
         this.name = name;
-        this.type = type;
     }
 
 
@@ -45,10 +42,5 @@ public class Square {
     public String name() {
         return this.name;
     }
-
-    public String type() {
-        return this.type;
-    }
-
 
 }

@@ -6,16 +6,16 @@ import java.util.*;
  * @course ICS4UC
  * @date 2022/01/22
  */
+ 
 public class Property extends Square {
     // Attributes
     private String propertyName = "";
     private int cost = 0;
     private int[] rent;
     private int housesOwned = 0;
-    private boolean hotelOwned = false;
     private int housesCost = 0;
-    private int hotelCost = 0;
     private String colour = "";
+    private Player owner = null;
 
     /**
      * Constructor
@@ -23,14 +23,11 @@ public class Property extends Square {
      * @param name
      */
     public Property(int position, String propertyName, int propertyCost, int[] rentPrices, int housesOwned, boolean hotelOwned, int housesCost, int hotelCost, String colour) {
-        super(position, propertyName, "property");
-        this.propertyName = propertyName;
+        super(position, propertyName);
         this.cost = propertyCost;
         this.rent = rentPrices;
-        this.housesOwned = housesOwned;
-        this.hotelOwned = hotelOwned;
+        this.housesOwned = 0;
         this.housesCost = housesCost;
-        this.hotelCost = hotelCost;
         this.colour = colour;
     }
 
@@ -44,9 +41,7 @@ public class Property extends Square {
                 ", cost=" + cost +
                 ", rent=" + Arrays.toString(rent) +
                 ", housesOwned=" + housesOwned +
-                ", hotelOwned=" + hotelOwned +
                 ", housesCost=" + housesCost +
-                ", hotelCost=" + hotelCost +
                 ", colour='" + colour + '\'' +
                 "} ";
     }
