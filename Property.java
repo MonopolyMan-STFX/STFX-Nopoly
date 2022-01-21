@@ -9,7 +9,6 @@ import java.util.*;
  
 public class Property extends Square {
     // Attributes
-    private String propertyName = "";
     private int cost = 0;
     private int[] rent;
     private int housesOwned = 0;
@@ -37,26 +36,20 @@ public class Property extends Square {
     @Override
     public String toString() {
         return super.toString() + " " + "Property{" +
-                "propertyName='" + propertyName + '\'' +
-                ", cost=" + cost +
+                "cost=" + cost +
                 ", rent=" + Arrays.toString(rent) +
                 ", housesOwned=" + housesOwned +
                 ", housesCost=" + housesCost +
                 ", colour='" + colour + '\'' +
                 "} ";
     }
-/**
+    /**
      * Getters
      */
 
 
 
+
+
+
 }
-
-
-
-
-
-//  ", position=" + position +
-//                 ", name='" + name + '\'' +
-//                 ", type='" + type + '\'' +

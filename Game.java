@@ -62,7 +62,7 @@ class Game {
         System.out.println("Roll: "+game.rollDie());
         System.out.println("Double: "+game.checkDouble());
 
-        Square test = new Square(12, "test", "test");
+        Square test = new Square(12, "test");
         System.out.println(test.toString());
         System.out.println("\n");
 

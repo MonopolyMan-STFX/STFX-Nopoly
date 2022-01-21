@@ -39,7 +39,7 @@ public class Square {
         return this.position;
     }
 
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
