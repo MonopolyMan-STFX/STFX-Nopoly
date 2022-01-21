@@ -1,7 +1,7 @@
 
 /**
  * Square parent class for Monopoly Board
- * @author JM
+ * @author Mr. Monopoly
  * @course ICS4UC
  * @date 2022/01/22
  */
@@ -31,7 +31,6 @@ public class Square {
         this.name = name;
     }
 
-
     /**
      * Getters
      */
@@ -42,5 +41,4 @@ public class Square {
     public String getName() {
         return this.name;
     }
-
 }

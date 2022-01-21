@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * Property Child class for Monopoly Square
- * @author JM
+ * @author Mr. Monopoly
  * @course ICS4UC
  * @date 2022/01/22
  */
