@@ -22,6 +22,7 @@ class Player
     private int numDoubles = 0;
 
     /**
+    * Constructor
     * @param tokenIn
     * @param moneyIn
     */
@@ -89,7 +90,7 @@ class Player
         if((position + moveUp) > 39)
         {
             money += 200;
-            position = (position + moveUp) - 39;
+            position = (position + moveUp) - 40;
         }
         else
         {
