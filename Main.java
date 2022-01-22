@@ -24,10 +24,12 @@ class Main {
     /* Test Game*/
     // Game.main(args);
 
-    /* Test Monopoly Board */
-
-     // create monopoly board
+   /* Test Monopoly Board */
+    // create monopoly board
     MonopolyBoard board = new MonopolyBoard();
+
+    // Print Board
+    System.out.println(board.toString() + "\n");
 
     // test get rent and add house
     Property testProperty = board.getProperty("Old Kent Road");
@@ -39,7 +41,5 @@ class Main {
     System.out.println("Is sqaure 3 a property?: " + board.isProperty(3));
     // get property name
     System.out.println("get Name of square 3: " + board.getProperty(3).getName());
-
-    
   }
 }

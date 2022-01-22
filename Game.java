@@ -29,9 +29,9 @@ class Game {
    }
   
     /*
-    * Roll Die
-    * @return total
-    */
+     * Roll Die
+     * @return total
+     */
     public int rollDie(){
         System.out.println("Rolling...");
         Random rand = new Random();
@@ -47,9 +47,9 @@ class Game {
     }
 
     /*
-    * Check if rolled doubles
-    * @return if double
-    */
+     * Check if rolled doubles
+     * @return if double
+     */
     public boolean checkDouble(){
         boolean isDouble = false;
         if (dice1 == dice2) {
@@ -59,8 +59,8 @@ class Game {
     }
 
     /*
-    * Play turn
-    */
+     * Play turn
+     */
     public void playTurn(int roll) {
         
         // Move player
@@ -81,17 +81,17 @@ class Game {
     }
 
     /*
-    * Get current player turn
-    * @return player
-    */
+     * Get current player turn
+     * @return player
+     */
     public int getCurPlayerTurn() {
         return curPlayerTurn;
     }
 
     /*
-    * Create new player
-    * @param player name
-    */
+     * Create new player
+     * @param player name
+     */
     public void createPlayer(String name) {
         players.add(new Player(name, 1500));
     }
@@ -114,22 +114,6 @@ class Game {
         roll = game.rollDie();
         game.playTurn(roll);
         System.out.println("Next turn: Player"+(game.getCurPlayerTurn()+1));
-
-        // Test roll function
-        // System.out.println("Roll: "+game.rollDie());
-        // System.out.println("Double: "+game.checkDouble());
-
-        // Random code from Jaavin...
-        // Square test = new Square(12, "test");
-        // System.out.println(test.toString());
-        // System.out.println("\n");
-
-        // // Board walk property
-        // int[] rent = {50, 200, 600, 1400, 1700, 2000};
-        // Property boardWalk = new Property(4, "Board Walk", 400, rent, 0, false, 200, 200, "blue" );
-
-        // System.out.println(boardWalk.toString());
-        // System.out.println(boardWalk.getPosition());
 
     }
 }

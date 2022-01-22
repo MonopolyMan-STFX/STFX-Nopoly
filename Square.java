@@ -5,28 +5,20 @@
  * @course ICS4UC
  * @date 2022/01/22
  */
+
 public class Square {
-    // Attributes   
-    protected int position = -1;
+    // Attributes
     protected String name = "";
 
     /**
      * Constructor
-     * @param position position of the square
      * @param name name of the square
      */
-    public Square(int position, String name) {
-        this.position = position;
+    public Square(String name) {
         this.name = name;
     }
 
-    /*
-     * Getters
-     */
-    public int getPosition() {
-        return this.position;
-    }
-
+    /* Getters */
     /**
      * getName
      * @return the name of the square
@@ -41,8 +33,7 @@ public class Square {
     @Override
     public String toString() {
         return "Square{" +
-                "position=" + position +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 /**
  * MonopolyBoard class for Board - Created MonopolyBoard Class, added documentation and getters to Property. Added txt file of first row of square in the board game.
@@ -13,22 +14,17 @@ public class MonopolyBoard {
     int numOfSquares = 4;
 
     // Attributes
-    private Square[] boardSquare = new Square[numOfSquares];
-
+    private Square[] boardSquares = new Square[numOfSquares];
 
     public MonopolyBoard() {
 
         // to be parsed by hello
-        boardSquare[0] = new Square(0,"Go");
-        boardSquare[1] = new Property(1, "Old Kent Road",60, new int[] {2,4,10,30,90,160,250}, 50, "brown" );
-        boardSquare[2] = new Property(2, "White Chapel Road",60, new int[] {4,8,20,60,180,320,450}, 50, "brown" );
-        boardSquare[3] = new Property(3, "The Angel Islington",100, new int[] {6,12,30,90,270,400,550}, 50, "light_blue" );
+        boardSquares[0] = new Square("Go");
+        boardSquares[1] = new Property("Old Kent Road",60, new int[] {2,4,10,30,90,160,250}, 50, "brown" );
+        boardSquares[2] = new Property("White Chapel Road",60, new int[] {4,8,20,60,180,320,450}, 50, "brown" );
+        boardSquares[3] = new Property("The Angel Islington",100, new int[] {6,12,30,90,270,400,550}, 50, "light_blue" );
 //        boardSquare[40] = new Property(40, "Boardwalk",400, new int[] {50,200, 600, 1400, 1700, 2000}, 200, "dark_Blue");
     }
-
-    /*
-     * Getter
-     */
 
     /**
      * get Property object from name
@@ -37,7 +33,7 @@ public class MonopolyBoard {
      */
     public Property getProperty (String name) {
         Property foundProperty = null;
-        for(Square square : boardSquare) {
+        for(Square square : boardSquares) {
             if(square instanceof Property) {
                 Property currentProperty = (Property) square;
                 if(currentProperty.getName().equals(name)) {
@@ -49,15 +45,20 @@ public class MonopolyBoard {
     }
 
     public Property getProperty(int index) {
-        return (Property) boardSquare[index];
+        return (Property) boardSquares[index];
     }
 
-
     public boolean isProperty(int index) {
-        boolean squareIsProperty = false;
-        if (boardSquare[index] instanceof Property) {
-            squareIsProperty = true;
-        }
-        return squareIsProperty;
+        return boardSquares[index] instanceof Property;
+    }
+
+    /**
+     * toString Function
+     */
+    @Override
+    public String toString() {
+        return "MonopolyBoard{" +
+                "boardSquares=" + Arrays.toString(boardSquares) +
+                '}';
     }
 }

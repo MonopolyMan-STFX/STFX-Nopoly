@@ -16,18 +16,16 @@ public class Property extends Square {
     private String colour = "";
     private Player owner = null;
 
-
     /**
      * Constructor
-     * @param position position of property on board
      * @param propertyName name of property and square
      * @param propertyCost cost of property
      * @param rentPrices a list of rent prices from no house to hotel
      * @param housesCost how much a house costs to build
      * @param colour the colour group of property
      */
-    public Property(int position, String propertyName, int propertyCost, int[] rentPrices, int housesCost, String colour) {
-        super(position, propertyName);
+    public Property(String propertyName, int propertyCost, int[] rentPrices, int housesCost, String colour) {
+        super(propertyName);
         this.cost = propertyCost;
         this.rent = rentPrices;
         this.housesOwned = 0;
@@ -35,9 +33,7 @@ public class Property extends Square {
         this.colour = colour;
     }
 
-    /*
-     * Getters
-     */
+    /* Getters */
     // Methods for price
 
     public int getCost() {
@@ -100,6 +96,4 @@ public class Property extends Square {
                 ", colour='" + colour + '\'' +
                 "} ";
     }
-
-
 }
