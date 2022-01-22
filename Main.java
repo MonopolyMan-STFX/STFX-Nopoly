@@ -20,7 +20,26 @@ class Main {
     // frame.add(label);
 
     // frame.show();
+
+    /* Test Game*/
     Game.main(args);
+
+    /* Test Monopoly Board */
+
+     // create monopoly board
+    MonopolyBoard board = new MonopolyBoard();
+
+    // test get rent and add house
+    Property testProperty = board.getProperty("Old Kent Road");
+    System.out.println(testProperty.getRent());
+    testProperty.addHouse();
+    System.out.println(testProperty.getRent());
+
+    // is 2nd square a property, use when another player lands on a square
+    System.out.println(board.isProperty(3));
+    // get property name
+    System.out.println(board.getProperty(3).getName());
+
     
   }
 }
