@@ -22,7 +22,7 @@ class Main {
     // frame.show();
 
     /* Test Game*/
-    Game.main(args);
+    // Game.main(args);
 
     /* Test Monopoly Board */
 
@@ -31,14 +31,14 @@ class Main {
 
     // test get rent and add house
     Property testProperty = board.getProperty("Old Kent Road");
-    System.out.println(testProperty.getRent());
+    System.out.println("Old kent road rent: " + testProperty.getRent());
     testProperty.addHouse();
-    System.out.println(testProperty.getRent());
+    System.out.println("Old Kent road 1 house Rent: " + testProperty.getRent());
 
     // is 2nd square a property, use when another player lands on a square
-    System.out.println(board.isProperty(3));
+    System.out.println("Is sqaure 3 a property?: " + board.isProperty(3));
     // get property name
-    System.out.println(board.getProperty(3).getName());
+    System.out.println("get Name of square 3: " + board.getProperty(3).getName());
 
     
   }
