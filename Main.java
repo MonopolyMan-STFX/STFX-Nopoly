@@ -31,15 +31,15 @@ class Main {
     // Print Board
     System.out.println(board.toString() + "\n");
 
-    // test get rent and add house
+    // Test get rent and add house
     Property testProperty = board.getProperty("Old Kent Road");
     System.out.println("Old kent road rent: " + testProperty.getRent());
     testProperty.addHouse();
     System.out.println("Old Kent road 1 house Rent: " + testProperty.getRent());
 
-    // is 2nd square a property, use when another player lands on a square
-    System.out.println("Is sqaure 3 a property?: " + board.isProperty(3));
-    // get property name
+    // Is 2nd square a property, use when another player lands on a square
+    System.out.println("Is square 3 a property?: " + board.isProperty(3));
+    // Get property name
     System.out.println("get Name of square 3: " + board.getProperty(3).getName());
   }
 }
