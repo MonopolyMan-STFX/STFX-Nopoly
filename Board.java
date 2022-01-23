@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 /**
- * MonopolyBoard class for Board - Created MonopolyBoard Class, added
+ * Board class for Board - Created Board Class, added
  * documentation and getters to Property. Added txt file of first row of square
  * in the board game.
  * 
@@ -10,21 +10,19 @@ import java.util.Arrays;
  * @date 2022/01/22
  */
 
-public class MonopolyBoard {
-
-  // change to 40, once yohello is done copying board, and parsing
-  // int numOfSquares = 40;
-  int numOfSquares = 4;
-
+public class Board {
   // Attributes
-  private Square[] boardSquares = new Square[numOfSquares];
+  private Square[] boardSquares;
 
   /**
    * Constructor
    * 
    * @params
    */
-  public MonopolyBoard() {
+  public Board(int size) {
+    
+    // Set data as attribute
+    this.boardSquares = new Square[size];
 
     // to be parsed by hello
     boardSquares[0] = new Square("Go");
@@ -90,6 +88,6 @@ public class MonopolyBoard {
    */
   @Override
   public String toString() {
-    return "MonopolyBoard{" + "boardSquares=" + Arrays.toString(boardSquares) + '}';
+    return "Board{" + "boardSquares=" + Arrays.toString(boardSquares) + '}';
   }
 }

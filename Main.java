@@ -24,9 +24,9 @@ class Main {
     /* Test Game*/
     // Game.main(args);
 
-   /* Test Monopoly Board */
+   /* Test Board */
     // create monopoly board
-    MonopolyBoard board = new MonopolyBoard();
+    Board board = new Board(4);
 
     // Print Board
     System.out.println(board.toString() + "\n");
