@@ -1,42 +1,41 @@
+import com.sun.tools.javac.Main;
+
 import java.util.*;
 
 /**
-    * @Author
-    * @Date 2022/01/20
-    * @Course ICS4UC
-*/
+ * @author SA, Mr. Monopoly
+ * @Date 2022/01/20
+ * @Course ICS4UC
+ */
 
 
 class Player
 {
     // This could identify the thing on the board, or the name
+    // Attributes
     private String playerToken = "";
     private int money = 0;
-
-    // USE THIS On the final version, as it will point to the property they own
-    // private ArrayList<Property> propertys = new ArrayList<Property>();
-    // For now use this, as it will just go to the index
-    private ArrayList<Integer> propertys = new ArrayList<Integer>();
+    private ArrayList<Property> properties = new ArrayList<Property>();
     private int position = 0;
     private boolean inJail = false;
     private int numDoubles = 0;
 
     /**
-    * Constructor
-    * @param tokenIn
-    * @param moneyIn
-    */
+     * Constructor
+     * @param tokenIn
+     * @param moneyIn
+     */
     public Player(String tokenIn, int moneyIn)
     {
-      this.playerToken = tokenIn;
-      this.money = moneyIn;
+        this.playerToken = tokenIn;
+        this.money = moneyIn;
     }
 
     /**
      * deposit money into the account
      * @param moneyIn
      */
-    public void deposit(int moneyIn) 
+    public void deposit(int moneyIn)
     {
         money += moneyIn;
     }
@@ -64,7 +63,7 @@ class Player
 
     /**
      * Returns money
-     * @return
+     * @return money
      */
     public int getBalance()
     {
@@ -73,7 +72,7 @@ class Player
 
     /**
      * Moves directly to that tile
-     * @param moved
+     * @param newTile tile to move to
      */
     public void changePositionDirect(int newTile)
     {
@@ -82,15 +81,15 @@ class Player
 
     /**
      * Moves up
-     * @param moveUp
+     * @param moveUp num of squares to move
      */
     public void moveUp(int moveUp)
     {
         // Checks if it passed go, and adds funds accordingly
-        if((position + moveUp) > 39)
+        if((position + moveUp) > (Board.BOARD_SIZE - 1))
         {
             money += 200;
-            position = (position + moveUp) - 40;
+            position = (position + moveUp) - Board.BOARD_SIZE;
         }
         else
         {
@@ -104,7 +103,7 @@ class Player
      * */
     public void addProperty(int indexOfProperty)
     {
-        // propertys.add(indexOfProperty);
+        // properties.add(indexOfProperty);
     }
 
     /**
@@ -121,7 +120,7 @@ class Player
         //     {
 
         //         // When found, stop searching
-        //         if(propertys.get(i) == indexOfProperty)
+        //         if(properties.get(i) == indexOfProperty)
         //             {
         //                 found = true;
         //             }
@@ -131,7 +130,7 @@ class Player
         //             }
 
         //         // If not found, exit and give up
-        //         if(i == propertys.size())
+        //         if(i == properties.size())
         //             {
         //                 found = true;
         //                 i = -1;
@@ -146,14 +145,18 @@ class Player
         // // Otherwise remove that property
         // else
         //     {
-        //         propertys.remove(i);
+        //         properties.remove(i);
         //     }
 
         return found;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
     public String getToken()
     {
-      return this.playerToken;
+        return this.playerToken;
     }
 }
