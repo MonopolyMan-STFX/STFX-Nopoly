@@ -103,7 +103,7 @@ class Player
      * */
     public void addProperty(Property indexOfProperty)
     {
-        // properties.add(indexOfProperty);
+        properties.add(indexOfProperty);
     }
 
     /**
