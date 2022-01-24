@@ -81,11 +81,10 @@ public class Property extends Square {
     }
 
     /**
-     * toString function
+     * toString override
      * 
      * @return String
      */
-    // To whoever keeps adding @Override, STOP WE DONT NEED IT IT DOESNT MAKE A DIFFERNCE
     public String toString() {
         return super.toString() + " " + "Property{" + "owner=" + owner + ", cost=" + cost + ", rent=" + Arrays.toString(rent) + ", housesOwned="
                 + housesOwned + ", housesCost=" + housesCost + ", colour='" + colour + '\'' + "} ";

@@ -25,8 +25,9 @@ class Main {
     // Game.main(args);
 
     /* Test Property */
-    TestProperty.main(args);
+    // TestProperty.main(args);
 
-
+    /* Test Square */
+    // TestSquare.main(args);
   }
 }

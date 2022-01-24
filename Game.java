@@ -141,7 +141,7 @@ class Game {
 	// Parsing the data from sqaures.txt
 	public void fillBoard() throws IOException
 	{
-		Scanner file = new Scanner(new FileReader("sqaures.txt"));
+		Scanner file = new Scanner(new FileReader("squares.txt"));
 		int i = 0;
 
 
