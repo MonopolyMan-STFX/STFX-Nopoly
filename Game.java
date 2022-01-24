@@ -9,7 +9,7 @@ import java.io.*;
 class Game {	
 	// Attributes
 	// FIXME MUST BE A PROPERTY OTHERWISE OTHER THINGS WILL NOT WORK DUE TO IT BEING A SQAURE
-	private ArrayList<Property> board = new ArrayList<Property>();
+	private ArrayList<Square> board = new ArrayList<Square>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private int dice1 = 0;
 	private int dice2 = 0;
@@ -116,13 +116,13 @@ class Game {
 			}
 		}
 
-		if(location != -1)
+		if(location != -1 && this.board.get(location) instanceof Property)
 		{
 			// TODO MAKE SURE THIS WORKS WITH THE CHILD CLASSES TOO (Not sure if it's explained well)
-			if(this.board.get(location).getOwner().equals(null))
+			if(((Property)this.board.get(location)).getOwner().equals(null))
 			{
-				this.board.get(location).setOwner(this.players.get(player));
-				this.players.get(player).addProperty(this.board.get(location));
+				((Property)this.board.get(location)).setOwner(this.players.get(player));
+				this.players.get(player).addProperty(((Property)this.board.get(location)));
 				done = true;
 			}
 		}
@@ -137,27 +137,35 @@ class Game {
 	// Parsing the data from sqaures.txt
 	public void fillBoard() throws IOException
 	{
-		Scanner file = new Scanner(new FileReader("just_properties.txt"));
+		Scanner file = new Scanner(new FileReader("sqaures.txt"));
+		int i = 0;
+
+
 
 		while(file.hasNextLine())
-		{
-			String line = file.nextLine();
-			String split_line[] = line.split(",");
+			{
+				i++;
+				System.out.println(i);
+				String line = file.nextLine();
+				String[] split_line = line.split(",");
 
-			int[] rent_temp = new int[7];
-			System.out.println(split_line.length);
-			rent_temp[0] = Integer.parseInt(split_line[4]);
-			rent_temp[1] = Integer.parseInt(split_line[5]);
-			rent_temp[2] = Integer.parseInt(split_line[6]);
-			rent_temp[3] = Integer.parseInt(split_line[7]);
-			rent_temp[4] = Integer.parseInt(split_line[8]);
-			rent_temp[5] = Integer.parseInt(split_line[9]);
-			rent_temp[6] = Integer.parseInt(split_line[10]);
+				if(split_line[1].equals("property"))
+					{
+						int[] rent_temp = new int[7];
+						System.out.println(split_line.length);
+						rent_temp[0] = Integer.parseInt(split_line[4]);
+						rent_temp[1] = Integer.parseInt(split_line[5]);
+						rent_temp[2] = Integer.parseInt(split_line[6]);
+						rent_temp[3] = Integer.parseInt(split_line[7]);
+						rent_temp[4] = Integer.parseInt(split_line[8]);
+						rent_temp[5] = Integer.parseInt(split_line[9]);
+						rent_temp[6] = Integer.parseInt(split_line[10]);
 
-			Property temp = new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]);
+						Property temp = new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]);
 
-			board.add(temp);
-		}
+						board.add(new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]));
+					}
+			}
 	}
 
 	/**
@@ -171,7 +179,7 @@ class Game {
 	  Game game = new Game();
 	  // Create test players
 	  game.createPlayer("Joe");
-	  game.createPlayer("Bob");	
+	  game.createPlayer("Bob");
 	  // Testing roll and play turn functions for each player...
 	  System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
 	  roll = game.rollDie();

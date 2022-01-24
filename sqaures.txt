@@ -29,13 +29,13 @@ Leicester sqaure,property,yellow,260,22,44,110,330,800,975,1150
 Coventry Street,property,yellow,260,22,44,110,330,800,975,1150
 Water Company,utility,4,10
 Piccadilly,property,yellow,280,24,48,120,360,850,1025,1200
-Go To Jail
+Go To Jail,jail
 Regent Street,property,green,300,26,52,130,390,900,1100,1275
 Oxford Street,property,green,300,26,52,130,390,900,1100,1275
 Community Chest3,Community Chest
 Bond Street,property,green,320,26,52,130,390,900,1100,1275
 Liverpool St. Cross Station,Railroad,200,25,50,100,200
 Chance3,Chance
-Park Lane,property,blue,350,200,600,1400,1700,2000
+Park Lane,property,blue,350,50,100,200,600,1400,1700,2000
 Luxury Tax,Tax,100
 Mayfair,property,blue,400,50,100,200,600,1400,1700,2000
