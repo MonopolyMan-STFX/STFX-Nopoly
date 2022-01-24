@@ -118,12 +118,15 @@ class Game {
 
 		if(location != -1 && this.board.get(location) instanceof Property)
 		{
-			// TODO MAKE SURE THIS WORKS WITH THE CHILD CLASSES TOO (Not sure if it's explained well)
+
 			if(((Property)this.board.get(location)).getOwner().equals(null))
 			{
-				((Property)this.board.get(location)).setOwner(this.players.get(player));
-				this.players.get(player).addProperty(((Property)this.board.get(location)));
-				done = true;
+				if(this.players.get(player).withdraw((Property)this.board.get(location).geCost() == true)
+				   {
+					   ((Property)this.board.get(location)).setOwner(this.players.get(player));
+					   this.players.get(player).addProperty(((Property)this.board.get(location)));
+					   done = true;
+				   }
 			}
 		}
 		else
