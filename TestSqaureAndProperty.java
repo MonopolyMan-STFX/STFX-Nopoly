@@ -16,21 +16,9 @@ class TestSquareAndProperty {
 
     public static void main(String[] args) {
 
-        setupBoard();
-
-        boardSquares[2].g
-        
-
-
-
-
-
-        
 
 
     }
-
-
 
 
 }
