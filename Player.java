@@ -8,7 +8,6 @@ import java.util.*;
  * @Course ICS4UC
  */
 
-
 class Player
 {
     // This could identify the thing on the board, or the name
@@ -86,14 +85,14 @@ class Player
     public void moveUp(int moveUp)
     {
         // Checks if it passed go, and adds funds accordingly
-        if((position + moveUp) > (Board.BOARD_SIZE - 1))
+        if((this.position + moveUp) > 39)
         {
             money += 200;
-            position = (position + moveUp) - Board.BOARD_SIZE;
+            this.position = (this.position + moveUp) - 39;
         }
         else
         {
-            position += moveUp;
+            this.position += moveUp;
         }
     }
 
@@ -160,5 +159,40 @@ class Player
         return this.playerToken;
     }
 
-    
+    /**
+     * Increments the number of doubles
+     */
+    public void incrNumDoubles() {
+        this.numDoubles++;
+    }
+
+    /**
+     * Resets the number of doubles
+     */
+    public void resetNumDoubles() {
+        this.numDoubles = 0;
+    }
+
+    /**
+     * Get number of doubles
+     * @return number of doubles
+     */
+    public int getNumDoubles() {
+        return this.numDoubles;
+    }
+
+    /**
+     * Check if the player is in jail
+     * @return in jail or not
+     */
+    public boolean checkIfInJail() {
+        return this.inJail;
+    }
+
+    /**
+     * Set if the player is in jail
+     */
+    public void setIfInJail(boolean jail) {
+        this.inJail = jail;
+    }
 }

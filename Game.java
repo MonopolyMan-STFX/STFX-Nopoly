@@ -1,96 +1,39 @@
 import java.util.*;
 import java.io.*;
+
 /**
- * This is the main game class
- *
- * @author Aaron, Craig, Kyle, Basel
+ * Main Game Class
+ * @author Kyle, Basel, Craig, Aaron
  */
 
 class Game {	
 	// Attributes
-	// FIXME MUST BE A PROPERTY OTHERWISE OTHER THINGS WILL NOT WORK DUE TO IT BEING A SQAURE
 	private ArrayList<Square> board = new ArrayList<Square>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private int dice1 = 0;
 	private int dice2 = 0;
 	private int curPlayerTurn = 0;	
+
 	// Constructor
 	public Game() throws IOException
 	{
 	  	// Set data as attributes
 		  this.fillBoard();
 	}	
-	/**
-	 * toString function
-	 */
-	public String toString() {
-	  	String result = "";
-	  	return result;
-	}	
-	/*
-	 * Roll Die
-	 *
-	 * @return total
-	 */
-	public int rollDie() {
-	  	System.out.println("Rolling...");
-	  	Random rand = new Random();
-	  	// Randomize value of two dice
-	  	// dice1 = rand.nextInt(6)+1;
-	  	// dice2 = rand.nextInt(6)+1;
-	  	dice1 = rand.nextInt(2) + 1;
-	  	dice2 = rand.nextInt(2) + 1;
-	  	// Calculate and return total
-	  	int total = dice1 + dice2;
-	  	System.out.println("Roll: " + total);
-	  	return total;
-	}	
-	/*
-	 * Check if rolled doubles
-	 *
-	 * @return if double
-	 */
-	public boolean checkDouble() {
-	  	boolean isDouble = false;
-	  	if (dice1 == dice2) {
-	  	  isDouble = true;
-	  	}
-	  	return isDouble;
-	}	
-	/*
-	 * Play turn
-	 */
-	public void playTurn(int roll) {
-	  	// Move player	
-	  	// Buy current property
-	  	// Do you want to sell?
-	  	// Buy house	
-	  	if (checkDouble() == true) {
-	  	  	playTurn(rollDie());
-	  	}	
-	  	curPlayerTurn++;
-	  	if (curPlayerTurn > players.size()) {
-	  	  	curPlayerTurn = 0;
-	  	}
-	}	
-	/*
-	 * Get current player turn
-	 *
-	 * @return player
-	 */
-	public int getCurPlayerTurn() {
-	  return curPlayerTurn;
-	}	
-	/*
-	 * Create new player
-	 *
-	 * @param player name
-	 */
-	public void createPlayer(String name) {
-	  players.add(new Player(name, 1500));
-	}
+	
+    /**
+    * toString function
+    */
+    public String toString() {
+        String result = "";
+        return result;
+    }
 
-	public boolean buyProperty(int player, String propertyName) 
+    // Buy current property
+    // Do you want to sell?
+    // Buy house
+
+    public boolean buyProperty(int player, String propertyName) 
 	{
 		boolean done = false;
 		boolean has_owner = false;
@@ -138,60 +81,155 @@ class Game {
 		return done;
 	}	
 
-	// Parsing the data from sqaures.txt
-	public void fillBoard() throws IOException
-	{
-		Scanner file = new Scanner(new FileReader("squares.txt"));
+    // Parsing the data from sqaures.txt
+	public void fillBoard() throws IOException {
+		// Set up file input
+        Scanner file = new Scanner(new FileReader("squares.txt"));
 		int i = 0;
-
-
-
-		while(file.hasNextLine())
-			{
+        // Loop through file
+		while(file.hasNextLine()) {
 				i++;
-				System.out.println(i);
+				//System.out.println(i);
 				String line = file.nextLine();
-				String[] split_line = line.split(",");
+				String[] splitLine = line.split(",");
 
-				if(split_line[1].equals("property"))
-					{
+				if(splitLine[1].equals("property")) {
 						int[] rent_temp = new int[7];
-						System.out.println(split_line.length);
-						rent_temp[0] = Integer.parseInt(split_line[4]);
-						rent_temp[1] = Integer.parseInt(split_line[5]);
-						rent_temp[2] = Integer.parseInt(split_line[6]);
-						rent_temp[3] = Integer.parseInt(split_line[7]);
-						rent_temp[4] = Integer.parseInt(split_line[8]);
-						rent_temp[5] = Integer.parseInt(split_line[9]);
-						rent_temp[6] = Integer.parseInt(split_line[10]);
+						//System.out.println(splitLine.length);
+						rent_temp[0] = Integer.parseInt(splitLine[4]);
+						rent_temp[1] = Integer.parseInt(splitLine[5]);
+						rent_temp[2] = Integer.parseInt(splitLine[6]);
+						rent_temp[3] = Integer.parseInt(splitLine[7]);
+						rent_temp[4] = Integer.parseInt(splitLine[8]);
+						rent_temp[5] = Integer.parseInt(splitLine[9]);
+						rent_temp[6] = Integer.parseInt(splitLine[10]);
 
-						Property temp = new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]);
+						Property temp = new Property(splitLine[0],Integer.parseInt(splitLine[3]), rent_temp, 50,splitLine[2]);
 
-						board.add(new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]));
-					}
-			}
-	}
+						board.add(new Property(splitLine[0],Integer.parseInt(splitLine[3]), rent_temp, 50,splitLine[2]));
+				}
+		}
+    }
 
-	/**
-	 *
-	 * @param args
-	 */
-	public static void main(String[] args) throws IOException
-	{
-	  int roll;
-	  // Create test game
-	  Game game = new Game();
-	  // Create test players
-	  game.createPlayer("Joe");
-	  game.createPlayer("Bob");
-	  // Testing roll and play turn functions for each player...
-	  System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
-	  roll = game.rollDie();
-	  game.playTurn(roll);
-	  System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));	
-	  System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
-	  roll = game.rollDie();
-	  game.playTurn(roll);
-	  System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
-	}
+    /*
+    * Roll Die
+    * @return total
+    */
+    public int rollDie() {
+        Random rand = new Random();
+        // Randomize value of two dice
+        // dice1 = rand.nextInt(6)+1;
+        // dice2 = rand.nextInt(6)+1;
+        dice1 = rand.nextInt(2)+1;
+        dice2 = rand.nextInt(2)+1;
+        // Calculate and return total
+        int total = dice1 + dice2;
+        System.out.println("Roll: " + total);
+        return total;
+    }
+
+    /*
+    * Check if rolled doubles
+    * @return if double
+    */
+    public boolean checkDouble() {
+        boolean isDouble = false;
+        if (dice1 == dice2) {
+            isDouble = true;
+        }
+        return isDouble;
+    }
+
+    /*
+    * Play turn
+    */
+    public void playTurn(int roll) {
+        // Move player if they are not in jail
+        if (players.get(curPlayerTurn).checkIfInJail() == false) {
+            // Move player based on roll, output position
+            players.get(curPlayerTurn).moveUp(roll);
+            System.out.println("Position: "+players.get(curPlayerTurn).getPosition());
+        }
+        // End of turn
+        endTurn();
+    }
+    
+    /*
+    * End turn
+    */
+    public void endTurn() {
+        if (checkDouble() == true) {           
+            // Increment number of doubles
+            players.get(curPlayerTurn).incrNumDoubles();
+            
+            // If player is in jail, they are now out and get to roll again
+            if (players.get(curPlayerTurn).checkIfInJail() == true) {
+                players.get(curPlayerTurn).setIfInJail(false);
+                playTurn(rollDie());
+            }
+
+            // If player rolls 3 doubles, go to jail
+            else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
+                System.out.println("(!) JAIL");
+                players.get(curPlayerTurn).setIfInJail(true);
+                
+                // Next player's turn
+                nextPlayerTurn();
+            }
+            // Roll again if not in jail
+            else if (players.get(curPlayerTurn).checkIfInJail() == false) {
+                playTurn(rollDie());
+            }
+        }
+        // Next player's turn
+        else {
+            nextPlayerTurn();
+        }
+    }
+
+    /*
+    * Next player's turn
+    */
+    public void nextPlayerTurn() {
+        // Next player's turn
+        curPlayerTurn++;
+        // Reset to first player
+        if (curPlayerTurn > players.size()-1) {
+            curPlayerTurn = 0;
+        }
+        // Reset number of doubles
+        players.get(curPlayerTurn).resetNumDoubles();
+    }
+
+    /*
+    * Get current player turn
+    * @return player
+    */
+    public int getCurPlayerTurn() {
+        return curPlayerTurn;
+    }
+
+    /*
+    * Create new player
+    * @param player name
+    */
+    public void createPlayer(String token) {
+        players.add(new Player(token, 1500));
+    }
+
+    /*
+    * Get players
+    * @return players
+    */
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    /*
+    * Get board
+    * @return board
+    */
+    public ArrayList<Square> getBoard() {
+        return board;
+    }	
 }
