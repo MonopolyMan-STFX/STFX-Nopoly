@@ -1,122 +1,185 @@
 import java.util.*;
-
+import java.io.*;
 /**
  * This is the main game class
  *
  * @author Aaron, Craig, Kyle, Basel
  */
 
-class Game {
+class Game {	
+	// Attributes
+	// FIXME MUST BE A PROPERTY OTHERWISE OTHER THINGS WILL NOT WORK DUE TO IT BEING A SQAURE
+	private ArrayList<Property> board = new ArrayList<Property>();
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private int dice1 = 0;
+	private int dice2 = 0;
+	private int curPlayerTurn = 0;	
+	// Constructor
+	public Game() throws IOException
+	{
+	  	// Set data as attributes
+		  this.fillBoard();
+	}	
+	/**
+	 * toString function
+	 */
+	public String toString() {
+	  	String result = "";
+	  	return result;
+	}	
+	/*
+	 * Roll Die
+	 *
+	 * @return total
+	 */
+	public int rollDie() {
+	  	System.out.println("Rolling...");
+	  	Random rand = new Random();
+	  	// Randomize value of two dice
+	  	// dice1 = rand.nextInt(6)+1;
+	  	// dice2 = rand.nextInt(6)+1;
+	  	dice1 = rand.nextInt(2) + 1;
+	  	dice2 = rand.nextInt(2) + 1;
+	  	// Calculate and return total
+	  	int total = dice1 + dice2;
+	  	System.out.println("Roll: " + total);
+	  	return total;
+	}	
+	/*
+	 * Check if rolled doubles
+	 *
+	 * @return if double
+	 */
+	public boolean checkDouble() {
+	  	boolean isDouble = false;
+	  	if (dice1 == dice2) {
+	  	  isDouble = true;
+	  	}
+	  	return isDouble;
+	}	
+	/*
+	 * Play turn
+	 */
+	public void playTurn(int roll) {
+	  	// Move player	
+	  	// Buy current property
+	  	// Do you want to sell?
+	  	// Buy house	
+	  	if (checkDouble() == true) {
+	  	  	playTurn(rollDie());
+	  	}	
+	  	curPlayerTurn++;
+	  	if (curPlayerTurn > players.size()) {
+	  	  	curPlayerTurn = 0;
+	  	}
+	}	
+	/*
+	 * Get current player turn
+	 *
+	 * @return player
+	 */
+	public int getCurPlayerTurn() {
+	  return curPlayerTurn;
+	}	
+	/*
+	 * Create new player
+	 *
+	 * @param player name
+	 */
+	public void createPlayer(String name) {
+	  players.add(new Player(name, 1500));
+	}
 
-  // Attributes
-  private ArrayList<String> board = new ArrayList<String>();
-  private ArrayList<Player> players = new ArrayList<Player>();
-  private int dice1 = 0;
-  private int dice2 = 0;
-  private int curPlayerTurn = 0;
+	public boolean buyProperty(int player, String propertyName) 
+	{
+		boolean done = false;
+		boolean has_owner = false;
+		boolean found = false;
 
-  // Constructor
-  public Game() {
-    // Set data as attributes
-  }
+		int location = 0;
 
-  /**
-   * toString function
-   */
-  public String toString() {
-    String result = "";
-    return result;
-  }
+		// Look for what property they wanna buy
+		while(found == false)
+		{
+			if(location == this.board.size())
+			{
+				found = true;
+				location = -1;
+			}
+			else if(this.board.get(location).equals(propertyName))
+			{
+				found = true;
+			}
+			else
+			{
+				location++;
+			}
+		}
 
-  /*
-   * Roll Die
-   * 
-   * @return total
-   */
-  public int rollDie() {
-    System.out.println("Rolling...");
-    Random rand = new Random();
-    // Randomize value of two dice
-    // dice1 = rand.nextInt(6)+1;
-    // dice2 = rand.nextInt(6)+1;
-    dice1 = rand.nextInt(2) + 1;
-    dice2 = rand.nextInt(2) + 1;
-    // Calculate and return total
-    int total = dice1 + dice2;
-    System.out.println("Roll: " + total);
-    return total;
-  }
+		if(location != -1)
+		{
+			// TODO MAKE SURE THIS WORKS WITH THE CHILD CLASSES TOO (Not sure if it's explained well)
+			if(this.board.get(location).getOwner().equals(null))
+			{
+				this.board.get(location).setOwner(this.players.get(player));
+				this.players.get(player).addProperty(this.board.get(location));
+				done = true;
+			}
+		}
+		else
+		{
+			done = false;
+		}
 
-  /*
-   * Check if rolled doubles
-   * 
-   * @return if double
-   */
-  public boolean checkDouble() {
-    boolean isDouble = false;
-    if (dice1 == dice2) {
-      isDouble = true;
-    }
-    return isDouble;
-  }
+		return done;
+	}	
 
-  /*
-   * Play turn
-   */
-  public void playTurn(int roll) {
+	// Parsing the data from sqaures.txt
+	public void fillBoard() throws IOException
+	{
+		Scanner file = new Scanner(new FileReader("just_properties.txt"));
 
-    // Move player
+		while(file.hasNextLine())
+		{
+			String line = file.nextLine();
+			String split_line[] = line.split(",");
 
-    // Buy current property
-    // Do you want to sell?
-    // Buy house
+			int[] rent_temp = new int[7];
+			System.out.println(split_line.length);
+			rent_temp[0] = Integer.parseInt(split_line[4]);
+			rent_temp[1] = Integer.parseInt(split_line[5]);
+			rent_temp[2] = Integer.parseInt(split_line[6]);
+			rent_temp[3] = Integer.parseInt(split_line[7]);
+			rent_temp[4] = Integer.parseInt(split_line[8]);
+			rent_temp[5] = Integer.parseInt(split_line[9]);
+			rent_temp[6] = Integer.parseInt(split_line[10]);
 
-    if (checkDouble() == true) {
-      playTurn(rollDie());
-    }
+			Property temp = new Property(split_line[0],Integer.parseInt(split_line[3]), rent_temp, 50,split_line[2]);
 
-    curPlayerTurn++;
-    if (curPlayerTurn > players.size()) {
-      curPlayerTurn = 0;
-    }
-  }
+			board.add(temp);
+		}
+	}
 
-  /*
-   * Get current player turn
-   * 
-   * @return player
-   */
-  public int getCurPlayerTurn() {
-    return curPlayerTurn;
-  }
-
-  /*
-   * Create new player
-   * 
-   * @param player name
-   */
-  public void createPlayer(String name) {
-    players.add(new Player(name, 1500));
-  }
-
-  public static void main(String[] args) {
-    int roll;
-    // Create test game
-    Game game = new Game();
-    // Create test players
-    game.createPlayer("Joe");
-    game.createPlayer("Bob");
-
-    // Testing roll and play turn functions for each player...
-    System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
-    roll = game.rollDie();
-    game.playTurn(roll);
-    System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
-
-    System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
-    roll = game.rollDie();
-    game.playTurn(roll);
-    System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
-
-  }
+	/**
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) throws IOException
+	{
+	  int roll;
+	  // Create test game
+	  Game game = new Game();
+	  // Create test players
+	  game.createPlayer("Joe");
+	  game.createPlayer("Bob");	
+	  // Testing roll and play turn functions for each player...
+	  System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
+	  roll = game.rollDie();
+	  game.playTurn(roll);
+	  System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));	
+	  System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
+	  roll = game.rollDie();
+	  game.playTurn(roll);
+	  System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
+	}
 }

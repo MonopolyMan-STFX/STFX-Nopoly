@@ -3,7 +3,7 @@ import com.sun.tools.javac.Main;
 import java.util.*;
 
 /**
- * @author SA, Mr. Monopoly
+ * @author Mr. Monopoly
  * @Date 2022/01/20
  * @Course ICS4UC
  */
@@ -101,7 +101,7 @@ class Player
      * Adds the index of a certain property to the ArrayList
      * @param indexOfProperty
      * */
-    public void addProperty(int indexOfProperty)
+    public void addProperty(Property indexOfProperty)
     {
         // properties.add(indexOfProperty);
     }
@@ -159,4 +159,6 @@ class Player
     {
         return this.playerToken;
     }
+
+    
 }
