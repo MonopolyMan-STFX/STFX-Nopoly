@@ -121,7 +121,8 @@ class Game {
 
 			if(((Property)this.board.get(location)).getOwner().equals(null))
 			{
-				if(this.players.get(player).withdraw((Property)this.board.get(location).geCost() == true)
+				int cost = ((Property)this.board.get(location)).getCost();
+				if(this.players.get(player).withdraw(cost) == true)
 				   {
 					   ((Property)this.board.get(location)).setOwner(this.players.get(player));
 					   this.players.get(player).addProperty(((Property)this.board.get(location)));
