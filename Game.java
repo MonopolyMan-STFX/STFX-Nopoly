@@ -23,7 +23,6 @@ class Game {
         for (int i=0; i<40; i++) {            
             board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
         }
-
     }	
 
     	// Constructor
@@ -187,7 +186,19 @@ class Game {
         if (players.get(curPlayerTurn).checkIfInJail() == false) {
             // Move player based on roll, output position
             players.get(curPlayerTurn).moveUp(roll);
-            System.out.println("Position: "+players.get(curPlayerTurn).getPosition());
+            
+            // System.out.println("Position: "+ (players.get(curPlayerTurn).getPosition() + 1));
+
+            System.out.println("Position: "+ players.get(curPlayerTurn).getPosition());
+            System.out.println("Square Name: " + getBoard().get(players.get(curPlayerTurn).getPosition()).getName());
+
+            // If they land on go to jail, send to jail
+            if (players.get(curPlayerTurn).getPosition() == 30) {
+                System.out.println("(!) JAIL");
+                players.get(curPlayerTurn).setIfInJail(true);
+                players.get(curPlayerTurn).changePositionDirect(10);
+            }
+            // TO-DO Buy the property here
         }
         // End of turn
         endTurn();
@@ -197,6 +208,7 @@ class Game {
     * End turn
     */
     public void endTurn() {
+        // Rolled a double
         if (checkDouble() == true) {
             System.out.println("DOUBLE");       
             // Increment number of doubles
@@ -213,11 +225,26 @@ class Game {
             else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
                 System.out.println("(!) JAIL");
                 players.get(curPlayerTurn).setIfInJail(true);
+                players.get(curPlayerTurn).changePositionDirect(10);
                 
                 // Next player's turn
                 nextPlayerTurn();
             }
         }
+        // Check if player is currently in jail
+        else if (players.get(curPlayerTurn).checkIfInJail() == true){
+            players.get(curPlayerTurn).incrNumDaysInJail();
+            
+            // Check if they have been in jail for 4 days (technically 3) 
+            if ((players.get(curPlayerTurn).getNumDaysInJail() == 4)) {
+                System.out.println("OUT OF JAIL");
+                players.get(curPlayerTurn).setIfInJail(false);
+                players.get(curPlayerTurn).resetNumDaysInJail();
+            }
+            // Next player's turn
+            nextPlayerTurn();
+        }
+
         // Next player's turn
         else {
             nextPlayerTurn();
@@ -266,10 +293,10 @@ class Game {
      * Get dice numbers
      * @return dice1 and dice2
      */
-    public int[] getDiceNumber() {
+    public int[] getDiceNumbers() {
         return new int[] {dice1, dice2};
     }
-
+    
     /*
     * Get board
     * @return board

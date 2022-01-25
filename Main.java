@@ -11,6 +11,7 @@ class Main {
   public static void main(String[] args) throws Exception {
     new MainBoard();
     
+    /* Test Game */
     //TestGame.main(args);
 
     /* Test Property */

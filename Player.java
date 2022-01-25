@@ -18,6 +18,7 @@ class Player
     private int position = 0;
     private boolean inJail = false;
     private int numDoubles = 0;
+    private int numDaysInJail = 0;
 
     /**
      * Constructor
@@ -28,15 +29,19 @@ class Player
     {
         this.name = tokenIn;
         this.money = moneyIn;
+        this.position = 0;
+        this.inJail = false;
+        this.numDoubles = 0;
+        this.numDaysInJail = 0;
     }
 
     /**
-     * deposit money into the account
+     * Deposit money into the account
      * @param moneyIn
      */
     public void deposit(int moneyIn)
     {
-        money += moneyIn;
+        this.money += moneyIn;
     }
 
     /**
@@ -47,14 +52,14 @@ class Player
     public boolean withdraw(int moneyOut)
     {
         boolean result;
-        if(moneyOut > money)
+        if(moneyOut > this.money)
         {
             result = false;
         }
         else
         {
             result = true;
-            money -= moneyOut;
+            this.money -= moneyOut;
         }
 
         return result;
@@ -66,7 +71,7 @@ class Player
      */
     public int getBalance()
     {
-        return money;
+        return this.money;
     }
 
     /**
@@ -75,7 +80,7 @@ class Player
      */
     public void changePositionDirect(int newTile)
     {
-        position = newTile;
+        this.position = newTile;
     }
 
     /**
@@ -87,8 +92,8 @@ class Player
         // Checks if it passed go, and adds funds accordingly
         if((this.position + moveUp) > 39)
         {
-            money += 200;
-            this.position = (this.position + moveUp) - 39;
+            this.money += 200;
+            this.position = (this.position + moveUp) - 40;
         }
         else
         {
@@ -152,7 +157,7 @@ class Player
     }
 
     public int getPosition() {
-        return position;
+        return this.position;
     }
 
     public String getName()
@@ -161,11 +166,50 @@ class Player
     }
 
     /**
+     * Increments the number of days in jail
+     */
+    public void incrNumDaysInJail() {
+        this.numDaysInJail++;
+    }
+
+    /**
+     * Get number of days in jail
+     * @return number of days in jail
+     */
+    public int getNumDaysInJail() {
+        return this.numDaysInJail;
+    }
+
+
+    /**
+     * Check if the player is in jail
+     * @return in jail or not
+     */
+    public boolean checkIfInJail() {
+        return this.inJail;
+    }
+
+    /**
+     * Set if the player is in jail
+     */
+    public void setIfInJail(boolean jail) {
+        this.inJail = jail;
+    }
+
+    /**
      * Increments the number of doubles
      */
     public void incrNumDoubles() {
         this.numDoubles++;
     }
+
+    /**
+     * Resets the number of days in jail
+     */
+    public void resetNumDaysInJail() {
+        this.numDaysInJail = 0;
+    }
+
 
     /**
      * Resets the number of doubles
@@ -180,22 +224,6 @@ class Player
      */
     public int getNumDoubles() {
         return this.numDoubles;
-    }
-
-    /**
-     * Check if the player is in jail
-     * @return in jail or not
-     */
-    public boolean checkIfInJail() {
-        return this.inJail;
-    }
-
-    /**
-     * Set if the player is in jail
-     */
-    public void setIfInJail(boolean jail)
-    {
-        this.inJail = jail;
     }
 
     public ArrayList<Square> getAllProperties()
