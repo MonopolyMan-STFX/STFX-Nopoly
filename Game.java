@@ -38,6 +38,10 @@ class Game {
         }
 	}	
 
+    public void printPropertyData(int index)
+    {
+        System.out.println(((Property)this.board.get(index)));
+    }
 
     /**
     * toString function
@@ -69,7 +73,7 @@ class Game {
 				location = -1;
 			}
             // Once it's found end it
-			else if(this.board.get(location).equals(propertyName))
+			else if(this.board.get(location).getName().equals(propertyName))
 			{
 				found = true;
 			}
@@ -85,26 +89,26 @@ class Game {
 		{
 
             // If it has no owner
-			if(((Property)this.board.get(location)).getOwner().equals(null))
+			if(((Property)this.board.get(location)).getOwner() == null)
 			{
                 // Get the cost, and put it into the variable ``cost``
-				int cost = ((Property)this.board.get(location)).getCost();
+                int cost = ((Property)this.board.get(location)).getCost();
 
                 // withdraw the money from player, if successful it will return true
-				if(this.players.get(player).withdraw(cost) == true)
-				   {
-                       // Set the owner of the property
-					   ((Property)this.board.get(location)).setOwner(this.players.get(player));
-                       // Adding the Property to player
-                       this.players.get(player).addProperty(((Property)this.board.get(location)));
-					   done = true;
-				   }
-			}
-		}
-		else
-		{
-			done = false;
-		}
+                if(this.players.get(player).withdraw(cost) == true)
+                {
+                    // Set the owner of the property
+                    ((Property)this.board.get(location)).setOwner(this.players.get(player));
+                    // Adding the Property to player
+                    this.players.get(player).addProperty(((Property)this.board.get(location)));
+                    done = true;
+                }
+            }
+        }
+        else
+        {
+            done = false;
+        }
 
 		return done;
 	}	
@@ -114,6 +118,8 @@ class Game {
 		// Set up file input
         Scanner fileIn = new Scanner(new FileReader(filename));
 		int i = 0;
+        // Skip the first line because it talks about how to "interpret the data"
+        fileIn.nextLine();
         // Loop through file
 		while(fileIn.hasNextLine()) {
 				i++;
@@ -271,4 +277,12 @@ class Game {
     public ArrayList<Square> getBoard() {
         return board;
     }	
+
+    public void printBoard()
+        {
+            for(int i = 0; i < board.size(); i++)
+                {
+                    System.out.println("I: " + i + " " + board.get(i).getName() );
+                }
+        }
 }

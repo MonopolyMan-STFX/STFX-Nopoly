@@ -14,7 +14,7 @@ class Player
     // Attributes
     private String name = "";
     private int money = 0;
-    private ArrayList<Property> properties = new ArrayList<Property>();
+    private ArrayList<Square> properties = new ArrayList<Square>();
     private int position = 0;
     private boolean inJail = false;
     private int numDoubles = 0;
@@ -102,6 +102,7 @@ class Player
      * */
     public void addProperty(Property indexOfProperty)
     {
+        // Setting owner is done in player class
         properties.add(indexOfProperty);
     }
 
@@ -192,7 +193,13 @@ class Player
     /**
      * Set if the player is in jail
      */
-    public void setIfInJail(boolean jail) {
+    public void setIfInJail(boolean jail)
+    {
         this.inJail = jail;
     }
+
+    public ArrayList<Square> getAllProperties()
+        {
+            return properties;
+        }
 }
