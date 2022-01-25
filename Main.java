@@ -9,20 +9,9 @@ import javax.swing.SwingConstants;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    // // A change - who did this?
-    // JFrame frame = new JFrame("ICS4UC Quad 2");
-    // frame.setSize(300, 300);
-    // frame.setLocation(5, 5);
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // // Makes a window called hello world
-    // JLabel label = new JLabel("Hello world", SwingConstants.CENTER);
-    // frame.add(label);
-
-    // frame.show();
-
-    /* Test Game*/
-    TestGame.main(args);
+    new MainBoard();
+    
+    //TestGame.main(args);
 
     /* Test Property */
     // TestProperty.main(args);
