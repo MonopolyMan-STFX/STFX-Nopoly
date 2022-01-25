@@ -12,7 +12,7 @@ class Player
 {
     // This could identify the thing on the board, or the name
     // Attributes
-    private String playerToken = "";
+    private String name = "";
     private int money = 0;
     private ArrayList<Property> properties = new ArrayList<Property>();
     private int position = 0;
@@ -26,7 +26,7 @@ class Player
      */
     public Player(String tokenIn, int moneyIn)
     {
-        this.playerToken = tokenIn;
+        this.name = tokenIn;
         this.money = moneyIn;
     }
 
@@ -154,9 +154,9 @@ class Player
         return position;
     }
 
-    public String getToken()
+    public String getName()
     {
-        return this.playerToken;
+        return this.name;
     }
 
     /**
