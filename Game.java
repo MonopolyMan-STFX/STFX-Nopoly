@@ -61,31 +61,41 @@ class Game {
 		// Look for what property they wanna buy
 		while(found == false)
 		{
+            // If it gets to the end and it doesnt find it
 			if(location == this.board.size())
 			{
 				found = true;
 				location = -1;
 			}
+            // Once it's found end it
 			else if(this.board.get(location).equals(propertyName))
 			{
 				found = true;
 			}
+            // Otherwise keep looking through it
 			else
 			{
 				location++;
 			}
 		}
 
+        // If it does actually exist, and the location is an actual property
 		if(location != -1 && this.board.get(location) instanceof Property)
 		{
 
+            // If it has no owner
 			if(((Property)this.board.get(location)).getOwner().equals(null))
 			{
+                // Get the cost, and put it into the variable ``cost``
 				int cost = ((Property)this.board.get(location)).getCost();
+
+                // withdraw the money from player, if successful it will return true
 				if(this.players.get(player).withdraw(cost) == true)
 				   {
+                       // Set the owner of the property
 					   ((Property)this.board.get(location)).setOwner(this.players.get(player));
-					   this.players.get(player).addProperty(((Property)this.board.get(location)));
+                       // Adding the Property to player
+                       this.players.get(player).addProperty(((Property)this.board.get(location)));
 					   done = true;
 				   }
 			}
