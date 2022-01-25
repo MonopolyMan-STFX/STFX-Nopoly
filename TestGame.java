@@ -2,9 +2,9 @@
  * Test game program
  **/
 class TestGame {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // Create test game
-        Game game = new Game();
+        Game game = new Game("squares.txt");
 
         // Create test players
         game.createPlayer("Joe");
@@ -27,5 +27,6 @@ class TestGame {
         roll = game.rollDie();
         game.playTurn(roll);
         System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
+
     }
 }
