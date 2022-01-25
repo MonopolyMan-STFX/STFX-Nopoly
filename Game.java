@@ -101,30 +101,34 @@ class Game {
     // Parsing the data from sqaures.txt
 	public void fillBoard(String filename) throws IOException {
 		// Set up file input
-        Scanner file = new Scanner(new FileReader(filename));
+        Scanner fileIn = new Scanner(new FileReader(filename));
 		int i = 0;
         // Loop through file
-		while(file.hasNextLine()) {
+		while(fileIn.hasNextLine()) {
 				i++;
 				//System.out.println(i);
-				String line = file.nextLine();
-				String[] splitLine = line.split(",");
+				String lineToBeParsed = fileIn.nextLine();
+				String[] splitLine = lineToBeParsed.split(",");
 
 				if(splitLine[1].equals("property")) {
-						int[] rent_temp = new int[7];
+						int[] rentTemp = new int[7];
 						//System.out.println(splitLine.length);
-						rent_temp[0] = Integer.parseInt(splitLine[4]);
-						rent_temp[1] = Integer.parseInt(splitLine[5]);
-						rent_temp[2] = Integer.parseInt(splitLine[6]);
-						rent_temp[3] = Integer.parseInt(splitLine[7]);
-						rent_temp[4] = Integer.parseInt(splitLine[8]);
-						rent_temp[5] = Integer.parseInt(splitLine[9]);
-						rent_temp[6] = Integer.parseInt(splitLine[10]);
+						rentTemp[0] = Integer.parseInt(splitLine[4]);
+						rentTemp[1] = Integer.parseInt(splitLine[5]);
+						rentTemp[2] = Integer.parseInt(splitLine[6]);
+						rentTemp[3] = Integer.parseInt(splitLine[7]);
+						rentTemp[4] = Integer.parseInt(splitLine[8]);
+						rentTemp[5] = Integer.parseInt(splitLine[9]);
+						rentTemp[6] = Integer.parseInt(splitLine[10]);
 
-						Property temp = new Property(splitLine[0],Integer.parseInt(splitLine[3]), rent_temp, 50,splitLine[2]);
+						// Property temp = new Property(splitLine[0],Integer.parseInt(splitLine[3]), rent_temp, 50,splitLine[2]);
 
-						board.add(new Property(splitLine[0],Integer.parseInt(splitLine[3]), rent_temp, 50,splitLine[2]));
+						board.add(new Property(splitLine[0],Integer.parseInt(splitLine[3]), rentTemp, 50,splitLine[2]));
 				}
+                else 
+                {
+                    board.add(new Square(splitLine[0]));
+                }
 		}
     }
 
