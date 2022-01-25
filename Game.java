@@ -15,12 +15,29 @@ class Game {
 	private int curPlayerTurn = 0;	
 
 	// Constructor
-	public Game() throws IOException
+	public Game()
 	{
-	  	// Set data as attributes
-		  this.fillBoard();
+        // Populate default data - 40 properties
+        int[] rent = {10, 20, 30, 40};
+        for (int i=0; i<40; i++) {            
+            board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
+        }
+
+    }	
+
+    	// Constructor
+	public Game(String filename)
+	{
+        try {
+            // Set data as attributes
+            this.fillBoard(filename);
+        } 
+        catch (Exception e) {
+            System.out.println("Failed to read file");
+        }
 	}	
-	
+
+
     /**
     * toString function
     */
@@ -82,9 +99,9 @@ class Game {
 	}	
 
     // Parsing the data from sqaures.txt
-	public void fillBoard() throws IOException {
+	public void fillBoard(String filename) throws IOException {
 		// Set up file input
-        Scanner file = new Scanner(new FileReader("squares.txt"));
+        Scanner file = new Scanner(new FileReader(filename));
 		int i = 0;
         // Loop through file
 		while(file.hasNextLine()) {
