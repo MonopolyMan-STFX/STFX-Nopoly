@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 
@@ -138,11 +139,12 @@ class Game {
     */
     public int rollDie() {
         Random rand = new Random();
-        // Randomize value of two dice
-        // dice1 = rand.nextInt(6)+1;
-        // dice2 = rand.nextInt(6)+1;
-        dice1 = rand.nextInt(2)+1;
-        dice2 = rand.nextInt(2)+1;
+        // Randomize value of two six-sided dice
+        dice1 = rand.nextInt(6)+1;
+        dice2 = rand.nextInt(6)+1;
+        // Two-sided dice to test doubles 
+        //dice1 = rand.nextInt(2)+1;
+        //dice2 = rand.nextInt(2)+1;
         // Calculate and return total
         int total = dice1 + dice2;
         System.out.println("Roll: " + total);
@@ -179,14 +181,16 @@ class Game {
     * End turn
     */
     public void endTurn() {
-        if (checkDouble() == true) {           
+        if (checkDouble() == true) {
+            System.out.println("DOUBLE");       
             // Increment number of doubles
             players.get(curPlayerTurn).incrNumDoubles();
             
-            // If player is in jail, they are now out and get to roll again
+            // If player is in jail, reset number of doubles, they are now out and get to roll again
             if (players.get(curPlayerTurn).checkIfInJail() == true) {
+                System.out.println("OUT OF JAIL");
                 players.get(curPlayerTurn).setIfInJail(false);
-                playTurn(rollDie());
+                players.get(curPlayerTurn).resetNumDoubles();
             }
 
             // If player rolls 3 doubles, go to jail
@@ -196,10 +200,6 @@ class Game {
                 
                 // Next player's turn
                 nextPlayerTurn();
-            }
-            // Roll again if not in jail
-            else if (players.get(curPlayerTurn).checkIfInJail() == false) {
-                playTurn(rollDie());
             }
         }
         // Next player's turn
@@ -244,6 +244,14 @@ class Game {
     */
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    /*
+     * Get dice numbers
+     * @return dice1 and dice2
+     */
+    public int[] getDiceNumber() {
+        return new int[] {dice1, dice2};
     }
 
     /*
