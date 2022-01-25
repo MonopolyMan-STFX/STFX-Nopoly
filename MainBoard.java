@@ -1,4 +1,4 @@
-                                              import javax.swing.*;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -374,7 +374,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Settings for the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.show();
+        this.setVisible(true);
 
 
     }
@@ -442,7 +442,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         System.out.println("Click "+pos);
         Property prop = (Property)board.get(pos);
         PropertyView thisProperty = new PropertyView(this, prop);
-        thisProperty.show();
+        thisProperty.setVisible(true);
 
     }
 
