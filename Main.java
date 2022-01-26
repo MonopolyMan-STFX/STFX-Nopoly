@@ -12,7 +12,7 @@ class Main {
     // new MainBoard();
     
     /* Test Game */
-    TestGame.main(args);
+    // TestGame.main(args);
 
     /* Test Property */
     // TestProperty.main(args);
@@ -21,6 +21,9 @@ class Main {
     // TestSquare.main(args);
 
     /* Test Player */
-    //TestPlayer.main(args);
+    // TestPlayer.main(args);
+
+    /* Test Cards */
+    // TestCard.main(args);
   }
 }

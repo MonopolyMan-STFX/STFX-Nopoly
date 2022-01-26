@@ -1,0 +1,6 @@
+0,0,N/A,false,This is a test card for setting position.
+500,0,N/A,false,This is a test card for giving money.
+-500,0,N/A,false,This is a test card for taking money.
+0,0,10,false,This is a test card for setting position.
+0,0,N/A,true,This is a test card for going to jail.
+0,5,N/A,false,This is a test card for moving position.
