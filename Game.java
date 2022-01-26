@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -185,28 +184,73 @@ class Game {
     /*
      * Play turn
      */
-    public void playTurn(int roll) {
-        // Move player if they are not in jail
-        if (players.get(curPlayerTurn).checkIfInJail() == false) {
-            // Move player based on roll, output position
-            players.get(curPlayerTurn).moveUp(roll);
+    public String playTurn(int roll) {
+        // // Move player if they are not in jail
+        // if (players.get(curPlayerTurn).checkIfInJail() == false) {
+        //     // Move player based on roll, output position
+        //     players.get(curPlayerTurn).moveUp(roll);
 
-            // System.out.println("Position: "+ (players.get(curPlayerTurn).getPosition() + 1));
+        //     System.out.println("Position: "+ players.get(curPlayerTurn).getPosition());
+        //     System.out.println("Square Name: " + getBoard().get(players.get(curPlayerTurn).getPosition()).getName());
 
-            System.out.println("Position: "+ players.get(curPlayerTurn).getPosition());
-            System.out.println("Square Name: " + getBoard().get(players.get(curPlayerTurn).getPosition()).getName());
+        //     // If they land on go to jail, send to jail
+        //     if (players.get(curPlayerTurn).getPosition() == 30) {
+        //         System.out.println("(!) JAIL");
+        //         players.get(curPlayerTurn).setIfInJail(true);
+        //         players.get(curPlayerTurn).changePositionDirect(10);
+        //     }
+        //     // TO-DO Buy the property here
+        // }
 
-            // If they land on go to jail, send to jail
-            if (players.get(curPlayerTurn).getPosition() == 30) {
-                System.out.println("(!) JAIL");
-                players.get(curPlayerTurn).setIfInJail(true);
-                players.get(curPlayerTurn).changePositionDirect(10);
+        String returnString = "";
+
+        players.get(curPlayerTurn).moveUp(roll);
+
+        int currentPosition = players.get(curPlayerTurn).getPosition();
+        if (board.get(currentPosition) instanceof Property)
+        {
+            if(((Property)board.get(currentPosition)).getOwner() == null)
+            {
+                System.out.println("NoOwner");
+                returnString = "NoOwner";
             }
-            // TO-DO Buy the property here
+            else if(((Property)board.get(currentPosition)).getOwner() == players.get(curPlayerTurn))
+            {
+                System.out.println("YouAreOwner");
+                returnString = "YouAreOwner";
+            }
+            else
+            {
+                System.out.println("PayRent");
+                returnString = "PayRent";
+            }
+        } 
+        else if (board.get(currentPosition) instanceof Square)
+        {
+            System.out.println("Nothing");
+            returnString = "Nothing";
         }
-        // End of turn
-        endTurn();
+        // else if (board.get(currentPosition) instanceof Jail)
+        // {
+        //     System.out.println("Roll die, or Pay");
+        // }
+        // else if(board.get(currentPosition) instanceof Chance)
+        // {   
+        //     System.out.println("You are on a Chance square");
+        // }
+        else
+        {
+            System.out.println("ERROR");
+            returnString = "ERROR";
+        }
+
+        return returnString;
     }
+
+
+    
+
+
 
     /*
      * End turn
