@@ -98,7 +98,7 @@ class Game {
                     // Check if player owns property
                     if(tempProperty.getOwner().getName().equals(player.getName())) {
                         //Remove property from player - AWAITING FUNCTION IN PLAYER
-                        player.removeProperty(tempProperty.getName());
+                        player.removeProperty(tempProperty);
 
                         //Give player money
                         player.deposit(tempProperty.getCost());

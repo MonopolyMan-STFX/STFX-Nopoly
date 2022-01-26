@@ -1,0 +1,12 @@
+public void buyCurrentProperty (){
+    //get current player position & price
+    Square current = boardSquares[Player.getPosition()];
+    //minus price from player balance and add player
+    if (Player.money > price) {
+    Player.withdraw(price);
+    Player.addProperty()
+
+    else{
+      System.out.println("Player does not have enough money!");
+    }
+  }

@@ -115,44 +115,23 @@ class Player
      * @param indexOfProperty
      * @return found
      * */
-    public boolean removeProperty(String propertyName)
+    public boolean removeProperty(Square property)
     {
-        // Search through the array in a linear fashion, and remove the value
-        boolean found = false;
-        // int i = 0;
-        // while(found == false)
-        //     {
+        boolean removed = false;
+        Property temporaryProperty = (Property)property;
 
-        //         // When found, stop searching
-        //         if(properties.get(i) == indexOfProperty)
-        //             {
-        //                 found = true;
-        //             }
-        //         else
-        //             {
-        //                 i++;
-        //             }
+        //Look for property being removed
+        for (int i = 0; i < properties.size(); i++)
+        {
+          if (properties.get(i).equals(temporaryProperty))
+          {
+            //Remove Property
+            properties.remove(i);
+            removed = true;
+          }
+        }
+        return removed;
 
-        //         // If not found, exit and give up
-        //         if(i == properties.size())
-        //             {
-        //                 found = true;
-        //                 i = -1;
-        //             }
-        //     }
-
-        // // Checks if it was not found by the end, and sets found to false to be returned
-        // if(i == -1)
-        //     {
-        //         found = false;
-        //     }
-        // // Otherwise remove that property
-        // else
-        //     {
-        //         properties.remove(i);
-        //     }
-
-        return found;
     }
 
     public int getPosition() {
