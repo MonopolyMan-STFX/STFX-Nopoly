@@ -1,6 +1,7 @@
 # Repl it 
 compile_and_run.sh
 .replit
+.breakpoints
 
 # Compiled class file
 *.class

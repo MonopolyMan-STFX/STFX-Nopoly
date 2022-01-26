@@ -8,8 +8,8 @@ import java.io.*;
 
 class Game {
     // Attributes
-    private ArrayList<Square> board = new ArrayList<Square>();
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private ArrayList<Square> board = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     private int dice1 = 0;
     private int dice2 = 0;
     private int curPlayerTurn = 0;
@@ -49,14 +49,15 @@ class Game {
         return result;
     }
 
-    // Buy current property
-    // Do you want to sell?
-    // Buy house
-
+    /**
+     * buy Property
+     * @param player Player buying property
+     * @return result of transaction
+     */
     public boolean buyProperty(Player player) {
         boolean transactionResult = false;
 
-        // handle to check if square is a property Not necessary but will catch passing got as a property or something
+        // handle to check if square is a property
         if(this.board.get(player.getPosition()) instanceof Property) {
             // tempProperty points to property in board
             Property tempProperty = (Property) this.board.get(player.getPosition());
@@ -70,8 +71,43 @@ class Game {
                 }
             }
         }
-
         return transactionResult;
+    }
+
+    /**
+     * sell Property
+     * @param player player selling property
+     * @param propertyName name of property to be sold
+     * @return result of sale
+     */
+    public boolean sellProperty(Player player, String propertyName) {
+        boolean found = false;
+        boolean saleResult = false;
+        int location = 0;
+
+        // Look for what property they want to sell
+        while(!found && location < this.board.size()) {
+            // Find the property
+            if(this.board.get(location).getName().equals(propertyName)) {
+                found = true;
+                // handle to check if square is a property
+                if(this.board.get(location) instanceof Property) {
+                    // tempProperty points to property in board
+                    Property tempProperty = (Property) this.board.get(location);
+
+                    // Check if player owns property
+                    if(tempProperty.getOwner().getName().equals(player.getName())) {
+                        //Remove property from player - AWAITING FUNCTION IN PLAYER
+                        player.removeProperty(tempProperty.getName());
+
+                        //Give player money
+                        player.deposit(tempProperty.getCost());
+                        saleResult = true;
+                    }
+                }
+            } else location++;
+        }
+        return saleResult;
     }
 
     // Parsing the data from sqaures.txt

@@ -1,4 +1,3 @@
-//import com.sun.tools.javac.Main;
 
 import java.util.*;
 
@@ -116,7 +115,7 @@ class Player
      * @param indexOfProperty
      * @return found
      * */
-    public boolean removeProperty(int indexOfProperty)
+    public boolean removeProperty(String propertyName)
     {
         // Search through the array in a linear fashion, and remove the value
         boolean found = false;
