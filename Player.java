@@ -3,7 +3,6 @@
 import java.util.*;
 
 /**
- * @author Mr. Monopoly
  * @Date 2022/01/20
  * @Course ICS4UC
  */
@@ -103,12 +102,13 @@ class Player
 
     /**
      * Adds the index of a certain property to the ArrayList
-     * @param indexOfProperty
-     * */
-    public void addProperty(Property indexOfProperty)
-    {
+     * @param property property object
+     */
+    public void addProperty(Property property) {
+        // set self as owner of property
+        property.setOwner(this);
         // Setting owner is done in player class
-        properties.add(indexOfProperty);
+        properties.add(property);
     }
 
     /**
@@ -218,6 +218,8 @@ class Player
         this.numDoubles = 0;
     }
 
+
+
     /**
      * Get number of doubles
      * @return number of doubles
@@ -227,7 +229,7 @@ class Player
     }
 
     public ArrayList<Square> getAllProperties()
-        {
-            return properties;
-        }
+    {
+        return properties;
+    }
 }
