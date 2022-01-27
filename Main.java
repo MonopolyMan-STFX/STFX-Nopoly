@@ -1,6 +1,3 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  * CPT - Main
@@ -9,10 +6,10 @@ import javax.swing.SwingConstants;
 
 class Main {
   public static void main(String[] args) throws Exception {
-    // new MainBoard();
+    new MainBoard();
     
     /* Test Game */
-    // TestGame.main(args);
+    //TestGame.main(args);
 
     /* Test Property */
     // TestProperty.main(args);

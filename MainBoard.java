@@ -21,10 +21,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     Timer rollTimer = null;
     JLabel rollLabel = null;
 
-    JPanel buyPanel = null;
-    JButton buyButton = null;
+    JPanel buyPropertyPanel = null;
+    JButton buyPropertyButton = null;
     JButton passButton = null;
-    Timer buyTimer = null;
+    Timer buyPropertyTimer = null;
 
     // All the squares on the board
     ArrayList<JPanel> gamePositions = null;
@@ -211,16 +211,16 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             return tempPanel;
     }
 
-    public JPanel makeBuyPanel() {
+    public JPanel makeBuyPropertyPanel() {
             JPanel tempPanel = new JPanel();
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
             tempPanel.setBackground(Color.WHITE);
 
-            buyButton = new JButton("Buy");
-            buyButton.setBounds(33,100,80, 40); 
-            buyButton.addActionListener(this);
-            tempPanel.add(buyButton);
+            buyPropertyButton = new JButton("Buy");
+            buyPropertyButton.setBounds(33,100,80, 40); 
+            buyPropertyButton.addActionListener(this);
+            tempPanel.add(buyPropertyButton);
 
             passButton = new JButton("Pass");
             passButton.setBounds(123,100,80, 40); 
@@ -229,7 +229,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             //tempPanel.addMouseListener(this);
             // Add the Name
-            JLabel tempLabel = new JLabel("Buy Decision");
+            JLabel tempLabel = new JLabel("Buy Property?");
             tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
             tempLabel.setBounds(2,2,200,20);
             tempPanel.add(tempLabel);
@@ -249,7 +249,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         monopoly.createPlayer("Vyshnavi");
         board = monopoly.getBoard(); 
         players = monopoly.getPlayers();
-        Iterator boardIter = board.iterator();
+        Iterator<Square> boardIter = board.iterator();
 
         // Setup the board information
         gamePositions = new ArrayList<JPanel>();
@@ -263,7 +263,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Board setup
         // Start
-        Square sqr = (Square)boardIter.next();
+        Square sqr = boardIter.next();
         JPanel pPanel = makeCornerPanel("Go");
         pPanel.setBounds(640,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
@@ -271,7 +271,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Bottom
         for (int i=8; i>=0; i--) {            
-            sqr = (Square)boardIter.next();
+            sqr = boardIter.next();
             pPanel = makePropertyPanelAcross((Property)sqr);
             pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
             gamePositions.add(pPanel);
@@ -279,7 +279,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
 
         // Jail corner
-        sqr = (Square)boardIter.next();
+        sqr = boardIter.next();
         pPanel = makeCornerPanel("Jail");
         pPanel.setBounds(0,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
@@ -287,7 +287,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Left side
         for (int i=8; i>=0; i--) {            
-            sqr = (Square)boardIter.next();
+            sqr = boardIter.next();
             pPanel = makePropertyPanelSide((Property)sqr);
             pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
@@ -295,7 +295,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
 
         // Free Parking        
-        sqr = (Square)boardIter.next();
+        sqr = boardIter.next();
         pPanel = makeCornerPanel("Parking");
         pPanel.setBounds(0,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
@@ -303,7 +303,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Top
         for (int i=0; i<9; i++) {            
-            sqr = (Square)boardIter.next();
+            sqr = boardIter.next();
             pPanel = makePropertyPanelAcross((Property)sqr);
             pPanel.setBounds(tileHeight+(tileWidth*i),0,tileWidth,tileHeight);
             gamePositions.add(pPanel);
@@ -311,15 +311,15 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
 
         // Go to Jail
-        sqr = (Square)boardIter.next();
-        pPanel = makeCornerPanel("<html>Go to <br> Jail</html>");
+        sqr = boardIter.next();
+        pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
         pPanel.setBounds(640,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
 
         // Right side
         for (int i=0; i<9; i++) {            
-            sqr = (Square)boardIter.next();
+            sqr = boardIter.next();
             pPanel = makePropertyPanelSide((Property)sqr);
             pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
@@ -337,11 +337,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         rollPanel.setVisible(true);
         this.add(rollPanel);         
 
-        buyPanel = makeBuyPanel();
-        buyPanel.setBounds(380,380,250,250);
-        buyPanel.setVisible(false);
+        buyPropertyPanel = makeBuyPropertyPanel();
+        buyPropertyPanel.setBounds(380,380,250,250);
+        buyPropertyPanel.setVisible(false);
         //this.enabled();
-        this.add(buyPanel);         
+        this.add(buyPropertyPanel);         
 
         // Draw the players in locations
         ImageIcon[] listOfIcons = new ImageIcon[4];
@@ -351,23 +351,17 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         listOfIcons[3] = new ImageIcon("dogpiece.png");
 
 
-        // Add the players to the board
+        // Add the players to the board on Go Square
         for (int i=0; i<players.size(); i++) {
-            Player p = players.get(i);
             playerIcons[i] = new JLabel(listOfIcons[i]);
             playerIcons[i].setBounds(2+25*i,40,20,20);
-            //playerIcons[i].setBounds(22+25*i,15,20,20);
             gamePositions.get(0).add(playerIcons[i]);
         }
-
-
 
         // Settings for the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.show();
-
-
+        this.setVisible(true);
     }
 
     /**
@@ -375,12 +369,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
      **/
     public void actionPerformed(ActionEvent e) {
         //System.out.println(e);
-        System.out.println("Action!!!");
         if (e.getSource() == rollButton) {
             rollButton.setEnabled(false);
             int num = monopoly.getCurPlayerTurn();
             int pos = players.get(num).getPosition();
-            System.out.println("Player "+num+" rolled from "+pos);
+            System.out.println("GUI: Player "+num+" rolled from "+pos);
 
             // Remove from the board
             gamePositions.get(pos).remove(playerIcons[num]);
@@ -392,7 +385,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             // Place on the board
             int newPos = players.get(num).getPosition();
-            System.out.println("Now At "+newPos);
+            System.out.println("GUI: Now At "+newPos);
             if ( (newPos >= 1 && newPos <= 9) 
                 || (newPos >= 21 && newPos <= 29) ) {
                 playerIcons[num].setBounds(2+25*num,40,20,20);
@@ -407,8 +400,8 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
             this.repaint();
 
-            /// Delay before next decision
-            rollTimer = new Timer(2000, this);
+            // Delay before next decision
+            rollTimer = new Timer(1000, this);
             rollTimer.start();
         }
         else if (e.getSource() == rollTimer) {
@@ -416,24 +409,55 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             rollLabel.setText("");
             rollButton.setEnabled(true);
             rollPanel.setVisible(false);
-            buyPanel.setVisible(true);
+            buyPropertyPanel.setVisible(true);
             this.repaint();
         }
-        else if (e.getSource() == buyButton) {
-            System.out.println("Buy!!");
-            buyPanel.setVisible(false);
-            
+        else if (e.getSource() == buyPropertyButton) {
+            System.out.println("GUI: Buy Property");
+
+            // Get the player information
             int num = monopoly.getCurPlayerTurn();
             int pos = players.get(num).getPosition();
+            System.out.println("GUI: player "+num+" pos "+pos);
+
+            // Replace the space
             Square mySpace = board.get(pos);
             if (mySpace instanceof Property) {
-                ((Property)mySpace).addHouse();
+                if (monopoly.buyProperty(players.get(num))) {
+                    System.out.println("GUI: Purchased "+((Property)mySpace).getName());
+                } else {
+                    System.out.println("GUI: Failed Purchase "+((Property)mySpace).getName());
+                }               
             }
 
+            // Delay before next decision
+            buyPropertyTimer = new Timer(1000, this);
+            buyPropertyTimer.start();
+        }
+        else if (e.getSource() == buyPropertyTimer) {
+            // Switch panels
+            buyPropertyTimer.stop();
+            buyPropertyPanel.setVisible(false);
             rollPanel.setVisible(true);
+            this.repaint();
         }
 
     }
+
+    /**
+     * Here is some code to use later - replacing panel to add house
+            if (mySpace instanceof Property) {
+                ((Property)mySpace).addHouse();
+
+                // Need to generate new panel and replace it
+                JPanel oldPanel = gamePositions.get(pos); 
+                JPanel newPanel = makePropertyPanelAcross((Property)mySpace);
+                newPanel.setBounds(oldPanel.getBounds());
+                this.remove(oldPanel);
+                this.add(newPanel);
+            }
+     */
+
 
     public void mousePressed(MouseEvent e) {
     }
@@ -451,10 +475,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         //System.out.println(e);
         JPanel src = (JPanel)e.getSource();
         int pos = gamePositions.indexOf(src);
-        System.out.println("Click "+pos);
+        System.out.println("GUI: Click "+pos);
         Property prop = (Property)board.get(pos);
         PropertyView thisProperty = new PropertyView(this, prop);
-        thisProperty.show();
+        thisProperty.setVisible(true);
 
     }
 
