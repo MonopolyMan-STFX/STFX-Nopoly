@@ -3,7 +3,7 @@ class Test_Game_and_Player
         public static void main(String[] args)
             {
                 // I will use snake case
-                Game game = new Game("squares.txt");
+                Game game = new Game("squares.txt", "cards.txt");
                 game.printBoard();
                 game.createPlayer("Daniel");
                 game.createPlayer("Bobet");

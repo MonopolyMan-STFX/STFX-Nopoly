@@ -9,13 +9,13 @@ class Game {
     // Attributes
     private ArrayList<Square> board = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Card> deck = new ArrayList<Card>();
     private int dice1 = 0;
     private int dice2 = 0;
     private int curPlayerTurn = 0;
 
     // Constructor
-    public Game()
-    {
+    public Game() {
         // Populate default data - 40 properties
         int[] rent = {10, 20, 30, 40};
         for (int i=0; i<40; i++) {
@@ -24,19 +24,18 @@ class Game {
     }
 
     // Constructor
-    public Game(String filename)
-    {
+    public Game(String boardFile, String cardFile) {
         try {
             // Set data as attributes
-            this.fillBoard(filename);
+            this.fillBoard(boardFile);
+            this.fillDeck(cardFile);
         }
         catch (Exception e) {
             System.out.println("Failed to read file");
         }
     }
 
-    public void printPropertyData(int index)
-    {
+    public void printPropertyData(int index) {
         System.out.println(((Property)this.board.get(index)));
     }
 
@@ -49,7 +48,7 @@ class Game {
     }
 
     /**
-     * buy Property
+     * Buy Property
      * @param player Player buying property
      * @return result of transaction
      */
@@ -74,7 +73,7 @@ class Game {
     }
 
     /**
-     * sell Property
+     * Sell Property
      * @param player player selling property
      * @param propertyName name of property to be sold
      * @return result of sale
@@ -96,7 +95,7 @@ class Game {
 
                     // Check if player owns property
                     if(tempProperty.getOwner().getName().equals(player.getName())) {
-                        //Remove property from player - AWAITING FUNCTION IN PLAYER
+                        //Remove property from player
                         player.removeProperty(tempProperty);
 
                         //Give player money
@@ -146,6 +145,86 @@ class Game {
     }
 
     /*
+     * Fill deck - parsing cards.txt to fill deck
+     * @param String filename
+     */
+    public void fillDeck(String filename) throws IOException {
+        // Connect scanner
+        Scanner sc = new Scanner(new FileReader(filename));
+
+        // Loop through file
+        while(sc.hasNextLine()) {
+            // Read and parse the line of data
+            String[] cardSplitEntry = sc.nextLine().split(",");
+
+            // Creating the card object with the parsed data
+            Card cardInstance = new Card(Integer.parseInt(cardSplitEntry[0]), Integer.parseInt(cardSplitEntry[1]), cardSplitEntry[2], Boolean.parseBoolean(cardSplitEntry[3]), cardSplitEntry[4]);
+
+            // Adding it to the arrayList of cards
+            deck.add(cardInstance);
+        }
+    }
+    
+    /*
+     * Draw a card
+     * @param Player currPlayer
+     * @return String message
+     */
+    public String drawCard(Player currPlayer) {
+        // Create random object
+        Random rand = new Random();
+
+        // Randomize value of index
+        int selectedCard = rand.nextInt(deck.size());
+
+        // Card index selected
+        System.out.println("Card Selected: " + selectedCard);
+
+        // If selected card is changing money
+        if (deck.get(selectedCard).getChangeMoney() != 0) {
+
+            System.out.println("Changing money card selected");
+            
+            // Depositing money?
+            if (deck.get(selectedCard).getChangeMoney() > 0) {
+                currPlayer.deposit(deck.get(selectedCard).getChangeMoney());
+            }
+
+            // Withdrawing money?
+            else if (deck.get(selectedCard).getChangeMoney() < 0) {
+                currPlayer.withdraw(Math.abs(deck.get(selectedCard).getChangeMoney()));
+            }
+        }
+
+        // If selected card is moving player position
+        if (deck.get(selectedCard).getMovePosition() != 0) {
+
+            System.out.println("Moving position card selected");
+
+            currPlayer.moveUp(deck.get(selectedCard).getMovePosition());
+        }
+
+        // If selected card is setting player position
+        if (deck.get(selectedCard).getSetPosition().equals("N/A") == false) {
+
+            System.out.println("Setting position card selected");
+            
+            currPlayer.changePositionDirect(Integer.parseInt(deck.get(selectedCard).getSetPosition()));
+        }
+
+        // If selected card is sending player to jail
+        if (deck.get(selectedCard).getGoToJail() != false) {
+            
+            System.out.println("Send player to jail card selected");
+            
+            currPlayer.setIfInJail(true);
+            currPlayer.changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
+        }
+
+        return deck.get(selectedCard).getMessage();
+    }
+
+    /*
      * Roll Die
      * @return total
      */
@@ -184,138 +263,138 @@ class Game {
     /*
      * Play turn
      */
-    public String playTurn(int roll)
-        {
-
+    public String playTurn(int roll) {
         String returnString = "";
+        
+        // Move player if they are not in jail
+        if (!players.get(curPlayerTurn).checkIfInJail()) {
 
-        // Check if their in jail
-        if(players.get(curPlayerTurn).checkIfInJail() == true)
-        {
-            // If they've been in there for 3> days, it just increments the amount of days in jail
-            if(players.get(curPlayerTurn).getNumDaysInJail() < 3)
-            {
+            // Move player based on roll
+            players.get(curPlayerTurn).moveUp(roll);
+
+            // Testing - output player values
+            System.out.println("Money: "+ players.get(curPlayerTurn).getBalance());
+            System.out.println("Position: "+ players.get(curPlayerTurn).getPosition());
+            System.out.println("Square Name: " + getBoard().get(players.get(curPlayerTurn).getPosition()).getName());
+
+            int currentPosition = players.get(curPlayerTurn).getPosition();
+            
+            // Player landed on property
+            if (board.get(currentPosition) instanceof Property) {
+                // Property has no owner
+                if(((Property)board.get(currentPosition)).getOwner() == null) {
+                    //System.out.println("NoOwner");
+                    returnString = "NoOwner";
+                }
+                // Player owns the property
+                else if(((Property)board.get(currentPosition)).getOwner() == players.get(curPlayerTurn)) {
+                    //System.out.println("YouAreOwner");
+                    returnString = "YouAreOwner";
+                }
+                // Other player owns the property, pay rent
+                else {
+                    //System.out.println("PayRent");
+                    returnString = "PayRent";
+                    if (players.get(curPlayerTurn).withdraw(((Property)board.get(currentPosition)).getRent())) {
+                        returnString = "PaidRent";
+                    }
+                    else {
+                        returnString = "NoMoney";
+                    }
+                }
+            }
+
+            else if (board.get(currentPosition) instanceof Square) {
+                // If they land on go to jail, send to jail
+                if(board.get(currentPosition).getName().equals("Go To Jail")) {
+                    //System.out.println("inJail");
+                    players.get(curPlayerTurn).setIfInJail(true);
+                    players.get(curPlayerTurn).changePositionDirect(10);
+                    returnString = "inJail";
+                }
+                // Land on chance or community chest
+                else if (board.get(currentPosition).getName().equals("Chance") || board.get(currentPosition).getName().equals("Community Chest")) {
+                    // Return card's message
+                    returnString = this.drawCard(players.get(curPlayerTurn));
+                }
+                // Land on income or luxury tax
+                else if (board.get(currentPosition).getName().equals("Luxury Tax") || board.get(currentPosition).getName().equals("Income Tax")) {
+                    //System.out.println("Income or Luxury Tax");
+                    if (players.get(curPlayerTurn).withdraw(200)) {
+                        returnString = "PaidTax";
+                    }
+                    else {
+                        returnString = "NoMoney";
+                    }
+                }
+                else {
+                    //System.out.println("Free Parking, Just Visiting or Go");
+                    returnString = "Nothing";
+                }
+            }
+            // Error
+            else {
+                //System.out.println("Error");
+                returnString = "Error";
+            }
+        }
+        
+        // Player is in jail
+        else {
+            // If it has not been 3 days, increment the amount of days in jail
+            if(players.get(curPlayerTurn).getNumDaysInJail() < 2) {
                 returnString = "InJail";
+                //System.out.println("inJail");
                 players.get(curPlayerTurn).incrNumDaysInJail();
             }
-            // Otherwise reset the amount days in jail, and now they're free
-            else
-            {
+            // Otherwise, reset the amount days in jail, and now they're free
+            else {
                 players.get(curPlayerTurn).resetNumDaysInJail();
                 players.get(curPlayerTurn).setIfInJail(false);
                 returnString = "Free";
+                //System.out.println("Free");
             }
         }
-        else
-        {
-            // Roll the dice
-            players.get(curPlayerTurn).moveUp(roll);
-
-            // Get the current position
-            int currentPosition = players.get(curPlayerTurn).getPosition();
-
-            // check if the position we're on is a property
-            if (board.get(currentPosition) instanceof Property)
-            {
-
-                //If there's no owner, tell the gui that
-                if(((Property)board.get(currentPosition)).getOwner() == null)
-                {
-                    System.out.println("NoOwner");
-                    returnString = "NoOwner";
-                }
-
-                // If the player is the owner, tell the player that
-                else if(((Property)board.get(currentPosition)).getOwner() == players.get(curPlayerTurn))
-                {
-                    System.out.println("YouAreOwner");
-                    returnString = "YouAreOwner";
-                }
-
-                // Otherwise someone else gotta be the owner so tell the gui that
-                else
-                {
-                    System.out.println("PayRent");
-                    returnString = "PayRent";
-                }
-            }
-
-            // If we are on a Square, return that we are on a Square
-            else if (board.get(currentPosition) instanceof Square)
-            {
-                System.out.println("Square");
-                returnString = "Square";
-            }
-            // else if (board.get(currentPosition) instanceof Jail)
-            // {
-            //     System.out.println("Roll die, or Pay");
-            // }
-            // else if(board.get(currentPosition) instanceof Chance)
-            // {
-            //     System.out.println("You are on a Chance square");
-            // }
-            else
-            {
-                // There should be nothing else on the board, so it's probably an error
-                System.out.println("ERROR");
-                returnString = "ERROR";
-            }
-        }
-
-        // Return it
+        System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
         return returnString;
     }
-
-
-    
-
-
 
     /*
      * End turn
      */
-    public void endTurn() {
+    public String endTurn() {
+        String returnString = "EndOfTurn";
         // Rolled a double
         if (checkDouble() == true) {
-            System.out.println("DOUBLE");
+            returnString = "Double";
+            //System.out.println("DOUBLE");
             // Increment number of doubles
             players.get(curPlayerTurn).incrNumDoubles();
 
             // If player is in jail, reset number of doubles, they are now out and get to roll again
             if (players.get(curPlayerTurn).checkIfInJail() == true) {
-                System.out.println("OUT OF JAIL");
+                //System.out.println("Free");
                 players.get(curPlayerTurn).setIfInJail(false);
                 players.get(curPlayerTurn).resetNumDoubles();
+                returnString = "Free";
             }
 
             // If player rolls 3 doubles, go to jail
             else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
-                System.out.println("(!) JAIL");
+                //System.out.println("inJail");
                 players.get(curPlayerTurn).setIfInJail(true);
                 players.get(curPlayerTurn).changePositionDirect(10);
+                returnString = "inJail";
 
                 // Next player's turn
                 nextPlayerTurn();
             }
         }
-        // Check if player is currently in jail
-        else if (players.get(curPlayerTurn).checkIfInJail() == true){
-            players.get(curPlayerTurn).incrNumDaysInJail();
-
-            // Check if they have been in jail for 0 to 3 days inclusive
-            if ((players.get(curPlayerTurn).getNumDaysInJail() == 4)) {
-                System.out.println("OUT OF JAIL");
-                players.get(curPlayerTurn).setIfInJail(false);
-                players.get(curPlayerTurn).resetNumDaysInJail();
-            }
-            // Next player's turn
-            nextPlayerTurn();
-        }
-
         // Next player's turn
         else {
             nextPlayerTurn();
         }
+        return returnString;
     }
 
     /*
@@ -371,7 +450,10 @@ class Game {
     public ArrayList<Square> getBoard() {
         return board;
     }
-
+    
+    /*
+     * Print board
+     */
     public void printBoard() {
         for(int i = 0; i < board.size(); i++)
         {

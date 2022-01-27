@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 /**
@@ -12,7 +11,7 @@ class Player
     // Attributes
     private String name = "";
     private int money = 0;
-    private ArrayList<Square> properties = new ArrayList<Square>();
+    private ArrayList<Property> properties = new ArrayList<Property>();
     private int position = 0;
     private boolean inJail = false;
     private int numDoubles = 0;
@@ -115,17 +114,15 @@ class Player
      * @param indexOfProperty
      * @return found
      * */
-    public boolean removeProperty(Square property)
-    {
+    public boolean removeProperty(Property property) {
         boolean removed = false;
-        Property temporaryProperty = (Property)property;
 
         //Look for property being removed
-        for (int i = 0; i < properties.size(); i++)
-        {
-          if (properties.get(i).equals(temporaryProperty))
-          {
-            //Remove Property
+        for (int i = 0; i < properties.size(); i++) {
+          if (properties.get(i).equals(property)) {
+            //Remove owner from property
+            property.removeOwner();
+            // remove property from player owned
             properties.remove(i);
             removed = true;
           }
@@ -158,7 +155,6 @@ class Player
         return this.numDaysInJail;
     }
 
-
     /**
      * Check if the player is in jail
      * @return in jail or not
@@ -188,15 +184,12 @@ class Player
         this.numDaysInJail = 0;
     }
 
-
     /**
      * Resets the number of doubles
      */
     public void resetNumDoubles() {
         this.numDoubles = 0;
     }
-
-
 
     /**
      * Get number of doubles
@@ -206,8 +199,11 @@ class Player
         return this.numDoubles;
     }
 
-    public ArrayList<Square> getAllProperties()
-    {
+    /*
+    * Get list of all owned properties 
+    * @return properties
+    */
+    public ArrayList<Property> getAllProperties() {
         return properties;
     }
 }

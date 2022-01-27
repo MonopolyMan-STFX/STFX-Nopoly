@@ -7,14 +7,14 @@ import java.util.*;
 class TestGame {
     public static void main(String[] args) {
         // Create test game
-        Game game = new Game("squares.txt");
+        Game game = new Game("squares.txt", "cards.txt");
 
         // Create test players
         game.createPlayer("Joe");
-        // game.createPlayer("Bob");
+        game.createPlayer("Bob");
         //game.createPlayer("Mark");
 
-        // int roll = 0;
+        int roll = 0;
 
         // Automatic test program
         // Loop for 20 turns
@@ -28,46 +28,69 @@ class TestGame {
 
         // Input based test program
         // Set up user input
-//        Scanner sc = new Scanner(System.in);
-//        char choice = 'o';
-//        while(choice != 'q') {
-//            // Start test game
-//            System.out.println("\n" + game.getPlayers().get(game.getCurPlayerTurn()).getName()+ "'s turn:");
-//            roll = game.rollDie();
-//            System.out.println(Arrays.toString(game.getDiceNumbers()));
-//            game.playTurn(roll);
-//            System.out.println("Next turn: " + game.getPlayers().get(game.getCurPlayerTurn()).getName());
-//            choice = sc.next().toLowerCase().charAt(0);
-//        }
+        Scanner sc = new Scanner(System.in);
+        char choice = 'o';
+        // Loop until quit
+        while(choice != 'q') {
+            // Output player turn
+            System.out.println("\n" + game.getPlayers().get(game.getCurPlayerTurn()).getName()+ "'s turn:");
+
+            // Roll dice and play turn
+            roll = game.rollDie();
+            System.out.println(Arrays.toString(game.getDiceNumbers()));
+            String returnStringGame = game.playTurn(roll);
+
+            // Output options
+            System.out.println(returnStringGame);
+            
+            // Buy property
+            if (returnStringGame.equals("NoOwner")) {
+                game.buyProperty(game.getPlayers().get(game.getCurPlayerTurn()));
+
+            }
+
+            choice = sc.next().toLowerCase().charAt(0);
+
+            // End player turn
+            if (choice == 'e') {
+                game.endTurn();
+                System.out.println("Next turn: " + game.getPlayers().get(game.getCurPlayerTurn()).getName());
+            }
+            
+            // Output owned properties
+            for(Property property : game.getPlayers().get(game.getCurPlayerTurn()).getAllProperties()) {
+                    System.out.println("Owned Properties: " + property.getName());
+                }
+       }
 
 
         /* Simple Test Buy Property */
 
-        // get Joe player obj, print name
-        Player testPlayer = game.getPlayers().get(0);
-        System.out.println(testPlayer.getName());
+        // // get Joe player obj, print name
+        // Player testPlayer = game.getPlayers().get(0);
+        // System.out.println(testPlayer.getName());
 
-        // where is joe right now and name of sqaure
-        System.out.println("Player posIndex : " + testPlayer.getPosition());
-        System.out.println( "Player is on : " + game.getBoard().get(0).getName());
+        // // where is joe right now and name of sqaure
+        // System.out.println("Player posIndex : " + testPlayer.getPosition());
+        // System.out.println( "Player is on : " + game.getBoard().get(0).getName());
 
-        // move joe up 1 to Old Kend Road
-        testPlayer.moveUp(1);
+        // // move joe up 1 to Old Kend Road
+        // testPlayer.moveUp(1);
 
-        // Joe index in board, and name of square
-        System.out.println("Player posIndex : " + testPlayer.getPosition());
-        System.out.println( "Player is on : " + game.getBoard().get(testPlayer.getPosition()).getName());
+        // // Joe index in board, and name of square
+        // System.out.println("Player posIndex : " + testPlayer.getPosition());
+        // System.out.println( "Player is on : " + game.getBoard().get(testPlayer.getPosition()).getName());
 
-        // How much money joe has
-        System.out.println("Joe Balance: " + testPlayer.getBalance());
+        // // How much money joe has
+        // System.out.println("Joe Balance: " + testPlayer.getBalance());
 
-        // Joe trys to buy Old Kent Road
-        if(game.buyProperty(testPlayer)) {
-            // Print the owner of old kent road
-            System.out.println("Owner is: " + ((Property) game.getBoard().get(testPlayer.getPosition())).getOwner().getName());
-        }
+        // // Joe trys to buy Old Kent Road
+        // if(game.buyProperty(testPlayer)) {
+        //     // Print the owner of old kent road
+        //     System.out.println("Owner is: " + ((Property) game.getBoard().get(testPlayer.getPosition())).getOwner().getName());
+        // }
 
-        // Print the property joe owns
-        System.out.println("Joe's Owned Property: " + testPlayer.getAllProperties().get(0).getName());
+        // // Print the property joe owns
+        // System.out.println("Joe's Owned Property: " + testPlayer.getAllProperties().get(0).getName());
     }
 }
