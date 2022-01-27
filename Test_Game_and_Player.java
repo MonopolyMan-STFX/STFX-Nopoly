@@ -14,7 +14,7 @@ class Test_Game_and_Player
                         System.out.println(game.getPlayers().get(i).getName());
                     }
                 game.getPlayers().get(0).changePositionDirect(0);
-                game.buyProperty(0,"Old Kent Road");
+                //game.buyProperty(0,"Old Kent Road");
 
                 game.printPropertyData(1);
             }

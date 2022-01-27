@@ -152,16 +152,16 @@ class Game {
     public int rollDie() {
         Random rand = new Random();
         // Randomize value of two six-sided dice
-        // dice1 = rand.nextInt(6)+1;
-        // dice2 = rand.nextInt(6)+1;
+        dice1 = rand.nextInt(6)+1;
+        dice2 = rand.nextInt(6)+1;
 
         // Two-sided dice to test doubles
         //dice1 = rand.nextInt(2)+1;
         //dice2 = rand.nextInt(2)+1;
 
         // Move up 1 space, no double
-        dice1 = 0;
-        dice2 = 1;
+        //dice1 = 0;
+        //dice2 = 1;
 
         // Calculate and return total
         int total = dice1 + dice2;

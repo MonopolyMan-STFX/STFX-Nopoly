@@ -14,7 +14,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     int tileWidth = 60;
     int tileHeight = 100;
     int houseLocation = 0; 
+
+    JPanel playerStatPanel = null;
+    JPanel[] playerStats = new JPanel[4];
     JLabel[] playerIcons = new JLabel[4];
+    ImageIcon[] listOfIcons = new ImageIcon[4];
 
     JPanel rollPanel = null;
     JButton rollButton = null;
@@ -25,6 +29,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     JButton buyPropertyButton = null;
     JButton passButton = null;
     Timer buyPropertyTimer = null;
+
+    JPanel endTurnPanel = null;
+    JButton endTurnButton = null;
+    JButton addHouseButton = null;
 
     // All the squares on the board
     ArrayList<JPanel> gamePositions = null;
@@ -156,31 +164,48 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             return tempPanel;
     }
 
-    /**
+/**
      * This is for the Player Stats in the middle
      **/
     public JPanel makePlayerPanel() {
-            JPanel tempPanel = new JPanel();
-            tempPanel.setLayout(null);
-            tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            tempPanel.setBackground(Color.WHITE);
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
 
-            // Add the Title
-            JLabel tempLabel = new JLabel("Player Panel", SwingConstants.CENTER);
-            tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            tempLabel.setBounds(2,0,250,25);
-            tempPanel.add(tempLabel);
+        // Add the Title
+        JLabel tempLabel = new JLabel("Player Panel", SwingConstants.CENTER);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        tempLabel.setBounds(2,0,250,25);
+        tempPanel.add(tempLabel);
 
-            for (int i=0; i<players.size(); i++) {
-                Player p = players.get(i);
-                tempLabel = new JLabel(""+p.getName(), SwingConstants.LEFT);
-                tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-                tempLabel.setBounds(2,20*(i+1),250,25);
-                tempPanel.add(tempLabel);
-            }
+        // player panel name and info
+        for (int i=0; i<players.size(); i++) {                
+            // JPanel for the player Stats
+            playerStats[i] = new JPanel();
+            playerStats[i].setLayout(null);
+            //playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            playerStats[i].setBackground(Color.WHITE);
 
-            return tempPanel;
+            // Add Player information
+            Player p = players.get(i);
+            tempLabel = new JLabel(""+p.getName()+"     $"+p.getBalance(), SwingConstants.LEFT);
+            tempLabel.setFont(new Font("Arial", Font.BOLD, 15));
+            tempLabel.setBounds(0,0,200,25);
+            playerStats[i].add(tempLabel);
+
+            // Add the player icons
+            JLabel labelName = new JLabel(listOfIcons[i]);
+            labelName.setBounds(200,0,20,20);
+            playerStats[i].add(labelName);
+
+            // Add player stats
+            playerStats[i].setBounds(5,30*(i+1),240,25);
+            tempPanel.add(playerStats[i]);
+        }         
+        return tempPanel;
     }
+
 
     /** 
      * These will be decision panels that appear in the same spot on the 
@@ -235,6 +260,41 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             tempPanel.add(tempLabel);
 
             return tempPanel;
+    }
+
+    /**
+     * Decisions at the end of players turn
+     * @return 
+     */
+    public JPanel makeEndTurnPanel() {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+
+        // End turn option
+        endTurnButton = new JButton("Finish Turn");
+        endTurnButton.setBounds(33,100,80, 40); 
+        endTurnButton.addActionListener(this);
+        tempPanel.add(endTurnButton);
+
+        // Add house option (not ready yet)
+        addHouseButton = new JButton("Add House");
+        addHouseButton.setBounds(133,100,80, 40); 
+        addHouseButton.setEnabled(false);
+        //addHouseButton.addActionListener(this);
+        tempPanel.add(addHouseButton);
+        //tempPanel.addMouseListener(this);
+
+        // Add the Name
+        JLabel tempLabel = new JLabel("Decision Options");
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        tempLabel.setBounds(2,2,200,20);
+        tempPanel.add(tempLabel);
+        
+        tempPanel.setVisible(false);
+
+        return tempPanel;
     }
 
 
@@ -326,11 +386,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             this.add(pPanel);         
         }
 
-        // Player Area
-        pPanel = makePlayerPanel();
-        pPanel.setBounds(110,380,250,250);
-        this.add(pPanel);         
-
         // Decision Area
         rollPanel = makeRollPanel();
         rollPanel.setBounds(380,380,250,250);
@@ -340,11 +395,15 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         buyPropertyPanel = makeBuyPropertyPanel();
         buyPropertyPanel.setBounds(380,380,250,250);
         buyPropertyPanel.setVisible(false);
-        //this.enabled();
         this.add(buyPropertyPanel);         
 
+        endTurnPanel = makeEndTurnPanel();
+        endTurnPanel.setBounds(380,380,250,250);
+        endTurnPanel.setVisible(false);
+        this.add(endTurnPanel);         
+
+
         // Draw the players in locations
-        ImageIcon[] listOfIcons = new ImageIcon[4];
         listOfIcons[0] = new ImageIcon("hatpiece.png");
         listOfIcons[1] = new ImageIcon("carpiece.png");
         listOfIcons[2] = new ImageIcon("thimblepiece.png");
@@ -358,6 +417,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(0).add(playerIcons[i]);
         }
 
+        // Player Area
+        playerStatPanel = makePlayerPanel();
+        playerStatPanel.setBounds(110,380,250,250);
+        this.add(playerStatPanel);         
+
         // Settings for the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -369,10 +433,12 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
      **/
     public void actionPerformed(ActionEvent e) {
         //System.out.println(e);
+        int num = monopoly.getCurPlayerTurn();
+        int pos = players.get(num).getPosition();
+
+        // Handle different actions
         if (e.getSource() == rollButton) {
             rollButton.setEnabled(false);
-            int num = monopoly.getCurPlayerTurn();
-            int pos = players.get(num).getPosition();
             System.out.println("GUI: Player "+num+" rolled from "+pos);
 
             // Remove from the board
@@ -409,15 +475,33 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             rollLabel.setText("");
             rollButton.setEnabled(true);
             rollPanel.setVisible(false);
-            buyPropertyPanel.setVisible(true);
+
+            // What happens now?
+            Square curSqr = board.get(pos);
+
+            if (curSqr instanceof Property) {
+                Property curProp = (Property)curSqr;
+
+                if (curProp.getOwner() == null) {
+                    buyPropertyPanel.setVisible(true);
+                }
+                else {
+                    System.out.println("Already owned");
+                    // TODO Add rent choice here
+                    endTurnPanel.setVisible(true);
+                }
+            }
+            else {
+                System.out.println("Not a property - end turn?");
+                endTurnPanel.setVisible(true);
+            }
+
             this.repaint();
         }
         else if (e.getSource() == buyPropertyButton) {
             System.out.println("GUI: Buy Property");
 
             // Get the player information
-            int num = monopoly.getCurPlayerTurn();
-            int pos = players.get(num).getPosition();
             System.out.println("GUI: player "+num+" pos "+pos);
 
             // Replace the space
@@ -430,19 +514,38 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 }               
             }
 
-            // Delay before next decision
-            buyPropertyTimer = new Timer(1000, this);
-            buyPropertyTimer.start();
-        }
-        else if (e.getSource() == buyPropertyTimer) {
-            // Switch panels
-            buyPropertyTimer.stop();
+            // Update player stats                     
+            JPanel newPanel = makePlayerPanel();
+            newPanel.setBounds(playerStatPanel.getBounds());
+            this.remove(playerStatPanel);
+            this.add(newPanel);
+            playerStatPanel = newPanel;
+
+            // Head to end turn
             buyPropertyPanel.setVisible(false);
-            rollPanel.setVisible(true);
+            endTurnPanel.setVisible(true);
             this.repaint();
         }
+        else if (e.getSource() == passButton) {
+            // Head to end turn
+            buyPropertyPanel.setVisible(false);
+            endTurnPanel.setVisible(true);
+            this.repaint();
+        }
+        else if (e.getSource() == endTurnButton) {
+            // Switch panels
+            endTurnPanel.setVisible(false);
+            
+            // Move on to next turn
+            monopoly.endTurn();
+            rollPanel.setVisible(true);
 
+            // TODO Update player panel - do we need to?
+
+            this.repaint();
+        }
     }
+
 
     /**
      * Here is some code to use later - replacing panel to add house
