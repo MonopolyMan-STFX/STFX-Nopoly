@@ -19,11 +19,13 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     JPanel[] playerStats = new JPanel[4];
     JLabel[] playerIcons = new JLabel[4];
     ImageIcon[] listOfIcons = new ImageIcon[4];
+    ImageIcon[] diceIcons = new ImageIcon[6];
 
     JPanel rollPanel = null;
     JButton rollButton = null;
     Timer rollTimer = null;
-    JLabel rollLabel = null;
+    JLabel rollLabel1 = null;
+    JLabel rollLabel2 = null;
 
     JPanel buyPropertyPanel = null;
     JButton buyPropertyButton = null;
@@ -89,7 +91,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             if (sqr.getHousesOwned() < 5)  { 
             for (int i = 0;  i < sqr.getHousesOwned(); i++) { 
 
-               ImageIcon img1 = new ImageIcon("House.png");
+               ImageIcon img1 = new ImageIcon("graphics/House.png");
                JLabel label1 = new JLabel(img1);
                int width1 = img1.getIconWidth();
                int height1 = img1.getIconHeight();
@@ -99,7 +101,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
             } else  {
 
-                ImageIcon img2 = new ImageIcon("Hotel.png");
+                ImageIcon img2 = new ImageIcon("graphics/Hotel.png");
                 JLabel label2 = new JLabel(img2);
                 int width2 = img2.getIconWidth();
                 int height2 = img2.getIconHeight();
@@ -196,7 +198,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             for (int i = 0;  i < sqr.getHousesOwned(); i++) { 
                 
             
-                ImageIcon img1 = new ImageIcon("House.png");
+                ImageIcon img1 = new ImageIcon("graphics/House.png");
                 JLabel label1 = new JLabel(img1);
                 int width1 = img1.getIconWidth();
                 int height1 = img1.getIconHeight();
@@ -205,7 +207,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
                 houseLocation += 20;
             }
         }  else {
-            ImageIcon img2 = new ImageIcon("Hotel.png");
+            ImageIcon img2 = new ImageIcon("graphics/Hotel.png");
             JLabel label2 = new JLabel(img2);
             int width2 = img2.getIconWidth();
             int height2 = img2.getIconHeight();
@@ -214,6 +216,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         } 
         return tempPanel;
     }
+
 
     public JPanel makeSquarePanelSide(Square sqr) {
         JPanel tempPanel = new JPanel();
@@ -232,21 +235,34 @@ public JPanel makeSquarePanelAcross(Square sqr) {
     }
 
 
+    /**
+     * Make the corner panel
+     * @param text
+     * @param imagefile
+     * @return
+     */
+    public JPanel makeCornerPanel(String text, String imagefile) {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+        tempPanel.addMouseListener(this);
+        // Add the Name
+        JLabel tempLabel = new JLabel(text);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        tempLabel.setBounds(18,0,tileHeight-2,15);
+        tempPanel.add(tempLabel);
+         
+         ImageIcon img3 = new ImageIcon(imagefile);
+         JLabel label3 = new JLabel  (img3);
+         int width3 =  img3.getIconWidth();
+         int height3 = img3.getIconHeight();
+         label3.setBounds(28,20, width3, height3);
+         tempPanel.add(label3);
 
-    public JPanel makeCornerPanel(String text) {
-            JPanel tempPanel = new JPanel();
-            tempPanel.setLayout(null);
-            tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            tempPanel.setBackground(Color.RED);
-            tempPanel.addMouseListener(this);
-            // Add the Name
-            JLabel tempLabel = new JLabel(text);
-            tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            tempLabel.setBounds(2,2,tileHeight-2,40);
-            tempPanel.add(tempLabel);
 
-            return tempPanel;
-    }
+        return tempPanel;
+}
 
 /**
      * This is for the Player Stats in the middle
@@ -268,7 +284,10 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             // JPanel for the player Stats
             playerStats[i] = new JPanel();
             playerStats[i].setLayout(null);
-            //playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            if (monopoly.getCurPlayerTurn() == i) {
+                playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            }
+            playerStats[i].addMouseListener(this);
             playerStats[i].setBackground(Color.WHITE);
 
             // Add Player information
@@ -312,10 +331,14 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             tempLabel.setBounds(2,0,250,30);
             tempPanel.add(tempLabel);
 
-            rollLabel = new JLabel("", SwingConstants.CENTER);
-            rollLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            rollLabel.setBounds(2,40,250,30);
-            tempPanel.add(rollLabel);
+            // Labels for the dice
+            rollLabel1 = new JLabel();
+            rollLabel1.setBounds(50,40,50,50);
+            tempPanel.add(rollLabel1);
+            
+            rollLabel2 = new JLabel();
+            rollLabel2.setBounds(125,40,50,50);
+            tempPanel.add(rollLabel2);
 
             return tempPanel;
     }
@@ -358,13 +381,13 @@ public JPanel makeSquarePanelAcross(Square sqr) {
 
         // End turn option
         endTurnButton = new JButton("Finish Turn");
-        endTurnButton.setBounds(33,100,80, 40); 
+        endTurnButton.setBounds(50,100,150,40); 
         endTurnButton.addActionListener(this);
         tempPanel.add(endTurnButton);
 
         // Add house option (not ready yet)
         addHouseButton = new JButton("Add House");
-        addHouseButton.setBounds(133,100,80, 40); 
+        addHouseButton.setBounds(50,140,150,40); 
         addHouseButton.setEnabled(false);
         //addHouseButton.addActionListener(this);
         tempPanel.add(addHouseButton);
@@ -408,7 +431,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         // Board setup
         // Start
         Square sqr = boardIter.next();
-        JPanel pPanel = makeCornerPanel("Go");
+        JPanel pPanel = makeCornerPanel("", "graphics/Go.png");
         pPanel.setBounds(640,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -431,7 +454,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
 
         // Jail corner
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("Jail");
+        pPanel = makeCornerPanel("In Jail", "graphics/InJail.png");
         pPanel.setBounds(0,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -454,7 +477,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
 
         // Free Parking        
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("Parking");
+        pPanel = makeCornerPanel("Parking", "graphics/Parking.png");
         pPanel.setBounds(0,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -477,7 +500,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
 
         // Go to Jail
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
+        pPanel = makeCornerPanel("Go to Jail","graphics/Tojail.png");
         pPanel.setBounds(640,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -514,20 +537,26 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         endTurnPanel.setVisible(false);
         this.add(endTurnPanel);         
 
-
-        // Draw the players in locations
-        listOfIcons[0] = new ImageIcon("hatpiece.png");
-        listOfIcons[1] = new ImageIcon("carpiece.png");
-        listOfIcons[2] = new ImageIcon("thimblepiece.png");
-        listOfIcons[3] = new ImageIcon("dogpiece.png");
-
+        // Load the players in locations
+        listOfIcons[0] = new ImageIcon("graphics/hatpiece.png");
+        listOfIcons[1] = new ImageIcon("graphics/carpiece.png");
+        listOfIcons[2] = new ImageIcon("graphics/himblepiece.png");
+        listOfIcons[3] = new ImageIcon("graphics/dogpiece.png");
 
         // Add the players to the board on Go Square
         for (int i=0; i<players.size(); i++) {
             playerIcons[i] = new JLabel(listOfIcons[i]);
-            playerIcons[i].setBounds(2+25*i,40,20,20);
+            playerIcons[i].setBounds(2+25*i,60,20,20);
             gamePositions.get(0).add(playerIcons[i]);
         }
+
+        // Load the Dice Icons
+        diceIcons[0] = new ImageIcon("graphics/dice1.png");
+        diceIcons[1] = new ImageIcon("graphics/dice2.png");
+        diceIcons[2] = new ImageIcon("graphics/dice3.png");
+        diceIcons[3] = new ImageIcon("graphics/dice4.png");
+        diceIcons[4] = new ImageIcon("graphics/dice5.png");
+        diceIcons[5] = new ImageIcon("graphics/dice6.png");
 
         // Player Area
         playerStatPanel = makePlayerPanel();
@@ -558,7 +587,9 @@ public JPanel makeSquarePanelAcross(Square sqr) {
 
             // Roll the dice
             int roll = monopoly.rollDie();   
-            rollLabel.setText(""+roll);
+            int[] rollVals = monopoly.getDiceNumbers();            
+            rollLabel1.setIcon(diceIcons[rollVals[0]-1]);
+            rollLabel2.setIcon(diceIcons[rollVals[1]-1]);
             monopoly.playTurn(roll);
 
             // Place on the board
@@ -584,7 +615,8 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         }
         else if (e.getSource() == rollTimer) {
             rollTimer.stop();
-            rollLabel.setText("");
+            rollLabel1.setIcon(null);
+            rollLabel2.setIcon(null);
             rollButton.setEnabled(true);
             rollPanel.setVisible(false);
 
@@ -642,6 +674,14 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             // Head to end turn
             buyPropertyPanel.setVisible(false);
             endTurnPanel.setVisible(true);
+
+            // Update player stats                     
+            JPanel newPanel = makePlayerPanel();
+            newPanel.setBounds(playerStatPanel.getBounds());
+            this.remove(playerStatPanel);
+            this.add(newPanel);
+            playerStatPanel = newPanel;
+            
             this.repaint();
         }
         else if (e.getSource() == endTurnButton) {
@@ -652,7 +692,12 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             monopoly.endTurn();
             rollPanel.setVisible(true);
 
-            // TODO Update player panel - do we need to?
+            // Update player stats                     
+            JPanel newPanel = makePlayerPanel();
+            newPanel.setBounds(playerStatPanel.getBounds());
+            this.remove(playerStatPanel);
+            this.add(newPanel);
+            playerStatPanel = newPanel;
 
             this.repaint();
         }
@@ -687,13 +732,27 @@ public JPanel makeSquarePanelAcross(Square sqr) {
     }
 
     public void mouseClicked(MouseEvent e) {
-        //System.out.println(e);
         JPanel src = (JPanel)e.getSource();
+
+        // Check if it's a game position
         int pos = gamePositions.indexOf(src);
-        System.out.println("GUI: Click "+pos);
-        Property prop = (Property)board.get(pos);
-        PropertyView thisProperty = new PropertyView(this, prop);
-        thisProperty.setVisible(true);
+        if (pos >=0) {
+            Property prop = (Property)board.get(pos);
+            PropertyView thisProperty = new PropertyView(this, prop);
+            thisProperty.setVisible(true);
+        }
+
+        // Check if it's a playerStat
+        for (int i=0; i<playerStats.length; i++) {
+            if (src == playerStats[i]) {
+                pos = i;
+            }
+        }
+        if (pos >=0) {
+            Player player = (Player)players.get(pos);
+            PlayerView thisPlayer = new PlayerView(this, player);
+            thisPlayer.setVisible(true);
+        }
 
     }
 

@@ -171,13 +171,60 @@ class Game {
             deck.add(cardInstance);
         }
     }
-    
+
+    /*
+     * Play the card
+     * @param Player currPlayer
+     */
+    public void playCard(Player currPlayer, Card cardDrawn) {
+
+        // If selected card is changing money
+        if (cardDrawn.getChangeMoney() != 0) {
+
+            System.out.println("Changing money card selected");
+            
+            // Depositing money?
+            if (cardDrawn.getChangeMoney() > 0) {
+                currPlayer.deposit(cardDrawn.getChangeMoney());
+            }
+
+            // Withdrawing money?
+            else if (cardDrawn.getChangeMoney() < 0) {
+                currPlayer.withdraw(Math.abs(cardDrawn.getChangeMoney()));
+            }
+        }
+
+        // If selected card is moving player position
+        if (cardDrawn.getMovePosition() != 0) {
+
+            System.out.println("Moving position card selected");
+
+            currPlayer.moveUp(cardDrawn.getMovePosition());
+        }
+
+        // If selected card is setting player position
+        if (cardDrawn.getSetPosition().equals("N/A") == false) {
+
+            System.out.println("Setting position card selected");
+            
+            currPlayer.changePositionDirect(Integer.parseInt(cardDrawn.getSetPosition()));
+        }
+
+        // If selected card is sending player to jail
+        if (cardDrawn.getGoToJail() != false) {
+            
+            System.out.println("Send player to jail card selected");
+            
+            currPlayer.setIfInJail(true);
+            currPlayer.changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
+        }
+    }
+
     /*
      * Draw a card
-     * @param Player currPlayer
-     * @return String message
+     * @return Card selected
      */
-    public String drawCard(Player currPlayer) {
+    public Card drawCard() {
         // Create random object
         Random rand = new Random();
 
@@ -187,48 +234,7 @@ class Game {
         // Card index selected
         System.out.println("Card Selected: " + selectedCard);
 
-        // If selected card is changing money
-        if (deck.get(selectedCard).getChangeMoney() != 0) {
-
-            System.out.println("Changing money card selected");
-            
-            // Depositing money?
-            if (deck.get(selectedCard).getChangeMoney() > 0) {
-                currPlayer.deposit(deck.get(selectedCard).getChangeMoney());
-            }
-
-            // Withdrawing money?
-            else if (deck.get(selectedCard).getChangeMoney() < 0) {
-                currPlayer.withdraw(Math.abs(deck.get(selectedCard).getChangeMoney()));
-            }
-        }
-
-        // If selected card is moving player position
-        if (deck.get(selectedCard).getMovePosition() != 0) {
-
-            System.out.println("Moving position card selected");
-
-            currPlayer.moveUp(deck.get(selectedCard).getMovePosition());
-        }
-
-        // If selected card is setting player position
-        if (deck.get(selectedCard).getSetPosition().equals("N/A") == false) {
-
-            System.out.println("Setting position card selected");
-            
-            currPlayer.changePositionDirect(Integer.parseInt(deck.get(selectedCard).getSetPosition()));
-        }
-
-        // If selected card is sending player to jail
-        if (deck.get(selectedCard).getGoToJail() != false) {
-            
-            System.out.println("Send player to jail card selected");
-            
-            currPlayer.setIfInJail(true);
-            currPlayer.changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
-        }
-
-        return deck.get(selectedCard).getMessage();
+        return deck.get(selectedCard);
     }
 
     /*
@@ -251,7 +257,7 @@ class Game {
 
         // Calculate and return total
         int total = dice1 + dice2;
-        System.out.println("Roll: " + total);
+        System.out.print("Roll: " + total);
         return total;
     }
 
@@ -265,6 +271,40 @@ class Game {
             isDouble = true;
         }
         return isDouble;
+    }
+
+    /** 
+     * Pay
+     * @return amount of money paid
+     */
+    public int pay() {
+        // Set variables
+        int num = 0;
+        int currentPosition = players.get(curPlayerTurn).getPosition();
+        // Check if on property
+        if (board.get(currentPosition) instanceof Property) {
+            if (players.get(curPlayerTurn).withdraw(((Property)board.get(currentPosition)).getRent())) {
+                // Pay owner of property
+                ((Property)board.get(currentPosition)).getOwner().deposit(((Property)board.get(currentPosition)).getRent());
+                num = ((Property) board.get(currentPosition)).getRent();
+            }            
+        }
+        else {
+            // Pay luxury tax
+            if (board.get(currentPosition).getName().equals("Luxury Tax")) {
+                if (players.get(curPlayerTurn).withdraw(100)) {
+                    num = 100;
+                }  
+            }
+            // Pay income tax
+            else if (board.get(currentPosition).getName().equals("Income Tax")) {
+                if (players.get(curPlayerTurn).withdraw(200)) {
+                    num = 200;
+                }  
+            }
+        }
+        // Return amount paid (if any)
+        return num;
     }
 
     /*
@@ -288,30 +328,28 @@ class Game {
             
             // Player landed on property
             if (board.get(currentPosition) instanceof Property) {
+
                 // Property has no owner
                 if(((Property)board.get(currentPosition)).getOwner() == null) {
                     //System.out.println("NoOwner");
                     returnString = "NoOwner";
                 }
+
                 // Player owns the property
                 else if(((Property)board.get(currentPosition)).getOwner() == players.get(curPlayerTurn)) {
                     //System.out.println("YouAreOwner");
                     returnString = "YouAreOwner";
                 }
+
                 // Other player owns the property, pay rent
                 else {
                     //System.out.println("PayRent");
                     returnString = "PayRent";
-                    if (players.get(curPlayerTurn).withdraw(((Property)board.get(currentPosition)).getRent())) {
-                        returnString = "PaidRent";
-                    }
-                    else {
-                        returnString = "NoMoney";
-                    }
                 }
             }
 
             else if (board.get(currentPosition) instanceof Square) {
+                
                 // If they land on go to jail, send to jail
                 if(board.get(currentPosition).getName().equals("Go To Jail")) {
                     //System.out.println("inJail");
@@ -319,21 +357,18 @@ class Game {
                     players.get(curPlayerTurn).changePositionDirect(10);
                     returnString = "inJail";
                 }
+
                 // Land on chance or community chest
                 else if (board.get(currentPosition).getName().equals("Chance") || board.get(currentPosition).getName().equals("Community Chest")) {
-                    // Return card's message
-                    returnString = this.drawCard(players.get(curPlayerTurn));
+                    returnString = "DrawCard";
                 }
+
                 // Land on income or luxury tax
                 else if (board.get(currentPosition).getName().equals("Luxury Tax") || board.get(currentPosition).getName().equals("Income Tax")) {
                     //System.out.println("Income or Luxury Tax");
-                    if (players.get(curPlayerTurn).withdraw(200)) {
-                        returnString = "PaidTax";
-                    }
-                    else {
-                        returnString = "NoMoney";
-                    }
+                    returnString = "PayTax";
                 }
+
                 else {
                     //System.out.println("Free Parking, Just Visiting or Go");
                     returnString = "Nothing";
@@ -362,7 +397,7 @@ class Game {
                 //System.out.println("Free");
             }
         }
-        System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
+        
         return returnString;
     }
 
@@ -370,6 +405,7 @@ class Game {
      * End turn
      */
     public String endTurn() {
+        System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
         String returnString = "EndOfTurn";
         // Rolled a double
         if (checkDouble() == true) {

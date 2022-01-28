@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PropertyView extends JFrame implements ActionListener {
+public class PlayerView extends JFrame implements ActionListener {
 
     JFrame parent = null;
 
-    public PropertyView(JFrame parent, Property sqr) {
+    public PlayerView(JFrame parent, Player player) {
         this.parent = parent;
         this.parent.setEnabled(false);
         this.setSize(300, 300);
@@ -16,7 +16,7 @@ public class PropertyView extends JFrame implements ActionListener {
         label.setBounds(50,50,200,50);
         this.add(label);
 
-        label = new JLabel(""+sqr.getName());
+        label = new JLabel(""+player.getName());
         label.setBounds(50,150,200,50);
         this.add(label);
 
@@ -31,7 +31,9 @@ public class PropertyView extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        this.parent.setEnabled(true);
+        //this.parent.enabled();
+        System.out.println("Button");
+        parent.setEnabled(true);
         this.setVisible(false); 
         this.dispose();
     }
