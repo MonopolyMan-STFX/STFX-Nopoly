@@ -63,7 +63,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             if (sqr.getHousesOwned() < 5)  { 
             for (int i = 0;  i < sqr.getHousesOwned(); i++) { 
 
-               ImageIcon img1 = new ImageIcon("House.png");
+               ImageIcon img1 = new ImageIcon("graphics/House.png");
                JLabel label1 = new JLabel(img1);
                int width1 = img1.getIconWidth();
                int height1 = img1.getIconHeight();
@@ -73,7 +73,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
             } else  {
 
-                ImageIcon img2 = new ImageIcon("Hotel.png");
+                ImageIcon img2 = new ImageIcon("graphics/Hotel.png");
                 JLabel label2 = new JLabel(img2);
                 int width2 = img2.getIconWidth();
                 int height2 = img2.getIconHeight();
@@ -129,7 +129,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             for (int i = 0;  i < sqr.getHousesOwned(); i++) { 
                 
             
-                ImageIcon img1 = new ImageIcon("House.png");
+                ImageIcon img1 = new ImageIcon("graphics/House.png");
                 JLabel label1 = new JLabel(img1);
                 int width1 = img1.getIconWidth();
                 int height1 = img1.getIconHeight();
@@ -138,7 +138,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 houseLocation += 20;
             }
         }  else {
-            ImageIcon img2 = new ImageIcon("Hotel.png");
+            ImageIcon img2 = new ImageIcon("graphics/Hotel.png");
             JLabel label2 = new JLabel(img2);
             int width2 = img2.getIconWidth();
             int height2 = img2.getIconHeight();
@@ -148,21 +148,33 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         return tempPanel;
     }
 
+    /**
+     * Make the corner panel
+     * @param text
+     * @param imagefile
+     * @return
+     */
+    public JPanel makeCornerPanel(String text, String imagefile) {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+        tempPanel.addMouseListener(this);
+        // Add the Name
+        JLabel tempLabel = new JLabel(text);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        tempLabel.setBounds(18,0,tileHeight-2,15);
+        tempPanel.add(tempLabel);
+         
+         ImageIcon img3 = new ImageIcon(imagefile);
+         JLabel label3 = new JLabel  (img3);
+         int width3 =  img3.getIconWidth();
+         int height3 = img3.getIconHeight();
+         label3.setBounds(28,20, width3, height3);
+         tempPanel.add(label3);
 
-    public JPanel makeCornerPanel(String text) {
-            JPanel tempPanel = new JPanel();
-            tempPanel.setLayout(null);
-            tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            tempPanel.setBackground(Color.WHITE);
-            tempPanel.addMouseListener(this);
-            // Add the Name
-            JLabel tempLabel = new JLabel(text);
-            tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            tempLabel.setBounds(2,2,tileHeight-2,40);
-            tempPanel.add(tempLabel);
-
-            return tempPanel;
-    }
+        return tempPanel;
+}
 
 /**
      * This is for the Player Stats in the middle
@@ -327,7 +339,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Board setup
         // Start
         Square sqr = boardIter.next();
-        JPanel pPanel = makeCornerPanel("Go");
+        JPanel pPanel = makeCornerPanel("", "graphics/Go.png");
         pPanel.setBounds(640,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -343,7 +355,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Jail corner
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("Jail");
+        pPanel = makeCornerPanel("In Jail", "graphics/InJail.png");
         pPanel.setBounds(0,640,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -359,7 +371,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Free Parking        
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("Parking");
+        pPanel = makeCornerPanel("Parking", "graphics/Parking.png");
         pPanel.setBounds(0,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -375,7 +387,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Go to Jail
         sqr = boardIter.next();
-        pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
+        pPanel = makeCornerPanel("Go to Jail","graphics/Tojail.png");
         pPanel.setBounds(640,0,tileHeight,tileHeight);
         gamePositions.add(pPanel);
         this.add(pPanel);         
@@ -407,16 +419,16 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
 
         // Draw the players in locations
-        listOfIcons[0] = new ImageIcon("hatpiece.png");
-        listOfIcons[1] = new ImageIcon("carpiece.png");
-        listOfIcons[2] = new ImageIcon("thimblepiece.png");
-        listOfIcons[3] = new ImageIcon("dogpiece.png");
+        listOfIcons[0] = new ImageIcon("graphics/hatpiece.png");
+        listOfIcons[1] = new ImageIcon("graphics/carpiece.png");
+        listOfIcons[2] = new ImageIcon("graphics/himblepiece.png");
+        listOfIcons[3] = new ImageIcon("graphics/dogpiece.png");
 
 
         // Add the players to the board on Go Square
         for (int i=0; i<players.size(); i++) {
             playerIcons[i] = new JLabel(listOfIcons[i]);
-            playerIcons[i].setBounds(2+25*i,40,20,20);
+            playerIcons[i].setBounds(2+25*i,60,20,20);
             gamePositions.get(0).add(playerIcons[i]);
         }
 
