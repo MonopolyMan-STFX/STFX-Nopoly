@@ -380,7 +380,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
 
             // Top & Bottom
-             if((i > 0 && 10 > i)== true ||  (i > 20 && 30 > i)== true)
+             if(((i > 0 && 10 > i)== true ||  (i > 20 && 30 > i))== true && board.get(i) instanceof Property)
             {
                 sqr = board.get(i);
                 pPanel = makePropertyPanelAcross((Property)sqr);
@@ -396,14 +396,23 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 this.add(pPanel);         
             }
 
-            // Sides
-            if(((i > 10 && 20 > i)== true ||  (i > 30 && 40 > i)== true) && board.get(i) instanceof Property)
+            // Sides Left then right
+            if((i > 10 && 20 > i)== true && board.get(i) instanceof Property)
             {
                 sqr = board.get(i);
                 pPanel = makePropertyPanelSide((Property)sqr);
                 pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
                 gamePositions.add(pPanel);
                 this.add(pPanel);         
+            }
+            else if((i > 30 && 40 > i)== true && board.get(i) instanceof Property)
+            {
+                sqr = board.get(i);
+                pPanel = makePropertyPanelSide((Property)sqr);
+                pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+                gamePositions.add(pPanel);
+                this.add(pPanel);  
+                System.out.println("Otherside");
             }
             else
             {
@@ -412,6 +421,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 gamePositions.add(pPanel);
                 this.add(pPanel);         
             }
+            System.out.print(" " + i);
         }
 
         // // Start
