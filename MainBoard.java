@@ -187,6 +187,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             if (monopoly.getCurPlayerTurn() == i) {
                 playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
             }
+            playerStats[i].addMouseListener(this);
             playerStats[i].setBackground(Color.WHITE);
 
             // Add Player information
@@ -590,13 +591,27 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     }
 
     public void mouseClicked(MouseEvent e) {
-        //System.out.println(e);
         JPanel src = (JPanel)e.getSource();
+
+        // Check if it's a game position
         int pos = gamePositions.indexOf(src);
-        System.out.println("GUI: Click "+pos);
-        Property prop = (Property)board.get(pos);
-        PropertyView thisProperty = new PropertyView(this, prop);
-        thisProperty.setVisible(true);
+        if (pos >=0) {
+            Property prop = (Property)board.get(pos);
+            PropertyView thisProperty = new PropertyView(this, prop);
+            thisProperty.setVisible(true);
+        }
+
+        // Check if it's a playerStat
+        for (int i=0; i<playerStats.length; i++) {
+            if (src == playerStats[i]) {
+                pos = i;
+            }
+        }
+        if (pos >=0) {
+            Player player = (Player)players.get(pos);
+            PlayerView thisPlayer = new PlayerView(this, player);
+            thisPlayer.setVisible(true);
+        }
 
     }
 
