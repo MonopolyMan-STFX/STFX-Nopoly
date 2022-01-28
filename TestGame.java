@@ -16,53 +16,48 @@ class TestGame {
 
         int roll = 0;
 
-        // Automatic test program
-        // Loop for 20 turns
-        // for (int i = 0; i<20; i++) {
-        //     System.out.println("\nPlayer" + (game.getCurPlayerTurn() + 1) + "'s turn");
-        //     roll = game.rollDie();
-        //     System.out.println(Arrays.toString(game.getDiceNumbers()));
-        //     game.playTurn(roll);
-        //     System.out.println("Next turn: Player" + (game.getCurPlayerTurn() + 1));
-        // }
-
-        // Input based test program
+        /* Input based test program */
         // Set up user input
         Scanner sc = new Scanner(System.in);
         char choice = 'o';
+
         // Loop until quit
         while(choice != 'q') {
+            
             // Output player turn
             System.out.println("\n" + game.getPlayers().get(game.getCurPlayerTurn()).getName()+ "'s turn:");
-
+            
             // Roll dice and play turn
             roll = game.rollDie();
-            System.out.println(Arrays.toString(game.getDiceNumbers()));
+            System.out.println(" " + Arrays.toString(game.getDiceNumbers()));
             String returnStringGame = game.playTurn(roll);
 
             // Output options
-            System.out.println(returnStringGame);
+            System.out.println("GUI Action: " + returnStringGame);
             
             // Buy property
             if (returnStringGame.equals("NoOwner")) {
                 game.buyProperty(game.getPlayers().get(game.getCurPlayerTurn()));
-
             }
 
-            choice = sc.next().toLowerCase().charAt(0);
+            // Pay rent
+            else if (returnStringGame.equals("PayRent") || returnStringGame.equals("PayTax")) {
+                game.pay();
+            }
 
-            // End player turn
-            if (choice == 'e') {
-                game.endTurn();
-                System.out.println("Next turn: " + game.getPlayers().get(game.getCurPlayerTurn()).getName());
+            System.out.println();
+            // Output owned properties
+            System.out.println("Owned Properties: ");            
+            for(Property property : game.getPlayers().get(game.getCurPlayerTurn()).getAllProperties()) {
+                System.out.println(property.getName());
             }
             
-            // Output owned properties
-            for(Property property : game.getPlayers().get(game.getCurPlayerTurn()).getAllProperties()) {
-                    System.out.println("Owned Properties: " + property.getName());
-                }
-       }
+            
+            choice = sc.next().toLowerCase().charAt(0);
 
+            // End player turn 
+            game.endTurn();
+       }
 
         /* Simple Test Buy Property */
 
