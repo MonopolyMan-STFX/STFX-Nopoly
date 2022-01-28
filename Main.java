@@ -6,13 +6,13 @@
 
 class Main {
   public static void main(String[] args) throws Exception {
-    //new MainBoard();
+    new MainBoard();
     
     /* Test Game */
-    TestGame.main(args);
+    //TestGame.main(args);
 
     /* Test Property */
-    // TestProperty.main(args);
+    //TestProperty.main(args);
 
     /* Test Square */
     // TestSquare.main(args);

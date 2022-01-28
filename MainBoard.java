@@ -19,11 +19,13 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     JPanel[] playerStats = new JPanel[4];
     JLabel[] playerIcons = new JLabel[4];
     ImageIcon[] listOfIcons = new ImageIcon[4];
+    ImageIcon[] diceIcons = new ImageIcon[6];
 
     JPanel rollPanel = null;
     JButton rollButton = null;
     Timer rollTimer = null;
-    JLabel rollLabel = null;
+    JLabel rollLabel1 = null;
+    JLabel rollLabel2 = null;
 
     JPanel buyPropertyPanel = null;
     JButton buyPropertyButton = null;
@@ -243,10 +245,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             tempLabel.setBounds(2,0,250,30);
             tempPanel.add(tempLabel);
 
-            rollLabel = new JLabel("", SwingConstants.CENTER);
-            rollLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            rollLabel.setBounds(2,40,250,30);
-            tempPanel.add(rollLabel);
+            // Labels for the dice
+            rollLabel1 = new JLabel();
+            rollLabel1.setBounds(50,40,50,50);
+            tempPanel.add(rollLabel1);
+            
+            rollLabel2 = new JLabel();
+            rollLabel2.setBounds(125,40,50,50);
+            tempPanel.add(rollLabel2);
 
             return tempPanel;
     }
@@ -289,13 +295,13 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // End turn option
         endTurnButton = new JButton("Finish Turn");
-        endTurnButton.setBounds(33,100,120,40); 
+        endTurnButton.setBounds(50,100,150,40); 
         endTurnButton.addActionListener(this);
         tempPanel.add(endTurnButton);
 
         // Add house option (not ready yet)
         addHouseButton = new JButton("Add House");
-        addHouseButton.setBounds(33,140,120,40); 
+        addHouseButton.setBounds(50,140,150,40); 
         addHouseButton.setEnabled(false);
         //addHouseButton.addActionListener(this);
         tempPanel.add(addHouseButton);
@@ -417,13 +423,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         endTurnPanel.setVisible(false);
         this.add(endTurnPanel);         
 
-
-        // Draw the players in locations
+        // Load the players in locations
         listOfIcons[0] = new ImageIcon("graphics/hatpiece.png");
         listOfIcons[1] = new ImageIcon("graphics/carpiece.png");
         listOfIcons[2] = new ImageIcon("graphics/himblepiece.png");
         listOfIcons[3] = new ImageIcon("graphics/dogpiece.png");
-
 
         // Add the players to the board on Go Square
         for (int i=0; i<players.size(); i++) {
@@ -431,6 +435,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             playerIcons[i].setBounds(2+25*i,60,20,20);
             gamePositions.get(0).add(playerIcons[i]);
         }
+
+        // Load the Dice Icons
+        diceIcons[0] = new ImageIcon("graphics/dice1.png");
+        diceIcons[1] = new ImageIcon("graphics/dice2.png");
+        diceIcons[2] = new ImageIcon("graphics/dice3.png");
+        diceIcons[3] = new ImageIcon("graphics/dice4.png");
+        diceIcons[4] = new ImageIcon("graphics/dice5.png");
+        diceIcons[5] = new ImageIcon("graphics/dice6.png");
 
         // Player Area
         playerStatPanel = makePlayerPanel();
@@ -461,7 +473,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             // Roll the dice
             int roll = monopoly.rollDie();   
-            rollLabel.setText(""+roll);
+            int[] rollVals = monopoly.getDiceNumbers();            
+            rollLabel1.setIcon(diceIcons[rollVals[0]-1]);
+            rollLabel2.setIcon(diceIcons[rollVals[1]-1]);
             monopoly.playTurn(roll);
 
             // Place on the board
@@ -487,7 +501,8 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
         else if (e.getSource() == rollTimer) {
             rollTimer.stop();
-            rollLabel.setText("");
+            rollLabel1.setIcon(null);
+            rollLabel2.setIcon(null);
             rollButton.setEnabled(true);
             rollPanel.setVisible(false);
 
