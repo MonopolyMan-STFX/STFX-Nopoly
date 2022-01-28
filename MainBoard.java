@@ -344,6 +344,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         for(int i = 0; i < board.size(); i++)
         {
+            System.out.println( i + " ");
             // Go
             if(i == 0)
             {
@@ -397,31 +398,32 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
 
             // Sides Left then right
-            if((i > 10 && 20 > i)== true && board.get(i) instanceof Property)
-            {
-                sqr = board.get(i);
-                pPanel = makePropertyPanelSide((Property)sqr);
-                pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-            else if((i > 30 && 40 > i)== true && board.get(i) instanceof Property)
-            {
-                sqr = board.get(i);
-                pPanel = makePropertyPanelSide((Property)sqr);
-                pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                gamePositions.add(pPanel);
-                this.add(pPanel);  
-                System.out.println("Otherside");
-            }
-            else
-            {
-                pPanel = makePropertyPanelSide(ERROR);
-                pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-            System.out.print(" " + i);
+             if((i > 10 && 20 > i)== true && board.get(i) instanceof Property)
+             {
+                 System.out.println("Should be doing the left?");
+                 sqr = board.get(i);
+                 pPanel = makePropertyPanelSide((Property)sqr);
+                 pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+                 gamePositions.add(pPanel);
+                 this.add(pPanel);
+             }
+             else if((i > 30 && 40 > i)== true && board.get(i) instanceof Property)
+             {
+                 sqr = board.get(i);
+                 pPanel = makePropertyPanelSide((Property)sqr);
+                 pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+                 gamePositions.add(pPanel);
+                 this.add(pPanel);
+                 System.out.println("Otherside");
+             }
+             else
+             {
+                 pPanel = makePropertyPanelSide((Property)sqr);
+                 pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+                 gamePositions.add(pPanel);
+                 this.add(pPanel);
+             }
+             // System.out.print(" " + i);
         }
 
         // // Start
