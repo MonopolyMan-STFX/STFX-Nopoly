@@ -153,7 +153,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             JPanel tempPanel = new JPanel();
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            tempPanel.setBackground(Color.RED);
+            tempPanel.setBackground(Color.WHITE);
             tempPanel.addMouseListener(this);
             // Add the Name
             JLabel tempLabel = new JLabel(text);
@@ -274,13 +274,13 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // End turn option
         endTurnButton = new JButton("Finish Turn");
-        endTurnButton.setBounds(33,100,80, 40); 
+        endTurnButton.setBounds(33,100,120,40); 
         endTurnButton.addActionListener(this);
         tempPanel.add(endTurnButton);
 
         // Add house option (not ready yet)
         addHouseButton = new JButton("Add House");
-        addHouseButton.setBounds(133,100,80, 40); 
+        addHouseButton.setBounds(33,140,120,40); 
         addHouseButton.setEnabled(false);
         //addHouseButton.addActionListener(this);
         tempPanel.add(addHouseButton);
@@ -530,6 +530,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Head to end turn
             buyPropertyPanel.setVisible(false);
             endTurnPanel.setVisible(true);
+
+            // Update player stats                     
+            JPanel newPanel = makePlayerPanel();
+            newPanel.setBounds(playerStatPanel.getBounds());
+            this.remove(playerStatPanel);
+            this.add(newPanel);
+            playerStatPanel = newPanel;
+            
             this.repaint();
         }
         else if (e.getSource() == endTurnButton) {
@@ -539,8 +547,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Move on to next turn
             monopoly.endTurn();
             rollPanel.setVisible(true);
-
-            // TODO Update player panel - do we need to?
 
             this.repaint();
         }
