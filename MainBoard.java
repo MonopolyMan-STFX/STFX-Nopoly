@@ -1,9 +1,9 @@
-                                              import javax.swing.*;
+                                                  import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.io.*;
 /**
  * Overall GUI for the Monopoly board
  **/
@@ -53,12 +53,38 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
             tempPanel.setBackground(Color.WHITE);
+
+
+
             tempPanel.addMouseListener(this);
 
             JPanel housePanel = new JPanel();
             housePanel.setLayout(null);
             housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            housePanel.setBackground(Color.GREEN);
+            if(sqr.getColour().equals("brown"))
+            {
+                housePanel.setBackground(Color.lightGray);
+            }
+            else if(sqr.getColour().equals("light_blue"))
+            {
+                housePanel.setBackground(Color.BLUE);
+            }
+            else if(sqr.getColour().equals("red"))
+            {
+                housePanel.setBackground(Color.RED);
+            }
+            else if(sqr.getColour().equals("yellow"))
+            {
+                housePanel.setBackground(Color.YELLOW);
+            }
+            else 
+            {
+                 housePanel.setBackground(Color.BLACK);
+            }
+            // else
+            // {
+            //     housePanel.setBackground(Color.GREEN);
+            // }           
             housePanel.setBounds(0,0,tileWidth, 20);
             tempPanel.add(housePanel);
             // Nick's code
@@ -99,6 +125,28 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             return tempPanel;
     }
 
+
+
+public JPanel makeSquarePanelAcross(Square sqr) {
+            JPanel tempPanel = new JPanel();
+            tempPanel.setLayout(null);
+            tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+            tempPanel.setBackground(Color.WHITE);
+            tempPanel.addMouseListener(this);
+
+            JPanel housePanel = new JPanel();
+            housePanel.setLayout(null);
+            housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            // Add the Name across
+            Label tempLabel = new Label(sqr.getName());
+            tempLabel.setFont(new Font("Arial", Font.BOLD, 10));
+            tempLabel.setBounds(2,20,tileWidth-4,20);
+            tempPanel.add(tempLabel);
+            
+            return tempPanel;
+    }
+
     public JPanel makePropertyPanelSide(Property sqr) {
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(null);
@@ -122,7 +170,26 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         JPanel housePanel = new JPanel();
         housePanel.setLayout(null);
         housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        housePanel.setBackground(Color.GREEN);
+        if(sqr.getColour().equals("pink"))
+        {
+            housePanel.setBackground(Color.PINK);
+        }
+        else if(sqr.getColour().equals("orange"))
+        {
+            housePanel.setBackground(Color.ORANGE);
+        }
+        else if(sqr.getColour().equals("green"))
+        {
+            housePanel.setBackground(Color.GREEN);
+        }
+        else if(sqr.getColour().equals("blue"))
+        {
+            housePanel.setBackground(Color.BLUE);
+        }
+        else 
+        {
+            housePanel.setBackground(Color.BLACK);
+        }
         housePanel.setBounds(0,0,20,tileWidth);
         tempPanel.add(housePanel);
 
@@ -150,6 +217,24 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         return tempPanel;
     }
 
+
+    public JPanel makeSquarePanelSide(Square sqr) {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder (BorderFactory.createLineBorder (Color.black));
+        tempPanel.setBackground(Color.WHITE);
+        tempPanel.addMouseListener(this);
+
+        // add the name side
+        Label tempLabel = new Label(sqr.getName());
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 10));
+        tempLabel.setBounds(22,1,tileWidth-4,20);
+        tempPanel.add(tempLabel);
+
+        return tempPanel;
+    }
+
+
     /**
      * Make the corner panel
      * @param text
@@ -174,6 +259,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
          int height3 = img3.getIconHeight();
          label3.setBounds(28,20, width3, height3);
          tempPanel.add(label3);
+
 
         return tempPanel;
 }
@@ -322,7 +408,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     /**
      * Constructor
     **/
-    public MainBoard() {
+    public MainBoard() throws IOException{
 
         // Links to the game
         monopoly = new Game();
@@ -353,7 +439,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Bottom
         for (int i=8; i>=0; i--) {            
             sqr = boardIter.next();
-            pPanel = makePropertyPanelAcross((Property)sqr);
+            if(sqr instanceof Property)
+            {
+                pPanel = makePropertyPanelAcross((Property)sqr);
+            }
+            else
+            {
+                pPanel = makeSquarePanelAcross(sqr);
+            }
             pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
             gamePositions.add(pPanel);
             this.add(pPanel);         
@@ -369,7 +462,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Left side
         for (int i=8; i>=0; i--) {            
             sqr = boardIter.next();
+            if(sqr instanceof Property)
+            {
             pPanel = makePropertyPanelSide((Property)sqr);
+            }
+            else
+            {
+              pPanel = makeSquarePanelSide(sqr);
+            }
             pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
             this.add(pPanel);         
@@ -385,7 +485,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Top
         for (int i=0; i<9; i++) {            
             sqr = boardIter.next();
-            pPanel = makePropertyPanelAcross((Property)sqr);
+            if(sqr instanceof Property)
+            {
+                pPanel = makePropertyPanelAcross((Property)sqr);
+            }
+            else
+            {
+                pPanel = makeSquarePanelAcross(sqr);
+            }            
             pPanel.setBounds(tileHeight+(tileWidth*i),0,tileWidth,tileHeight);
             gamePositions.add(pPanel);
             this.add(pPanel);         
@@ -401,7 +508,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Right side
         for (int i=0; i<9; i++) {            
             sqr = boardIter.next();
+            if(sqr instanceof Property)
+            {
             pPanel = makePropertyPanelSide((Property)sqr);
+            }
+            else
+            {
+              pPanel = makeSquarePanelSide(sqr);
+            }
             pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
             this.add(pPanel);         
