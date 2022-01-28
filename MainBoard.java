@@ -184,7 +184,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // JPanel for the player Stats
             playerStats[i] = new JPanel();
             playerStats[i].setLayout(null);
-            //playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            if (monopoly.getCurPlayerTurn() == i) {
+                playerStats[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            }
             playerStats[i].setBackground(Color.WHITE);
 
             // Add Player information
@@ -547,6 +549,13 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Move on to next turn
             monopoly.endTurn();
             rollPanel.setVisible(true);
+
+            // Update player stats                     
+            JPanel newPanel = makePlayerPanel();
+            newPanel.setBounds(playerStatPanel.getBounds());
+            this.remove(playerStatPanel);
+            this.add(newPanel);
+            playerStatPanel = newPanel;
 
             this.repaint();
         }
