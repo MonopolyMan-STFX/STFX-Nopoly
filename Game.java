@@ -15,12 +15,14 @@ class Game {
     private int curPlayerTurn = 0;
 
     // Constructor
-    public Game() {
+    public Game() throws IOException {
         // Populate default data - 40 properties
-        int[] rent = {10, 20, 30, 40};
-        for (int i=0; i<40; i++) {
-            board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
-        }
+        // int[] rent = {10, 20, 30, 40};
+        // for (int i=0; i<40; i++) {
+        //     board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
+        // }
+            
+        this.fillBoard("squares.txt");
     }
 
     // Constructor
@@ -112,19 +114,19 @@ class Game {
     public void fillBoard(String filename) throws IOException {
         // Set up file input
         Scanner fileIn = new Scanner(new FileReader(filename));
-        int i = 0;
+
         // Skip the first line because it talks about how to "interpret the data"
         fileIn.nextLine();
+
         // Loop through file
         while(fileIn.hasNextLine()) {
-            i++;
-            //System.out.println(i);
+
             String lineToBeParsed = fileIn.nextLine();
             String[] splitLine = lineToBeParsed.split(",");
 
             if(splitLine[1].equals("property")) {
+
                 int[] rentTemp = new int[7];
-                //System.out.println(splitLine.length);
                 rentTemp[0] = Integer.parseInt(splitLine[4]);
                 rentTemp[1] = Integer.parseInt(splitLine[5]);
                 rentTemp[2] = Integer.parseInt(splitLine[6]);
