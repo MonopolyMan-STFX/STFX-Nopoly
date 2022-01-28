@@ -139,6 +139,11 @@ class Game {
 
                 board.add(new Property(splitLine[0],Integer.parseInt(splitLine[3]), rentTemp, 50,splitLine[2]));
             }
+            else if(splitLine[1].equals("Railroad"))
+            {
+                int[] rent_temp = {20,25,50,100,200};
+                board.add(new Property(splitLine[0],200,rent_temp , 9999,"black"));
+            }
             else
             {
                 board.add(new Square(splitLine[0]));

@@ -1,4 +1,4 @@
-import javax.swing.*;
+                                                  import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -51,25 +51,40 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
             tempPanel.setBackground(Color.WHITE);
+
+
+
             tempPanel.addMouseListener(this);
 
             JPanel housePanel = new JPanel();
             housePanel.setLayout(null);
             housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-            if(sqr.getColour().equals("yellow"))
-            {   
-                System.out.println("TIS IS YELLOW");
-            }
-            else
+            if(sqr.getColour().equals("brown"))
             {
-                System.out.println("TIS IS NOT " + sqr.getColour());
+                housePanel.setBackground(Color.lightGray);
             }
-            housePanel.setBackground(Color.BLUE);
+            else if(sqr.getColour().equals("light_blue"))
+            {
+                housePanel.setBackground(Color.BLUE);
+            }
+            else if(sqr.getColour().equals("red"))
+            {
+                housePanel.setBackground(Color.RED);
+            }
+            else if(sqr.getColour().equals("yellow"))
+            {
+                housePanel.setBackground(Color.YELLOW);
+            }
+            else 
+            {
+                 housePanel.setBackground(Color.BLACK);
+            }
+            // else
+            // {
+            //     housePanel.setBackground(Color.GREEN);
+            // }           
             housePanel.setBounds(0,0,tileWidth, 20);
             tempPanel.add(housePanel);
-
-
-            // Touch only thr stuff above this 
             // Nick's code
             if (sqr.getHousesOwned() < 5)  { 
             for (int i = 0;  i < sqr.getHousesOwned(); i++) { 
@@ -108,6 +123,28 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             return tempPanel;
     }
 
+
+
+public JPanel makeSquarePanelAcross(Square sqr) {
+            JPanel tempPanel = new JPanel();
+            tempPanel.setLayout(null);
+            tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+            tempPanel.setBackground(Color.WHITE);
+            tempPanel.addMouseListener(this);
+
+            JPanel housePanel = new JPanel();
+            housePanel.setLayout(null);
+            housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            // Add the Name across
+            Label tempLabel = new Label(sqr.getName());
+            tempLabel.setFont(new Font("Arial", Font.BOLD, 10));
+            tempLabel.setBounds(2,20,tileWidth-4,20);
+            tempPanel.add(tempLabel);
+            
+            return tempPanel;
+    }
+
     public JPanel makePropertyPanelSide(Property sqr) {
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(null);
@@ -131,7 +168,26 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         JPanel housePanel = new JPanel();
         housePanel.setLayout(null);
         housePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        housePanel.setBackground(Color.GREEN);
+        if(sqr.getColour().equals("pink"))
+        {
+            housePanel.setBackground(Color.PINK);
+        }
+        else if(sqr.getColour().equals("orange"))
+        {
+            housePanel.setBackground(Color.ORANGE);
+        }
+        else if(sqr.getColour().equals("green"))
+        {
+            housePanel.setBackground(Color.GREEN);
+        }
+        else if(sqr.getColour().equals("blue"))
+        {
+            housePanel.setBackground(Color.BLUE);
+        }
+        else 
+        {
+            housePanel.setBackground(Color.BLACK);
+        }
         housePanel.setBounds(0,0,20,tileWidth);
         tempPanel.add(housePanel);
 
@@ -158,6 +214,23 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         } 
         return tempPanel;
     }
+
+    public JPanel makeSquarePanelSide(Square sqr) {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder (BorderFactory.createLineBorder (Color.black));
+        tempPanel.setBackground(Color.WHITE);
+        tempPanel.addMouseListener(this);
+
+        // add the name side
+        Label tempLabel = new Label(sqr.getName());
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 10));
+        tempLabel.setBounds(22,1,tileWidth-4,20);
+        tempPanel.add(tempLabel);
+
+        return tempPanel;
+    }
+
 
 
     public JPanel makeCornerPanel(String text) {
@@ -312,7 +385,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     /**
      * Constructor
     **/
-    public MainBoard() throws IOException {
+    public MainBoard() throws IOException{
 
         // Links to the game
         monopoly = new Game();
@@ -320,7 +393,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         monopoly.createPlayer("Vyshnavi");
         board = monopoly.getBoard(); 
         players = monopoly.getPlayers();
-        // Iterator<Square> boardIter = board.iterator();
+        Iterator<Square> boardIter = board.iterator();
 
         // Setup the board information
         gamePositions = new ArrayList<JPanel>();
@@ -333,162 +406,97 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         this.add(titleLabel);
 
         // Board setup
-
-        // ERROR var
-        int[] rent = {10, 20, 30, 40};
-        Property ERROR = new Property("ERROR",100,rent, 50,"error");
-
-        //temp vars
-        Square sqr = board.get(1);
+        // Start
+        Square sqr = boardIter.next();
         JPanel pPanel = makeCornerPanel("Go");
+        pPanel.setBounds(640,640,tileHeight,tileHeight);
+        gamePositions.add(pPanel);
+        this.add(pPanel);         
 
-        for(int i = 0; i < board.size(); i++)
-        {
-            System.out.println( i + " ");
-            // Go
-            if(i == 0)
+        // Bottom
+        for (int i=8; i>=0; i--) {            
+            sqr = boardIter.next();
+            if(sqr instanceof Property)
             {
-                pPanel.setBounds(640,640,tileHeight,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-
-            // Jail
-            else if(i == 10)
-            {
-                pPanel = makeCornerPanel("Jail");
-                pPanel.setBounds(0,640,tileHeight,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-
-            // Free Square
-            else if(i == 20)
-            {
-                pPanel = makeCornerPanel("Parking");
-                pPanel.setBounds(0,0,tileHeight,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-
-            // Go To Jail
-            else if(i == 30)
-            {
-                pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
-                pPanel.setBounds(640,0,tileHeight,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
-            }
-
-            // Top & Bottom
-             if(((i > 0 && 10 > i)== true ||  (i > 20 && 30 > i))== true && board.get(i) instanceof Property)
-            {
-                sqr = board.get(i);
                 pPanel = makePropertyPanelAcross((Property)sqr);
-                pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
             }
             else
             {
-                pPanel = makePropertyPanelAcross(ERROR);
-                pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
-                gamePositions.add(pPanel);
-                this.add(pPanel);         
+                pPanel = makeSquarePanelAcross(sqr);
             }
-
-            // Sides Left then right
-             if((i > 10 && 20 > i)== true && board.get(i) instanceof Property)
-             {
-                 System.out.println("Should be doing the left?");
-                 sqr = board.get(i);
-                 pPanel = makePropertyPanelSide((Property)sqr);
-                 pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                 gamePositions.add(pPanel);
-                 this.add(pPanel);
-             }
-             else if((i > 30 && 40 > i)== true && board.get(i) instanceof Property)
-             {
-                 sqr = board.get(i);
-                 pPanel = makePropertyPanelSide((Property)sqr);
-                 pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                 gamePositions.add(pPanel);
-                 this.add(pPanel);
-                 System.out.println("Otherside");
-             }
-             else
-             {
-                 pPanel = makePropertyPanelSide((Property)sqr);
-                 pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-                 gamePositions.add(pPanel);
-                 this.add(pPanel);
-             }
-             // System.out.print(" " + i);
+            pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
+            gamePositions.add(pPanel);
+            this.add(pPanel);         
         }
 
-        // // Start
-        // Square sqr = boardIter.next();
-        // JPanel pPanel = makeCornerPanel("Go");
-        // pPanel.setBounds(640,640,tileHeight,tileHeight);
-        // gamePositions.add(pPanel);
-        // this.add(pPanel);         
+        // Jail corner
+        sqr = boardIter.next();
+        pPanel = makeCornerPanel("Jail");
+        pPanel.setBounds(0,640,tileHeight,tileHeight);
+        gamePositions.add(pPanel);
+        this.add(pPanel);         
 
-        // // Bottom
-        // for (int i=8; i>=0; i--) {            
-        //     sqr = boardIter.next();
-        //     pPanel = makePropertyPanelAcross((Property)sqr);
-        //     pPanel.setBounds(tileHeight+(tileWidth*i),640,tileWidth,tileHeight);
-        //     gamePositions.add(pPanel);
-        //     this.add(pPanel);         
-        // }
+        // Left side
+        for (int i=8; i>=0; i--) {            
+            sqr = boardIter.next();
+            if(sqr instanceof Property)
+            {
+            pPanel = makePropertyPanelSide((Property)sqr);
+            }
+            else
+            {
+              pPanel = makeSquarePanelSide(sqr);
+            }
+            pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+            gamePositions.add(pPanel);
+            this.add(pPanel);         
+        }
 
-        // // Jail corner
-        // sqr = boardIter.next();
-        // pPanel = makeCornerPanel("Jail");
-        // pPanel.setBounds(0,640,tileHeight,tileHeight);
-        // gamePositions.add(pPanel);
-        // this.add(pPanel);         
+        // Free Parking        
+        sqr = boardIter.next();
+        pPanel = makeCornerPanel("Parking");
+        pPanel.setBounds(0,0,tileHeight,tileHeight);
+        gamePositions.add(pPanel);
+        this.add(pPanel);         
 
-        // // Left side
-        // for (int i=8; i>=0; i--) {            
-        //     sqr = boardIter.next();
-        //     pPanel = makePropertyPanelSide((Property)sqr);
-        //     pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-        //     gamePositions.add(pPanel);
-        //     this.add(pPanel);         
-        // }
+        // Top
+        for (int i=0; i<9; i++) {            
+            sqr = boardIter.next();
+            if(sqr instanceof Property)
+            {
+                pPanel = makePropertyPanelAcross((Property)sqr);
+            }
+            else
+            {
+                pPanel = makeSquarePanelAcross(sqr);
+            }            
+            pPanel.setBounds(tileHeight+(tileWidth*i),0,tileWidth,tileHeight);
+            gamePositions.add(pPanel);
+            this.add(pPanel);         
+        }
 
-        // // Free Parking        
-        // sqr = boardIter.next();
-        // pPanel = makeCornerPanel("Parking");
-        // pPanel.setBounds(0,0,tileHeight,tileHeight);
-        // gamePositions.add(pPanel);
-        // this.add(pPanel);         
+        // Go to Jail
+        sqr = boardIter.next();
+        pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
+        pPanel.setBounds(640,0,tileHeight,tileHeight);
+        gamePositions.add(pPanel);
+        this.add(pPanel);         
 
-        // // Top
-        // for (int i=0; i<9; i++) {            
-        //     sqr = boardIter.next();
-        //     pPanel = makePropertyPanelAcross((Property)sqr);
-        //     pPanel.setBounds(tileHeight+(tileWidth*i),0,tileWidth,tileHeight);
-        //     gamePositions.add(pPanel);
-        //     this.add(pPanel);         
-        // }
-
-        // // Go to Jail
-        // sqr = boardIter.next();
-        // pPanel = makeCornerPanel("<html>Go to <br>&nbsp; Jail</html>");
-        // pPanel.setBounds(640,0,tileHeight,tileHeight);
-        // gamePositions.add(pPanel);
-        // this.add(pPanel);         
-
-        // // Right side
-        // for (int i=0; i<9; i++) {            
-        //     sqr = boardIter.next();
-        //     pPanel = makePropertyPanelSide((Property)sqr);
-        //     pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
-        //     gamePositions.add(pPanel);
-        //     this.add(pPanel);         
-        // }
+        // Right side
+        for (int i=0; i<9; i++) {            
+            sqr = boardIter.next();
+            if(sqr instanceof Property)
+            {
+            pPanel = makePropertyPanelSide((Property)sqr);
+            }
+            else
+            {
+              pPanel = makeSquarePanelSide(sqr);
+            }
+            pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
+            gamePositions.add(pPanel);
+            this.add(pPanel);         
+        }
 
         // Decision Area
         rollPanel = makeRollPanel();
