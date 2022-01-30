@@ -641,7 +641,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 System.out.println("GUI: Not a property - end turn?");
                 endTurnPanel.setVisible(true);
             }
-
+            updatePlayerPanel();
             this.repaint();
         }
         else if (e.getSource() == buyPropertyButton) {
