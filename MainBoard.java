@@ -19,7 +19,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     JPanel[] playerStats = new JPanel[4];
     JLabel[] playerIcons = new JLabel[4];
     ImageIcon[] listOfIcons = new ImageIcon[4];
-    ImageIcon[] diceIcons = new ImageIcon[6];
+    ImageIcon[] diceIcons = new ImageIcon[7];
 
     JPanel rollPanel = null;
     JButton rollButton = null;
@@ -53,9 +53,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
             tempPanel.setBackground(Color.WHITE);
-
-
-
             tempPanel.addMouseListener(this);
 
             JPanel housePanel = new JPanel();
@@ -127,12 +124,12 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
 
 
-public JPanel makeSquarePanelAcross(Square sqr) {
+    public JPanel makeSquarePanelAcross(Square sqr) {
             JPanel tempPanel = new JPanel();
             tempPanel.setLayout(null);
             tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
             tempPanel.setBackground(Color.WHITE);
-            tempPanel.addMouseListener(this);
+            //tempPanel.addMouseListener(this);
 
             JPanel housePanel = new JPanel();
             housePanel.setLayout(null);
@@ -223,7 +220,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         tempPanel.setLayout(null);
         tempPanel.setBorder (BorderFactory.createLineBorder (Color.black));
         tempPanel.setBackground(Color.WHITE);
-        tempPanel.addMouseListener(this);
+        //tempPanel.addMouseListener(this);
 
         // add the name side
         Label tempLabel = new Label(sqr.getName());
@@ -411,7 +408,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
     public MainBoard() throws IOException{
 
         // Links to the game
-        monopoly = new Game();
+        monopoly = new Game("squares.txt", "cards.txt");
         monopoly.createPlayer("Aman");
         monopoly.createPlayer("Vyshnavi");
         board = monopoly.getBoard(); 
@@ -551,12 +548,13 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         }
 
         // Load the Dice Icons
-        diceIcons[0] = new ImageIcon("graphics/dice1.png");
-        diceIcons[1] = new ImageIcon("graphics/dice2.png");
-        diceIcons[2] = new ImageIcon("graphics/dice3.png");
-        diceIcons[3] = new ImageIcon("graphics/dice4.png");
-        diceIcons[4] = new ImageIcon("graphics/dice5.png");
-        diceIcons[5] = new ImageIcon("graphics/dice6.png");
+        diceIcons[0] = new ImageIcon("graphics/dice0.png");
+        diceIcons[1] = new ImageIcon("graphics/dice1.png");
+        diceIcons[2] = new ImageIcon("graphics/dice2.png");
+        diceIcons[3] = new ImageIcon("graphics/dice3.png");
+        diceIcons[4] = new ImageIcon("graphics/dice4.png");
+        diceIcons[5] = new ImageIcon("graphics/dice5.png");
+        diceIcons[6] = new ImageIcon("graphics/dice6.png");
 
         // Player Area
         playerStatPanel = makePlayerPanel();
@@ -586,12 +584,15 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie();   
+            int roll = monopoly.rollDie();   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
-            rollLabel1.setIcon(diceIcons[rollVals[0]-1]);
-            rollLabel2.setIcon(diceIcons[rollVals[1]-1]);
-            monopoly.playTurn(roll);
+            rollLabel1.setIcon(diceIcons[rollVals[0]]);
+            rollLabel2.setIcon(diceIcons[rollVals[1]]);
+            this.repaint();
 
+            // Play the turn
+            String resp = monopoly.playTurn(roll);
+            
             // Place on the board
             int newPos = players.get(num).getPosition();
             System.out.println("GUI: Now At "+newPos);
@@ -607,7 +608,6 @@ public JPanel makeSquarePanelAcross(Square sqr) {
                 playerIcons[num].setBounds(2+25*num,50,20,20);
                 gamePositions.get(newPos).add(playerIcons[num]);
             }
-            this.repaint();
 
             // Delay before next decision
             rollTimer = new Timer(1000, this);
@@ -627,16 +627,18 @@ public JPanel makeSquarePanelAcross(Square sqr) {
                 Property curProp = (Property)curSqr;
 
                 if (curProp.getOwner() == null) {
+                    System.out.println("GUI: Buy");
                     buyPropertyPanel.setVisible(true);
                 }
                 else {
-                    System.out.println("Already owned");
-                    // TODO Add rent choice here
+                    System.out.println("GUI: Already owned");
+                    int amt = monopoly.pay();
+                    System.out.println("GUI: Pay: "+amt);
                     endTurnPanel.setVisible(true);
                 }
             }
             else {
-                System.out.println("Not a property - end turn?");
+                System.out.println("GUI: Not a property - end turn?");
                 endTurnPanel.setVisible(true);
             }
 
@@ -659,11 +661,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             }
 
             // Update player stats                     
-            JPanel newPanel = makePlayerPanel();
-            newPanel.setBounds(playerStatPanel.getBounds());
-            this.remove(playerStatPanel);
-            this.add(newPanel);
-            playerStatPanel = newPanel;
+            updatePlayerPanel();
 
             // Head to end turn
             buyPropertyPanel.setVisible(false);
@@ -676,11 +674,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             endTurnPanel.setVisible(true);
 
             // Update player stats                     
-            JPanel newPanel = makePlayerPanel();
-            newPanel.setBounds(playerStatPanel.getBounds());
-            this.remove(playerStatPanel);
-            this.add(newPanel);
-            playerStatPanel = newPanel;
+            updatePlayerPanel();
             
             this.repaint();
         }
@@ -693,11 +687,7 @@ public JPanel makeSquarePanelAcross(Square sqr) {
             rollPanel.setVisible(true);
 
             // Update player stats                     
-            JPanel newPanel = makePlayerPanel();
-            newPanel.setBounds(playerStatPanel.getBounds());
-            this.remove(playerStatPanel);
-            this.add(newPanel);
-            playerStatPanel = newPanel;
+            updatePlayerPanel();
 
             this.repaint();
         }
@@ -738,22 +728,35 @@ public JPanel makeSquarePanelAcross(Square sqr) {
         int pos = gamePositions.indexOf(src);
         if (pos >=0) {
             Property prop = (Property)board.get(pos);
-            PropertyView thisProperty = new PropertyView(this, prop);
+            Player curPlayer = monopoly.getPlayers().get(monopoly.getCurPlayerTurn());
+            PropertyView thisProperty = new PropertyView(this, monopoly, prop, curPlayer);
             thisProperty.setVisible(true);
         }
-
-        // Check if it's a playerStat
-        for (int i=0; i<playerStats.length; i++) {
-            if (src == playerStats[i]) {
-                pos = i;
+        else {
+            // Check if it's a playerStat
+            pos = -1;
+            for (int i=0; i<playerStats.length; i++) {
+                if (src == playerStats[i]) {
+                    pos = i;
+                }
             }
-        }
-        if (pos >=0) {
-            Player player = (Player)players.get(pos);
-            PlayerView thisPlayer = new PlayerView(this, player);
-            thisPlayer.setVisible(true);
+            if (pos >=0) {
+                Player player = (Player)players.get(pos);
+                PlayerView thisPlayer = new PlayerView(this, player);
+                thisPlayer.setVisible(true);
+            }
         }
 
     }
 
+    /**
+     * Update player panel
+     */
+    public void updatePlayerPanel() {
+        JPanel newPanel = makePlayerPanel();
+        newPanel.setBounds(playerStatPanel.getBounds());
+        this.remove(playerStatPanel);
+        this.add(newPanel);
+        playerStatPanel = newPanel;
+    }
 }

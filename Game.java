@@ -14,18 +14,16 @@ class Game {
     private int dice2 = 0;
     private int curPlayerTurn = 0;
 
-    // Constructor
+    // Constructor - default for testing
     public Game() throws IOException {
         // Populate default data - 40 properties
-        // int[] rent = {10, 20, 30, 40};
-        // for (int i=0; i<40; i++) {
-        //     board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
-        // }
-            
-        this.fillBoard("squares.txt");
+        int[] rent = {10, 20, 30, 40};
+        for (int i=0; i<40; i++) {
+            board.add(new Property("Prop "+i,100,rent, 50,"GREEN"));
+        }
     }
 
-    // Constructor
+    // Constructor - real one
     public Game(String boardFile, String cardFile) {
         try {
             // Set data as attributes
@@ -251,9 +249,24 @@ class Game {
         //dice1 = rand.nextInt(2)+1;
         //dice2 = rand.nextInt(2)+1;
 
-        // Move up 1 space, no double
-        //dice1 = 0;
-        //dice2 = 1;
+        // Calculate and return total
+        int total = dice1 + dice2;
+        System.out.print("Roll: " + total);
+        return total;
+    }
+
+    /**
+     * Overloaded for testing - fixed dice numbers
+     * 
+     * @param d1
+     * @param d2
+     * @return
+     */
+    public int rollDie(int d1, int d2) {
+
+        // loaded die for testing
+        dice1 = d1;
+        dice2 = d2;
 
         // Calculate and return total
         int total = dice1 + dice2;
