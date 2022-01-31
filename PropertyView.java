@@ -62,7 +62,7 @@ public class PropertyView extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == sellButton) {
-            if (game.sellProperty(this.player, this.property.getName())) {
+            if (game.sellProperty(this.property.getName())) {
                 msgLabel.setText("Sold");
                 parent.updatePlayerPanel();
                 parent.repaint();

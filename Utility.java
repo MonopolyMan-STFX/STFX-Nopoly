@@ -14,7 +14,7 @@ public class Utility extends Square {
     private int rentMultiplier2 = 0;
     private int utilitiesOwned = 0;
     private Player owner = null;
-    private ArrayList<Property> ownerProperties = new ArrayList<Property>();
+    private ArrayList<Square> ownerProperties = new ArrayList<Square>();
 
     /**
      * Constructor

@@ -26,7 +26,7 @@ class TestProperty {
 
         // Set the owner and get owner
         testProperty.setOwner(testPlayer);
-        System.out.println(testProperty.getOwner());
+        System.out.println(testProperty.getOwner().getName());
 
         // Remove owner amd get owner
         testProperty.removeOwner();

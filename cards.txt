@@ -1,6 +1,12 @@
-0,0,N/A,false,This is a test card for setting position.
-500,0,N/A,false,This is a test card for giving money.
--500,0,N/A,false,This is a test card for taking money.
-0,0,10,false,This is a test card for setting position.
-0,0,N/A,true,This is a test card for going to jail.
-0,5,N/A,false,This is a test card for moving position.
+200,0,N/A,false,Advance to go. (Collect $200)
+200,0,N/A,false,Bank error in your favour. Collect $200.
+45,0,N/A,false,From sale of stock you get $45.
+20,0,N/A,false,Income tax refund. Collect $20.
+100,0,N/A,false,You inherit $100.
+50,0,N/A,false,Doctor's fee pay $50
+0,0,N/A,true,Go to jail.
+-150,0,N/A,false,Pay school tax of $150.
+25,0,N/A,false,Receive for services $25.
+50,0,N/A,false,Bank pays you dividend of $50.
+-15,0,N/A,false,Pay poor tax of $15.
+0,0,18,false,Advance to Marlborough Street.
