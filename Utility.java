@@ -4,10 +4,11 @@ import java.util.*;
  *
  * @author Craig, Aaron
  * @course ICS4UC
- * @date 2022/01/26
+ * @date 2022/02/01
  */
 
 public class Utility extends Square {
+
     // Attributes
     private int cost = 0;
     private int rentMultiplier1 = 0;
@@ -42,16 +43,16 @@ public class Utility extends Square {
      */
     public int getRent(int diceNum) {
 
-      //Get list of the owner of this utilites properties
-      ownerProperties = owner.getAllProperties();
-      //Reset 
-      utilitiesOwned = 0;
-      //Look through owner's properties and find out how many utilities are owned
-       for (int i = 0; i < ownerProperties.size(); i++) {
-        if (ownerProperties.get(i).getName().equals("Electric Company")||ownerProperties.get(i).getName().equals("Water Company")){
-          utilitiesOwned++;
+        //Get list of the owner of this utilites properties
+        ownerProperties = owner.getAllProperties();
+        //Reset 
+        utilitiesOwned = 0;
+        //Look through owner's properties and find out how many utilities are owned
+        for (int i = 0; i < ownerProperties.size(); i++) {
+            if (ownerProperties.get(i).getName().equals("Electric Company")||ownerProperties.get(i).getName().equals("Water Company")) {
+                utilitiesOwned++;
+            }
         }
-       }
 
         int total = 0;
 
@@ -69,26 +70,40 @@ public class Utility extends Square {
     }
 
 
-    //Methods for ownership
+    /**
+     * Get utilities owned
+     * @return utilities owned
+     */
     public int getUtilitiesOwned() {
         return utilitiesOwned;
     }
 
+    /**
+     * Add utility
+     */
     public void addUtility() {
         this.utilitiesOwned++;
     }
 
-    //Get utility owner
+    /**
+     * Get owner
+     * @return owner
+     */
     public Player getOwner() {
         return owner;
     }
 
-    //Set Utility Owner
+    /**
+     * Set owner
+     * @param owner
+     */
     public void setOwner(Player owner) {
         this.owner = owner;
     }
 
-    //Remove Utility Owner
+    /**
+     * Remove owner
+     */
     public void removeOwner() {
         this.owner = null;
     }

@@ -1,7 +1,9 @@
 
 /**
  * CPT - Main
- * @author  Mr. Reid, Craig, Kyle, Aaron, Mr. Monopoly, DN, RL, SA
+ * @author Mr. Reid, Craig, Kyle, Aaron, Mr. Monopoly, DN, RL, SA
+ * @course ICS4UC
+ * @date 2022/02/01
  */
 
 class Main {

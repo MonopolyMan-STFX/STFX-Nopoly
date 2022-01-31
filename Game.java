@@ -3,6 +3,9 @@ import java.io.*;
 
 /**
  * Main Game Class
+ * @author Kyle, Basel
+ * @course ICS4UC
+ * @date 2022/02/01
  */
 
 class Game {
@@ -35,6 +38,9 @@ class Game {
         }
     }
 
+    /**
+     * Print property data
+     */
     public void printPropertyData(int index) {
         System.out.println(((Property)this.board.get(index)));
     }
@@ -49,7 +55,6 @@ class Game {
 
     /**
      * Buy Property
-     * @param player Player buying property
      * @return result of transaction
      */
     public boolean buyProperty() {
@@ -74,7 +79,6 @@ class Game {
 
     /**
      * Sell Property
-     * @param player player selling property
      * @param propertyName name of property to be sold
      * @return result of sale
      */
@@ -231,10 +235,6 @@ class Game {
         dice1 = rand.nextInt(6)+1;
         dice2 = rand.nextInt(6)+1;
 
-        // Two-sided dice to test doubles
-        //dice1 = rand.nextInt(2)+1;
-        //dice2 = rand.nextInt(2)+1;
-
         // Calculate and return total
         int total = dice1 + dice2;
         System.out.print("Roll: " + total);
@@ -250,7 +250,7 @@ class Game {
      */
     public int rollDie(int d1, int d2) {
 
-        // loaded die for testing
+        // Loaded die for testing
         dice1 = d1;
         dice2 = d2;
 
@@ -266,6 +266,7 @@ class Game {
      */
     public boolean checkDouble() {
         boolean isDouble = false;
+        // Check if dice are equal to each other
         if (dice1 == dice2) {
             isDouble = true;
         }
@@ -488,15 +489,5 @@ class Game {
      */
     public ArrayList<Square> getBoard() {
         return board;
-    }
-    
-    /*
-     * Print board
-     */
-    public void printBoard() {
-        for(int i = 0; i < board.size(); i++)
-        {
-            System.out.println("I: " + i + " " + board.get(i).getName() );
-        }
     }
 }

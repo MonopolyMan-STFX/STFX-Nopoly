@@ -5,7 +5,7 @@ import java.util.Arrays;
  *
  * @author Mr. Monopoly
  * @course ICS4UC
- * @date 2022/01/22
+ * @date 2022/02/01
  */
 
 public class Property extends Square {
@@ -43,46 +43,68 @@ public class Property extends Square {
     /**
      * getRent - Based on how many houses owned, 0 = no houses, 1-4 - houses , 5 -
      * hotel
-     *
-     * @return int rent
+     * @return rent
      */
     public int getRent() {
         return rent[this.housesOwned];
     }
 
+    /**
+     * Get houses cost
+     * @return houses cost
+     */
     public int getHousesCost() {
         return housesCost;
     }
 
-    // Methods for ownership
+    /**
+     * Get houses owned
+     * @return houses owned
+     */
     public int getHousesOwned() {
         return housesOwned;
     }
 
+    /**
+     * Add house
+     */
     public void addHouse() {
         this.housesOwned++;
-    }
+    }   
 
+    /**
+     * Get owner
+     * @return owner
+     */
     public Player getOwner() {
         return owner;
     }
 
+    /**
+     * Set owner
+     * @param owner
+     */
     public void setOwner(Player owner) {
         this.owner = owner;
     }
 
+    /**
+     * Remove owner
+     */
     public void removeOwner() {
         this.owner = null;
     }
 
-    // Methods for colour groups
+    /**
+     * Get colour
+     * @return colour
+     */
     public String getColour() {
         return colour;
     }
 
     /**
      * toString override
-     * 
      * @return String
      */
     public String toString() {

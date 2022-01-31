@@ -1,13 +1,14 @@
 import java.util.*;
 
 /**
- * @Date 2022/01/20
- * @Course ICS4UC
+ * Player Class
+ * @author Sourojeet
+ * @course ICS4UC
+ * @date 2022/02/01
  */
 
-class Player
-{
-    // This could identify the thing on the board, or the name
+class Player {
+    
     // Attributes
     private String name = "";
     private int money = 0;
@@ -131,10 +132,18 @@ class Player
 
     }
 
+    /**
+     * Get position
+     * @return position
+     */
     public int getPosition() {
         return this.position;
     }
 
+    /**
+     * Get name
+     * @return name
+     */
     public String getName()
     {
         return this.name;

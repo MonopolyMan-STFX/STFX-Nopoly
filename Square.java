@@ -14,7 +14,6 @@ public class Square {
 
     /**
      * Constructor
-     *
      * @param String name
      */
     public Square(String name) {
@@ -23,7 +22,6 @@ public class Square {
 
     /**
      * getName
-     *
      * @return String name
      */
     public String getName() {
@@ -32,10 +30,8 @@ public class Square {
 
     /**
      * toString function
-     *
      * @return String
      */
-    @Override
     public String toString() {
         return "Square{" + "name='" + name + '\'' + '}';
     }

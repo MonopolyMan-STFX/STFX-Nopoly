@@ -1,6 +1,8 @@
-
 /**
- * Community/Chance card class
+ * Community/Chance Card Class
+ * @author Dan
+ * @course ICS4UC
+ * @date 2022/02/01
  **/
 
 public class Card {
@@ -14,8 +16,11 @@ public class Card {
 
     /**
      * Constructor
-     *
-     * @param 
+     * @param changeMoney
+     * @param movePosition
+     * @param setPosition
+     * @param goToJail
+     * @param message
      */
     public Card(int changeMoney, int movePosition, String setPosition, boolean goToJail, String message) {
         
@@ -27,23 +32,42 @@ public class Card {
         this.message = message;
     }
 
-    // Getters
+    /**
+     * Get change in money
+     * @return change in money
+     */
     public int getChangeMoney() {
         return this.changeMoney;
     }
 
+    /**
+     * Get move position
+     * @return move position
+     */
     public int getMovePosition() {
         return this.movePosition;
     }
 
+    /**
+     * Get go to jail
+     * @return go to jail
+     */
     public boolean getGoToJail() {
         return this.goToJail;
     }
 
+    /**
+     * Get message
+     * @return message
+     */
     public String getMessage() {
         return this.message;
     }
 
+    /**
+     * Get set position
+     * @return set position
+     */
     public String getSetPosition() {
         return this.setPosition;
     }
