@@ -11,7 +11,7 @@ class Main {
     new MainBoard();
     
     /* Test Game */
-    // TestGame.main(args);
+    //TestGame.main(args);
 
     /* Test Property */
     // TestProperty.main(args);
@@ -27,5 +27,6 @@ class Main {
 
     /* Test Utility */
     // TestUtility.main(args);
+    
   }
 }

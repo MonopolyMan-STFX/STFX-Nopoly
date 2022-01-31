@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * Player Class
- * @author Sourojeet
+ * @author Sourojeet, Kyle
  * @course ICS4UC
  * @date 2022/02/01
  */

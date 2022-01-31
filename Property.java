@@ -35,14 +35,16 @@ public class Property extends Square {
         this.colour = colour;
     }
 
-    // Methods for price
+    /**
+     * Get cost
+     * @return cost
+     */
     public int getCost() {
         return cost;
     }
 
     /**
-     * getRent - Based on how many houses owned, 0 = no houses, 1-4 - houses , 5 -
-     * hotel
+     * getRent - Based on how many houses owned, 0 = no houses, 1-4 - houses , 5 - hotel
      * @return rent
      */
     public int getRent() {

@@ -3,7 +3,7 @@ import java.io.*;
 
 /**
  * Main Game Class
- * @author Kyle, Basel
+ * @author Kyle, Basel, Dan
  * @course ICS4UC
  * @date 2022/02/01
  */
@@ -107,12 +107,67 @@ class Game {
                         saleResult = true;
                     }
                 }
-            } else location++;
+            } 
+            else {
+                location++;
+            }
         }
         return saleResult;
     }
 
-    // Parsing the data from sqaures.txt
+    /**
+     * Buy house
+     * @param property
+     * @return result of sale
+     */
+    public boolean buyHouse(Property property) {
+        // Initialize variables
+        boolean result = false;
+        int location = 0;
+        String searchColour = property.getColour();
+        int numColourInSet = 0;
+        int numColourOwned = 0;
+
+        // Loop through board
+        while(location < this.board.size()) {
+
+            // Check if board square is property
+            if(this.board.get(location) instanceof Property) {
+                // Increment by one if same colour as search
+                if (((Property) this.board.get(location)).getColour().equals(searchColour)) {
+                    numColourInSet++;
+                }
+            }
+            location++;
+        }
+
+        // Loop through players owned properties
+        for (Square tempProperty : players.get(curPlayerTurn).getAllProperties()) {
+            // Check if board square is property
+            if (tempProperty instanceof Property) {
+                // Increment by one if same colour as search
+                if (((Property)tempProperty).getColour() == searchColour) {
+                    numColourOwned++;
+                }
+            }
+        }
+        
+        // Check if player owns full set
+        if (numColourInSet == numColourOwned) {
+            // Try to purchase house
+            if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
+                // Add house
+                property.addHouse();
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /*
+     * Fill board - parsing squares.txt to fill board
+     * @param filename
+     */
     public void fillBoard(String filename) throws IOException {
         // Set up file input
         Scanner fileIn = new Scanner(new FileReader(filename));
@@ -156,7 +211,7 @@ class Game {
 
     /*
      * Fill deck - parsing cards.txt to fill deck
-     * @param String filename
+     * @param filename
      */
     public void fillDeck(String filename) throws IOException {
         // Connect scanner
@@ -185,29 +240,28 @@ class Game {
         if (cardDrawn.getChangeMoney() != 0) {
             // Depositing money?
             if (cardDrawn.getChangeMoney() > 0) {
-                this.getPlayers().get(this.getCurPlayerTurn()).deposit(cardDrawn.getChangeMoney());
+                players.get(curPlayerTurn).deposit(cardDrawn.getChangeMoney());
             }
 
             // Withdrawing money?
             else if (cardDrawn.getChangeMoney() < 0) {
-                this.getPlayers().get(this.getCurPlayerTurn()).withdraw(Math.abs(cardDrawn.getChangeMoney()));
+                players.get(curPlayerTurn).withdraw(Math.abs(cardDrawn.getChangeMoney()));
             }
         }
 
         // If selected card is moving player position
         if (cardDrawn.getMovePosition() != 0) {
-            this.getPlayers().get(this.getCurPlayerTurn()).moveUp(cardDrawn.getMovePosition());
+            players.get(curPlayerTurn).moveUp(cardDrawn.getMovePosition());
         }
 
         // If selected card is setting player position
         if (cardDrawn.getSetPosition().equals("N/A") == false) {
-            this.getPlayers().get(this.getCurPlayerTurn()).changePositionDirect(Integer.parseInt(cardDrawn.getSetPosition()));
+            players.get(curPlayerTurn).changePositionDirect(Integer.parseInt(cardDrawn.getSetPosition()));
         }
 
         // If selected card is sending player to jail
         if (cardDrawn.getGoToJail() != false) {
-            this.getPlayers().get(this.getCurPlayerTurn()).setIfInJail(true);
-            this.getPlayers().get(this.getCurPlayerTurn()).changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
+            setJailStatus(true);
         }
     }
 
