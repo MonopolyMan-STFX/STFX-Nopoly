@@ -25,7 +25,6 @@ public class PlayerView extends JFrame implements ActionListener {
         this.add(button);
     
         // Settings for the frame
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
     }
 

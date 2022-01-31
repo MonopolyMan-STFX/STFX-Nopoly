@@ -391,16 +391,15 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         tempPanel.add(bankruptButton);
 
         // Add the Name
-        JLabel tempLabel = new JLabel("You Owe:");
+        JLabel tempLabel = new JLabel("You Owe:", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
         tempLabel.setBounds(2,2,200,20);
         tempPanel.add(tempLabel);
 
-        oweLabel = new JLabel("");
+        oweLabel = new JLabel("", SwingConstants.CENTER);
         oweLabel.setFont(new Font("Arial", Font.BOLD, 20));
         oweLabel.setBounds(2,22,200,20);
         tempPanel.add(oweLabel);
-
 
         return tempPanel;
 }

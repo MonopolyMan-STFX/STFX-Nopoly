@@ -56,7 +56,6 @@ public class PropertyView extends JFrame implements ActionListener {
         this.add(sellButton);
 
         // Settings for the frame
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
     }
 
