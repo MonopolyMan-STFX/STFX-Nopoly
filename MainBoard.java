@@ -653,7 +653,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Replace the space
             Square mySpace = board.get(pos);
             if (mySpace instanceof Property) {
-                if (monopoly.buyProperty(players.get(num))) {
+                if (monopoly.buyProperty()) {
                     System.out.println("GUI: Purchased "+((Property)mySpace).getName());
                 } else {
                     System.out.println("GUI: Failed Purchase "+((Property)mySpace).getName());

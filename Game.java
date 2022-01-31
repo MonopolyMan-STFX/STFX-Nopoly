@@ -52,19 +52,19 @@ class Game {
      * @param player Player buying property
      * @return result of transaction
      */
-    public boolean buyProperty(Player player) {
+    public boolean buyProperty() {
         boolean transactionResult = false;
 
         // handle to check if square is a property
-        if(this.board.get(player.getPosition()) instanceof Property) {
+        if(this.board.get(players.get(curPlayerTurn).getPosition()) instanceof Property) {
             // tempProperty points to property in board
-            Property tempProperty = (Property) this.board.get(player.getPosition());
+            Property tempProperty = (Property) this.board.get(players.get(curPlayerTurn).getPosition());
 
             // If it has no owner
             if(tempProperty.getOwner() == null) {
                 // withdraw the money from player, if successful it will return true and buy
-                if(player.withdraw(tempProperty.getCost())) {
-                    player.addProperty(tempProperty);
+                if(players.get(curPlayerTurn).withdraw(tempProperty.getCost())) {
+                    players.get(curPlayerTurn).addProperty(tempProperty);
                     transactionResult = true;
                 }
             }
@@ -78,7 +78,7 @@ class Game {
      * @param propertyName name of property to be sold
      * @return result of sale
      */
-    public boolean sellProperty(Player player, String propertyName) {
+    public boolean sellProperty(String propertyName) {
         boolean found = false;
         boolean saleResult = false;
         int location = 0;
@@ -94,12 +94,12 @@ class Game {
                     Property tempProperty = (Property) this.board.get(location);
 
                     // Check if player owns property
-                    if(tempProperty.getOwner().getName().equals(player.getName())) {
+                    if(tempProperty.getOwner().getName().equals(players.get(curPlayerTurn).getName())) {
                         //Remove property from player
-                        player.removeProperty(tempProperty);
+                        players.get(curPlayerTurn).removeProperty(tempProperty);
 
                         //Give player money
-                        player.deposit(tempProperty.getCost());
+                        players.get(curPlayerTurn).deposit(tempProperty.getCost() / 2);
                         saleResult = true;
                     }
                 }
@@ -137,13 +137,11 @@ class Game {
 
                 board.add(new Property(splitLine[0],Integer.parseInt(splitLine[3]), rentTemp, 50,splitLine[2]));
             }
-            else if(splitLine[1].equals("Railroad"))
-            {
-                int[] rent_temp = {20,25,50,100,200};
-                board.add(new Property(splitLine[0],200,rent_temp , 9999,"black"));
+            else if(splitLine[1].equals("Railroad")) {
+                int[] railroadRent = {25,50,100,200};
+                board.add(new Property(splitLine[0],200,railroadRent,9999,"black"));
             }
-            else
-            {
+            else {
                 board.add(new Square(splitLine[0]));
             }
         }
