@@ -32,9 +32,17 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     JButton passButton = null;
     Timer buyPropertyTimer = null;
 
+    JPanel rentPanel = null;
+    JButton rentButton = null;
+    JButton bankruptButton = null;
+    JLabel oweLabel = null;
+
     JPanel endTurnPanel = null;
     JButton endTurnButton = null;
     JButton addHouseButton = null;
+
+    JPanel gameOverPanel = null;
+    JLabel winnerLabel = null;
 
     // All the squares on the board
     ArrayList<JPanel> gamePositions = null;
@@ -366,6 +374,38 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             return tempPanel;
     }
 
+    public JPanel makeRentPropertyPanel() {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+
+        rentButton = new JButton("Pay");
+        rentButton.setBounds(33,100,80, 40); 
+        rentButton.addActionListener(this);
+        tempPanel.add(rentButton);
+
+        bankruptButton = new JButton("Bankrupt");
+        bankruptButton.setBounds(123,100,80, 40); 
+        bankruptButton.addActionListener(this);
+        tempPanel.add(bankruptButton);
+
+        // Add the Name
+        JLabel tempLabel = new JLabel("You Owe:");
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        tempLabel.setBounds(2,2,200,20);
+        tempPanel.add(tempLabel);
+
+        oweLabel = new JLabel("");
+        oweLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        oweLabel.setBounds(2,22,200,20);
+        tempPanel.add(oweLabel);
+
+
+        return tempPanel;
+}
+
+
     /**
      * Decisions at the end of players turn
      * @return 
@@ -400,6 +440,43 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         return tempPanel;
     }
+
+    /**
+     * Decisions at the end of players turn
+     * @return 
+     */
+    public JPanel makeGameOverPanel() {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+
+        // Game over!!!
+        JLabel tempLabel = new JLabel("GAME", SwingConstants.CENTER);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        tempLabel.setBounds(10,2,200,40);
+        tempPanel.add(tempLabel);
+
+        tempLabel = new JLabel("OVER", SwingConstants.CENTER);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        tempLabel.setBounds(10,52,200,40);
+        tempPanel.add(tempLabel);
+
+        tempLabel = new JLabel("Winner is:", SwingConstants.CENTER);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        tempLabel.setBounds(10,92,200,40);
+        tempPanel.add(tempLabel);
+
+        winnerLabel = new JLabel("", SwingConstants.CENTER);
+        winnerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        winnerLabel.setBounds(10,112,200,40);
+        tempPanel.add(winnerLabel);
+
+        tempPanel.setVisible(false);
+
+        return tempPanel;
+    }
+
 
 
     /**
@@ -507,11 +584,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             sqr = boardIter.next();
             if(sqr instanceof Property)
             {
-            pPanel = makePropertyPanelSide((Property)sqr);
+                pPanel = makePropertyPanelSide((Property)sqr);
             }
             else
             {
-              pPanel = makeSquarePanelSide(sqr);
+                pPanel = makeSquarePanelSide(sqr);
             }
             pPanel.setBounds(640,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
@@ -529,10 +606,20 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         buyPropertyPanel.setVisible(false);
         this.add(buyPropertyPanel);         
 
+        rentPanel = makeRentPropertyPanel();
+        rentPanel.setBounds(380,380,250,250);
+        rentPanel.setVisible(false);
+        this.add(rentPanel);         
+
         endTurnPanel = makeEndTurnPanel();
         endTurnPanel.setBounds(380,380,250,250);
         endTurnPanel.setVisible(false);
         this.add(endTurnPanel);         
+
+        gameOverPanel = makeGameOverPanel();
+        gameOverPanel.setBounds(380,380,250,250);
+        gameOverPanel.setVisible(false);
+        this.add(gameOverPanel);         
 
         // Load the players in locations
         listOfIcons[0] = new ImageIcon("graphics/hatpiece.png");
@@ -584,7 +671,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie();   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,1);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -632,9 +719,8 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 }
                 else {
                     System.out.println("GUI: Already owned");
-                    int amt = monopoly.pay();
-                    System.out.println("GUI: Pay: "+amt);
-                    endTurnPanel.setVisible(true);
+                    oweLabel.setText("$"+curProp.getRent());
+                    rentPanel.setVisible(true);
                 }
             }
             else {
@@ -642,6 +728,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 endTurnPanel.setVisible(true);
             }
             updatePlayerPanel();
+
             this.repaint();
         }
         else if (e.getSource() == buyPropertyButton) {
@@ -668,6 +755,35 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             endTurnPanel.setVisible(true);
             this.repaint();
         }
+        else if (e.getSource() == rentButton) {
+            System.out.println("GUI: Rent");
+
+            // Get the player information
+            System.out.println("GUI: player "+num+" pos "+pos);
+
+            // Replace the space
+            Square mySpace = board.get(pos);
+            if (mySpace instanceof Property) {
+                    int amt = monopoly.pay();
+                    System.out.println("GUI: Pay: "+amt);
+
+                if (amt != 0) {
+                    System.out.println("GUI: Paid rent on "+((Property)mySpace).getName());
+                    rentPanel.setVisible(false);
+                    endTurnPanel.setVisible(true);        
+                } else {
+                    // If it fails, stay on the decision (need to buy)
+                    System.out.println("GUI: Failed rent "+((Property)mySpace).getName());
+                }               
+            }
+            
+            // Update player stats                     
+            updatePlayerPanel();
+
+            // Head to end turn
+            this.repaint();
+        }
+
         else if (e.getSource() == passButton) {
             // Head to end turn
             buyPropertyPanel.setVisible(false);
@@ -683,8 +799,15 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             endTurnPanel.setVisible(false);
             
             // Move on to next turn
-            monopoly.endTurn();
-            rollPanel.setVisible(true);
+            String resp = monopoly.endTurn();
+            
+            if (resp.equals("GameOver")) {
+                winnerLabel.setText("Reid");
+                gameOverPanel.setVisible(true);
+            }
+            else {
+                rollPanel.setVisible(true);
+            }
 
             // Update player stats                     
             updatePlayerPanel();
