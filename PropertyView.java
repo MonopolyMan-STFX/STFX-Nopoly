@@ -6,6 +6,7 @@ public class PropertyView extends JFrame implements ActionListener {
     MainBoard parent = null;
     JButton okButton = null;
     JButton sellButton = null;
+    JButton houseButton = null;
     JLabel msgLabel = null;
     Game game = null;
     Property property = null;
@@ -42,18 +43,28 @@ public class PropertyView extends JFrame implements ActionListener {
 
 
         okButton = new JButton("Done");
-        okButton.setBounds(50,200,100,50);
+        okButton.setBounds(5,200,80,50);
         okButton.addActionListener(this);
         this.add(okButton);
 
         // Sell button only if it's the owner
         sellButton = new JButton("Sell");
-        sellButton.setBounds(150,200,100,50);
+        sellButton.setBounds(90,200,80,50);
         if (owner == null || player != owner) {
             sellButton.setEnabled(false);
         }
         sellButton.addActionListener(this);
         this.add(sellButton);
+
+        // Add house button only if it's the owner
+        houseButton = new JButton("Add House");
+        houseButton.setBounds(175,200,80,50);
+        if (owner == null || player != owner) {
+            houseButton.setEnabled(false);
+        }
+        houseButton.addActionListener(this);
+        this.add(houseButton);
+
 
         // Settings for the frame
         this.setLayout(null);
@@ -69,6 +80,19 @@ public class PropertyView extends JFrame implements ActionListener {
             } else {
                 msgLabel.setText("Error: Cannot sell");
             }
+            this.repaint();
+        }
+        else if (e.getSource() == houseButton) {
+            /* TODO call game to add house
+            if (game.sellProperty(this.property.getName())) {
+                msgLabel.setText("Sold");
+                parent.updatePlayerPanel();
+                parent.repaint();
+                sellButton.setEnabled(false);
+            } else {
+                msgLabel.setText("Error: Cannot sell");
+            }
+            */
             this.repaint();
         }
         else {

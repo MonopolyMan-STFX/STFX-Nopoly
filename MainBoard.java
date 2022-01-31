@@ -8,45 +8,55 @@ import java.io.*;
  * Overall GUI for the Monopoly board
  **/
 public class MainBoard extends JFrame implements ActionListener, MouseListener {
-
-    JLabel label1 = null;
-
+    // Board information
     int tileWidth = 60;
     int tileHeight = 100;
     int houseLocation = 0; 
 
+    // Player Information
     JPanel playerStatPanel = null;
     JPanel[] playerStats = new JPanel[4];
     JLabel[] playerIcons = new JLabel[4];
     ImageIcon[] listOfIcons = new ImageIcon[4];
     ImageIcon[] diceIcons = new ImageIcon[7];
 
+    // Rolling the dice
     JPanel rollPanel = null;
     JButton rollButton = null;
     Timer rollTimer = null;
     JLabel rollLabel1 = null;
     JLabel rollLabel2 = null;
 
+    // Buying a property
     JPanel buyPropertyPanel = null;
     JButton buyPropertyButton = null;
     JButton passButton = null;
     Timer buyPropertyTimer = null;
 
+    // Renting and bankrupt
     JPanel rentPanel = null;
     JButton rentButton = null;
     JButton bankruptButton = null;
     JLabel oweLabel = null;
 
+    // Handling cards
+    JPanel drawCardPanel = null;
+    JButton drawCardButton = null;
+    JButton playCardButton = null;
+    Card currentCard = null;
+    JTextArea viewCard = null;
+
+    // End of turn
     JPanel endTurnPanel = null;
     JButton endTurnButton = null;
     JButton addHouseButton = null;
 
+    // Game over
     JPanel gameOverPanel = null;
     JLabel winnerLabel = null;
 
     // All the squares on the board
     ArrayList<JPanel> gamePositions = null;
-
 
     // Attributes linking to the game
     Game monopoly = null;
@@ -366,9 +376,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             //tempPanel.addMouseListener(this);
             // Add the Name
-            JLabel tempLabel = new JLabel("Buy Property?");
+            JLabel tempLabel = new JLabel("Buy Property?", SwingConstants.CENTER);
             tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-            tempLabel.setBounds(2,2,200,20);
+            tempLabel.setBounds(2,0,250,30);
             tempPanel.add(tempLabel);
 
             return tempPanel;
@@ -402,7 +412,41 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         tempPanel.add(oweLabel);
 
         return tempPanel;
-}
+    }
+
+    /**
+     * Decisions to draw a card
+     * @return 
+     */
+    public JPanel makeDrawCardPanel() {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(null);
+        tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        tempPanel.setBackground(Color.WHITE);
+
+        // Draw Card
+        drawCardButton = new JButton("Draw Card");
+        drawCardButton.setBounds(50,100,150,40); 
+        drawCardButton.addActionListener(this);
+        tempPanel.add(drawCardButton);
+
+        // Play card 
+        playCardButton = new JButton("Play Card");
+        playCardButton.setBounds(50,150,150,40); 
+        playCardButton.addActionListener(this);
+        playCardButton.setEnabled(false);
+        tempPanel.add(playCardButton);
+
+        // Add the Name
+        JLabel tempLabel = new JLabel("<html><center>Community Chest <br> Chance</center></html>", SwingConstants.CENTER);
+        tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        tempLabel.setBounds(2,0,250,100);
+        tempPanel.add(tempLabel);
+        
+        tempPanel.setVisible(false);
+
+        return tempPanel;
+    }
 
 
     /**
@@ -421,18 +465,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         endTurnButton.addActionListener(this);
         tempPanel.add(endTurnButton);
 
-        // Add house option (not ready yet)
-        addHouseButton = new JButton("Add House");
-        addHouseButton.setBounds(50,140,150,40); 
-        addHouseButton.setEnabled(false);
-        //addHouseButton.addActionListener(this);
-        tempPanel.add(addHouseButton);
-        //tempPanel.addMouseListener(this);
-
         // Add the Name
-        JLabel tempLabel = new JLabel("Decision Options");
+        JLabel tempLabel = new JLabel("Decision Options", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        tempLabel.setBounds(2,2,200,20);
+        tempLabel.setBounds(2,0,250,20);
         tempPanel.add(tempLabel);
         
         tempPanel.setVisible(false);
@@ -453,22 +489,22 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Game over!!!
         JLabel tempLabel = new JLabel("GAME", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        tempLabel.setBounds(10,2,200,40);
+        tempLabel.setBounds(2,0,250,40);
         tempPanel.add(tempLabel);
 
         tempLabel = new JLabel("OVER", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        tempLabel.setBounds(10,52,200,40);
+        tempLabel.setBounds(2,52,250,40);
         tempPanel.add(tempLabel);
 
         tempLabel = new JLabel("Winner is:", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        tempLabel.setBounds(10,92,200,40);
+        tempLabel.setBounds(2,92,250,40);
         tempPanel.add(tempLabel);
 
         winnerLabel = new JLabel("", SwingConstants.CENTER);
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        winnerLabel.setBounds(10,112,200,40);
+        winnerLabel.setBounds(2,112,250,40);
         tempPanel.add(winnerLabel);
 
         tempPanel.setVisible(false);
@@ -500,6 +536,15 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
         titleLabel.setBounds(200,150,400,60);
         this.add(titleLabel);
+
+        // Place for the cards to display
+        viewCard = new JTextArea();
+        viewCard.setFont(new Font("Arial", Font.BOLD, 20));
+        viewCard.setBounds(200,250,300,100);
+        viewCard.setBorder(BorderFactory.createLineBorder(Color.black));
+        viewCard.setEditable(false);
+        this.add(viewCard);
+
 
         // Board setup
         // Start
@@ -610,6 +655,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         rentPanel.setVisible(false);
         this.add(rentPanel);         
 
+        drawCardPanel = makeDrawCardPanel();
+        drawCardPanel.setBounds(380,380,250,250);
+        drawCardPanel.setVisible(false);
+        this.add(drawCardPanel);         
+
         endTurnPanel = makeEndTurnPanel();
         endTurnPanel.setBounds(380,380,250,250);
         endTurnPanel.setVisible(false);
@@ -670,31 +720,18 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,1);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,2);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
             this.repaint();
 
             // Play the turn
-            String resp = monopoly.playTurn(roll);
+            monopoly.playTurn(roll);
             
             // Place on the board
-            int newPos = players.get(num).getPosition();
-            System.out.println("GUI: Now At "+newPos);
-            if ( (newPos >= 1 && newPos <= 9) 
-                || (newPos >= 21 && newPos <= 29) ) {
-                playerIcons[num].setBounds(2+25*num,40,20,20);
-                gamePositions.get(newPos).add(playerIcons[num]);
-            } else if ( (newPos >= 11 && newPos <= 19) 
-                || (newPos >= 31 && newPos <= 39) ) {
-                playerIcons[num].setBounds(22+25*num,15,20,20);
-                gamePositions.get(newPos).add(playerIcons[num]);
-            } else {
-                playerIcons[num].setBounds(2+25*num,50,20,20);
-                gamePositions.get(newPos).add(playerIcons[num]);
-            }
-
+            updatePlayerPosition(num);
+            
             // Delay before next decision
             rollTimer = new Timer(1000, this);
             rollTimer.start();
@@ -721,6 +758,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                     oweLabel.setText("$"+curProp.getRent());
                     rentPanel.setVisible(true);
                 }
+            }
+            else if (curSqr instanceof CardSquare) {
+                System.out.println("GUI: Card Square");
+                drawCardPanel.setVisible(true);
             }
             else {
                 System.out.println("GUI: Not a property - end turn?");
@@ -782,11 +823,46 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Head to end turn
             this.repaint();
         }
-
         else if (e.getSource() == passButton) {
             // Head to end turn
             buyPropertyPanel.setVisible(false);
             endTurnPanel.setVisible(true);
+
+            // Update player stats                     
+            updatePlayerPanel();
+            
+            this.repaint();
+        }
+        else if (e.getSource() == drawCardButton) {
+            // Head to end turn
+            drawCardButton.setEnabled(false);
+            playCardButton.setEnabled(true);
+
+            currentCard = monopoly.drawCard();
+            System.out.println(currentCard);    // TODO Something going wrong here - why \n not working?
+            viewCard.setText(currentCard.getMessage());            
+            System.out.println(currentCard.getMessage());
+            //viewCard.setText("1 2\n3 4\n5 6"); 
+
+            this.repaint();
+        }
+        else if (e.getSource() == playCardButton) {
+            // Head to end turn
+            drawCardPanel.setVisible(false);
+            playCardButton.setEnabled(false);
+            viewCard.setText("");
+            drawCardButton.setEnabled(true);
+            endTurnPanel.setVisible(true);
+
+            // Play the current card
+            if (currentCard != null) {
+                monopoly.playCard(currentCard);
+                currentCard = null;
+                            
+            }
+            else {
+                System.out.println("GUI: Error no card to play");
+            }
 
             // Update player stats                     
             updatePlayerPanel();
@@ -810,6 +886,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             // Update player stats                     
             updatePlayerPanel();
+
+            // Place on the board
+            updatePlayerPosition(num);
 
             this.repaint();
         }
@@ -872,7 +951,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     }
 
     /**
-     * Update player panel
+     * Update player panel stats
      */
     public void updatePlayerPanel() {
         JPanel newPanel = makePlayerPanel();
@@ -880,5 +959,27 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         this.remove(playerStatPanel);
         this.add(newPanel);
         playerStatPanel = newPanel;
+    }
+
+    /**
+     * Update the positions on the board
+     * @param num - player number
+     */
+    public void updatePlayerPosition(int num) {
+        int newPos = players.get(num).getPosition();
+        System.out.println("GUI: Now At "+newPos);
+        if ( (newPos >= 1 && newPos <= 9) 
+            || (newPos >= 21 && newPos <= 29) ) {
+            playerIcons[num].setBounds(2+25*num,40,20,20);
+            gamePositions.get(newPos).add(playerIcons[num]);
+        } else if ( (newPos >= 11 && newPos <= 19) 
+            || (newPos >= 31 && newPos <= 39) ) {
+            playerIcons[num].setBounds(22+25*num,15,20,20);
+            gamePositions.get(newPos).add(playerIcons[num]);
+        } else {
+            playerIcons[num].setBounds(2+25*num,50,20,20);
+            gamePositions.get(newPos).add(playerIcons[num]);
+        }
+
     }
 }
