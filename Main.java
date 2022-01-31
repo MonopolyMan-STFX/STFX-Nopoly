@@ -6,7 +6,7 @@
 
 class Main {
   public static void main(String[] args) throws Exception {
-    new MainBoard();
+    //new MainBoard();
     
     /* Test Game */
     // TestGame.main(args);
@@ -21,7 +21,7 @@ class Main {
     // TestPlayer.main(args);
 
     /* Test Cards */
-    // TestCard.main(args);
+     TestCard.main(args);
 
     /* Test Utility */
     // TestUtility.main(args);

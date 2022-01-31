@@ -141,6 +141,9 @@ class Game {
                 int[] railroadRent = {25,50,100,200};
                 board.add(new Property(splitLine[0],200,railroadRent,9999,"black"));
             }
+            else if(splitLine[1].equals("Chance") || splitLine[1].equals("Community Chest")) {
+                board.add(new CardSquare(splitLine[0]));
+            }
             else {
                 board.add(new Square(splitLine[0]));
             }
@@ -172,46 +175,35 @@ class Game {
      * Play the card
      * @param Player currPlayer
      */
-    public void playCard(Player currPlayer, Card cardDrawn) {
+    public void playCard(Card cardDrawn) {
 
         // If selected card is changing money
         if (cardDrawn.getChangeMoney() != 0) {
-
-            System.out.println("Changing money card selected");
-            
             // Depositing money?
             if (cardDrawn.getChangeMoney() > 0) {
-                currPlayer.deposit(cardDrawn.getChangeMoney());
+                this.getPlayers().get(this.getCurPlayerTurn()).deposit(cardDrawn.getChangeMoney());
             }
 
             // Withdrawing money?
             else if (cardDrawn.getChangeMoney() < 0) {
-                currPlayer.withdraw(Math.abs(cardDrawn.getChangeMoney()));
+                this.getPlayers().get(this.getCurPlayerTurn()).withdraw(Math.abs(cardDrawn.getChangeMoney()));
             }
         }
 
         // If selected card is moving player position
         if (cardDrawn.getMovePosition() != 0) {
-
-            System.out.println("Moving position card selected");
-
-            currPlayer.moveUp(cardDrawn.getMovePosition());
+            this.getPlayers().get(this.getCurPlayerTurn()).moveUp(cardDrawn.getMovePosition());
         }
 
         // If selected card is setting player position
         if (cardDrawn.getSetPosition().equals("N/A") == false) {
-
-            System.out.println("Setting position card selected");
-            
-            currPlayer.changePositionDirect(Integer.parseInt(cardDrawn.getSetPosition()));
+            this.getPlayers().get(this.getCurPlayerTurn()).changePositionDirect(Integer.parseInt(cardDrawn.getSetPosition()));
         }
 
         // If selected card is sending player to jail
         if (cardDrawn.getGoToJail() != false) {
-            
-            System.out.println("Send player to jail card selected");
-            
-            setJailStatus(true);
+            this.getPlayers().get(this.getCurPlayerTurn()).setIfInJail(true);
+            this.getPlayers().get(this.getCurPlayerTurn()).changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
         }
     }
 
@@ -225,9 +217,6 @@ class Game {
 
         // Randomize value of index
         int selectedCard = rand.nextInt(deck.size());
-
-        // Card index selected
-        System.out.println("Card Selected: " + selectedCard);
 
         return deck.get(selectedCard);
     }
@@ -377,7 +366,7 @@ class Game {
                 }
 
                 // Land on chance or community chest
-                else if (board.get(currentPosition).getName().equals("Chance") || board.get(currentPosition).getName().equals("Community Chest")) {
+                else if (board.get(currentPosition) instanceof CardSquare) {
                     returnString = "DrawCard";
                 }
 
@@ -473,8 +462,8 @@ class Game {
      * Create new player
      * @param player name
      */
-    public void createPlayer(String token) {
-        players.add(new Player(token, 1500));
+    public void createPlayer(String name) {
+        players.add(new Player(name, 1500));
     }
 
     /*
