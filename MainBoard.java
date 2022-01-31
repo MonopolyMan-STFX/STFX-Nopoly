@@ -1,4 +1,4 @@
-                                                  import javax.swing.*;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -720,7 +720,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,2);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,3);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -942,8 +942,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 }
             }
             if (pos >=0) {
+                Player curPlayer = monopoly.getPlayers().get(monopoly.getCurPlayerTurn());
                 Player player = (Player)players.get(pos);
-                PlayerView thisPlayer = new PlayerView(this, player);
+                PlayerView thisPlayer = new PlayerView(this, monopoly, curPlayer);
                 thisPlayer.setVisible(true);
             }
         }
