@@ -213,8 +213,7 @@ class Game {
             
             System.out.println("Send player to jail card selected");
             
-            currPlayer.setIfInJail(true);
-            currPlayer.changePositionDirect(10); // Jail position can be determined by dividing board size into 4 pieces
+            setJailStatus(true);
         }
     }
 
@@ -286,6 +285,20 @@ class Game {
         return isDouble;
     }
 
+    /*
+     * Set jail staus
+     * @param in jail or not
+     */
+    public void setJailStatus(boolean status) {
+        if (status == true) {
+            players.get(curPlayerTurn).setIfInJail(true);
+            players.get(curPlayerTurn).changePositionDirect(10);
+        }
+        else {
+            players.get(curPlayerTurn).setIfInJail(false);
+        }
+    }
+
     /** 
      * Pay
      * @return amount of money paid
@@ -344,19 +357,16 @@ class Game {
 
                 // Property has no owner
                 if(((Property)board.get(currentPosition)).getOwner() == null) {
-                    //System.out.println("NoOwner");
                     returnString = "NoOwner";
                 }
 
                 // Player owns the property
                 else if(((Property)board.get(currentPosition)).getOwner() == players.get(curPlayerTurn)) {
-                    //System.out.println("YouAreOwner");
                     returnString = "YouAreOwner";
                 }
 
                 // Other player owns the property, pay rent
                 else {
-                    //System.out.println("PayRent");
                     returnString = "PayRent";
                 }
             }
@@ -365,9 +375,6 @@ class Game {
                 
                 // If they land on go to jail, send to jail
                 if(board.get(currentPosition).getName().equals("Go To Jail")) {
-                    //System.out.println("inJail");
-                    players.get(curPlayerTurn).setIfInJail(true);
-                    players.get(curPlayerTurn).changePositionDirect(10);
                     returnString = "inJail";
                 }
 
@@ -378,7 +385,6 @@ class Game {
 
                 // Land on income or luxury tax
                 else if (board.get(currentPosition).getName().equals("Luxury Tax") || board.get(currentPosition).getName().equals("Income Tax")) {
-                    //System.out.println("Income or Luxury Tax");
                     returnString = "PayTax";
                 }
 
@@ -399,15 +405,11 @@ class Game {
             // If it has not been 3 days, increment the amount of days in jail
             if(players.get(curPlayerTurn).getNumDaysInJail() < 2) {
                 returnString = "InJail";
-                //System.out.println("inJail");
                 players.get(curPlayerTurn).incrNumDaysInJail();
             }
             // Otherwise, reset the amount days in jail, and now they're free
             else {
-                players.get(curPlayerTurn).resetNumDaysInJail();
-                players.get(curPlayerTurn).setIfInJail(false);
                 returnString = "Free";
-                //System.out.println("Free");
             }
         }
         
@@ -423,23 +425,17 @@ class Game {
         // Rolled a double
         if (checkDouble() == true) {
             returnString = "Double";
-            //System.out.println("DOUBLE");
             // Increment number of doubles
             players.get(curPlayerTurn).incrNumDoubles();
 
             // If player is in jail, reset number of doubles, they are now out and get to roll again
             if (players.get(curPlayerTurn).checkIfInJail() == true) {
-                //System.out.println("Free");
-                players.get(curPlayerTurn).setIfInJail(false);
                 players.get(curPlayerTurn).resetNumDoubles();
                 returnString = "Free";
             }
 
             // If player rolls 3 doubles, go to jail
             else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
-                //System.out.println("inJail");
-                players.get(curPlayerTurn).setIfInJail(true);
-                players.get(curPlayerTurn).changePositionDirect(10);
                 returnString = "inJail";
 
                 // Next player's turn
@@ -457,14 +453,14 @@ class Game {
      * Next player's turn
      */
     public void nextPlayerTurn() {
+        // Reset number of doubles
+        players.get(curPlayerTurn).resetNumDoubles();
         // Next player's turn
         curPlayerTurn++;
         // Reset to first player
         if (curPlayerTurn > players.size()-1) {
             curPlayerTurn = 0;
         }
-        // Reset number of doubles
-        players.get(curPlayerTurn).resetNumDoubles();
     }
 
     /*

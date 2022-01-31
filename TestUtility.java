@@ -23,7 +23,7 @@ class TestUtility {
         // Set the owner and get owner
         testUtility.setOwner(testPlayer);
         //testPlayer.addProperty((Property)(Square)(testUtility));
-        System.out.println("Utility Owner: "+testUtility.getOwner());
+        System.out.println("Utility Owner: "+testUtility.getOwner().getName());
 
         // Get rent if Utility owner owns 1 Utility
         testPlayer.addProperty(testProperty);

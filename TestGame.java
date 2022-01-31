@@ -33,7 +33,7 @@ class TestGame {
             String returnStringGame = game.playTurn(roll);
 
             // Output options
-            System.out.println("GUI Action: " + returnStringGame);
+            System.out.println("GUI Play Action: " + returnStringGame);
             
             // Buy property
             if (returnStringGame.equals("NoOwner")) {
@@ -48,15 +48,15 @@ class TestGame {
             System.out.println();
             // Output owned properties
             System.out.println("Owned Properties: ");            
-            for(Property property : game.getPlayers().get(game.getCurPlayerTurn()).getAllProperties()) {
+            for(Square property : game.getPlayers().get(game.getCurPlayerTurn()).getAllProperties()) {
                 System.out.println(property.getName());
             }
-            
             
             choice = sc.next().toLowerCase().charAt(0);
 
             // End player turn 
-            game.endTurn();
+            String returnStringEnd = game.endTurn();
+            System.out.println("GUI End Action: " + returnStringEnd);
        }
        
 

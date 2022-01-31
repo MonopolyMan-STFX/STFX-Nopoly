@@ -11,7 +11,7 @@ class Player
     // Attributes
     private String name = "";
     private int money = 0;
-    private ArrayList<Property> properties = new ArrayList<Property>();
+    private ArrayList<Square> properties = new ArrayList<Square>();
     private int position = 0;
     private boolean inJail = false;
     private int numDoubles = 0;
@@ -203,7 +203,7 @@ class Player
     * Get list of all owned properties 
     * @return properties
     */
-    public ArrayList<Property> getAllProperties() {
+    public ArrayList<Square> getAllProperties() {
         return properties;
     }
 }

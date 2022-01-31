@@ -9,10 +9,10 @@ class Main {
     new MainBoard();
     
     /* Test Game */
-    //TestGame.main(args);
+    // TestGame.main(args);
 
     /* Test Property */
-    //TestProperty.main(args);
+    // TestProperty.main(args);
 
     /* Test Square */
     // TestSquare.main(args);
@@ -24,6 +24,6 @@ class Main {
     // TestCard.main(args);
 
     /* Test Utility */
-    //TestUtility.main(args);
+    // TestUtility.main(args);
   }
 }
