@@ -157,7 +157,7 @@ class Game {
         // Check if player owns full set
         if (numColourInSet == numColourOwned) {
             // Check if they have more than 5 houses
-            if (property.getHousesOwned() < 6) {
+            if (property.getHousesOwned() < 5) {
                 // Try to purchase house
                 if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
                     // Add house
