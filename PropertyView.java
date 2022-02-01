@@ -38,12 +38,12 @@ public class PropertyView extends JFrame implements ActionListener {
         label.setBounds(50,50,200,50);
         this.add(label);
 
-        // You won't get any Rent until you fix this damn door!
+        // Rent Cost
         rentLabel = new JLabel("Rent Cost: $" + property.getRent());
         rentLabel.setBounds(50, 80, 200, 50);
         this.add(rentLabel);
 
-        // You won't get any Rent until you fix this damn door!
+        // Number of houses
         houseLabel = new JLabel("Number of Houses: " + property.getHousesOwned());
         houseLabel.setBounds(50, 95, 200, 50);
         this.add(houseLabel);

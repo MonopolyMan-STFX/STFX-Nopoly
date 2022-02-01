@@ -19,9 +19,6 @@ class Game {
     private int curPlayerTurn = 0;
     private String monopolyWinSituation = "";
 
-    // Discuss changing buy house rule to one per turn?... offial rule is too complex, and buying unlimited in one turn is too OP
-//    private boolean houseBuiltThisTurn
-
     // Constructor - default for testing
     public Game() throws IOException {
         // Populate default data - 40 properties
@@ -470,8 +467,8 @@ class Game {
     }
 
 
-    /**
-     * Declare bankruptcy
+     /**
+     * Current player declares Bankruptcy
      */
     public void declareBankruptcy() {
         players.get(curPlayerTurn).declaredBankruptcy();
@@ -494,6 +491,7 @@ class Game {
     }
 
 
+
     /**
      * check if all but one player is bankrupt
      * @return is the game over
@@ -503,17 +501,18 @@ class Game {
 
             int bankruptPlayers = 0;
             
+            // check how many players are bankrupt
             for(Player player : players) {
                 if(player.isBankrupt()) {
                     bankruptPlayers++;
                 }
             }
 
+            // check if all but one player is bankrupt
             if(bankruptPlayers == players.size()-1) {
                 monopolyWinSituation = "bankrupt";
                 gameEnd = true;
             }
-
             return gameEnd;
     }
 
@@ -524,6 +523,7 @@ class Game {
     public Player getWinner() {
         Player winner = null;
 
+        // if the game ended by bankruptcy, get last player 
         if(monopolyWinSituation.equals("bankrupt")) {
             for (Player player:players) {
                 if (!player.isBankrupt()){
@@ -531,7 +531,7 @@ class Game {
                 }
             }
         }
-
+        // if the game ended, since someone reached a certain amount of money
         else if (monopolyWinSituation.equals("money")) {
             for (Player player:players) {
                 if (player.getBalance() >= MONEY_TO_WIN) {
@@ -539,7 +539,6 @@ class Game {
                 }
             }
         }
-
         return winner;
     }
 
@@ -655,6 +654,4 @@ class Game {
     public Player getCurrentPlayer() {
         return players.get(curPlayerTurn);
     }
-
-
 }

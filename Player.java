@@ -45,34 +45,38 @@ class Player {
         this.money += moneyIn;
     }
 
-   /**
+    /**
      * Withdraws money, if false it failed
      * @param moneyOut
      * @return result
      */
     public boolean withdraw(int moneyOut) {
         boolean result;
-        if(moneyOut > this.money)
-        {
+        if(moneyOut > this.money) {
             result = false;
             this.isBankrupt = true;
+            this.money = 0;
         }
-        else
-        {
+        else {
             result = true;
             this.money -= moneyOut;
         }
-
         return result;
     }
 
+    /**
+     * Is the player bankrupt
+     */
     public boolean isBankrupt() {
         return this.isBankrupt;
 
     }
 
+    /**
+     * player decided to declare Bankruptcy
+     */
     public void declaredBankruptcy() {
-        this.money = Integer.MIN_VALUE;
+        this.money = 0;
         this.isBankrupt = true;
     }
 
