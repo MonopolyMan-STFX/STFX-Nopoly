@@ -396,7 +396,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         tempPanel.add(rentButton);
 
         bankruptButton = new JButton("Bankrupt");
-        bankruptButton.setBounds(123,100,80, 40); 
+        bankruptButton.setBounds(123,100,80, 40);
         bankruptButton.addActionListener(this);
         tempPanel.add(bankruptButton);
 
@@ -521,9 +521,10 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
         // Links to the game
         monopoly = new Game("squares.txt", "cards.txt");
-        monopoly.createPlayer("Aman");
-        monopoly.createPlayer("Vyshnavi");
-        board = monopoly.getBoard(); 
+        monopoly.createPlayer("Player 1");
+        monopoly.createPlayer("Player 2");
+        monopoly.createPlayer("Player 3");
+        board = monopoly.getBoard();
         players = monopoly.getPlayers();
         Iterator<Square> boardIter = board.iterator();
 
@@ -823,6 +824,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Head to end turn
             this.repaint();
         }
+
+        else if (e.getSource() == bankruptButton) {
+
+        }
+
         else if (e.getSource() == passButton) {
             // Head to end turn
             buyPropertyPanel.setVisible(false);
@@ -876,7 +882,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             String resp = monopoly.endTurn();
             
             if (resp.equals("GameOver")) {
-                // winnerLabel.setText(monopoly.getPlayers().get(curPlayerTurn).getName());
+                 winnerLabel.setText(monopoly.getWinner().getName());
 
                 gameOverPanel.setVisible(true);
             }

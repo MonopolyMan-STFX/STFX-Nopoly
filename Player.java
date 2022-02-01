@@ -71,6 +71,10 @@ class Player {
 
     }
 
+    public void declaredBankruptcy() {
+        this.isBankrupt = true;
+    }
+
     /**
      * Returns money
      * @return money

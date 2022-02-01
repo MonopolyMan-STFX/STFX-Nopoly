@@ -460,8 +460,15 @@ class Game {
     }
 
 
+
+    public void declareBankruptcy() {
+        players.get(curPlayerTurn).declaredBankruptcy();
+    }
+
+
     /**
-     * gameEnd when a player gets a set amount of money
+     * if a player reaches an amount of money end
+     * @return is the gameover
      */
     public boolean gameEndMoney() {
             boolean gameEnd = false;
@@ -472,13 +479,17 @@ class Game {
                 }
             }
             return gameEnd;
-        }
+    }
 
 
-        /**
-         * check game ends when all but one player is bankrupt
-         */
-        public boolean gameEndBankrupt() {
+
+
+
+    /**
+     * check if all but one player is bankrupt
+     * @return is the game over
+     */
+    public boolean gameEndBankrupt() {
             boolean gameEnd = false;
 
             int bankruptPlayers = 0;
@@ -490,9 +501,15 @@ class Game {
                 }
             }
             return gameEnd;
-        }
+    }
 
-
+    /**
+     * currentPlayer before game over
+     * @return winner of the game
+     */
+    public Player getWinner() {
+            return players.get(curPlayerTurn);
+    }
 
 
 
@@ -534,7 +551,7 @@ class Game {
         else {
             nextPlayerTurn();
         }
-        return "GameOver";
+        return returnString;
     }
 
     /*
