@@ -19,7 +19,7 @@ public class PlayerView extends JFrame implements ActionListener {
 	    this.parent = parent;
 	    this.parent.setEnabled(false);
 	    this.setSize(300, 300);
-	    currentPlayer = player;
+	    this.currentPlayer = player;
 	    monopoly = game;
 	    board = game.getBoard();
 		
@@ -73,19 +73,22 @@ public class PlayerView extends JFrame implements ActionListener {
 		// if the combobox had any interactions
 		if(e.getSource() == jComboBox)
 	    {
-		// Print out the selected item
+			// Print out the selected item
 			System.out.println("GUI: "+jComboBox.getSelectedItem().toString());
 
-		// Get the property
+
+
+			// Get the property
 			int position = 0;
 			boolean found = false;
 			while(found == false)
 			{
-				if(currentPlayer.getAllProperties().get(position).getName().equals(jComboBox.getSelectedItem().toString()))
+				if(this.currentPlayer.getAllProperties().get(position).getName().equals(jComboBox.getSelectedItem().toString()))
 				{
+				//	System.out.println(jComboBox.getSelectedItem.toString());
 					found = true;
 				}
-				else if(currentPlayer.getAllProperties().size() == position)
+				else if(this.currentPlayer.getAllProperties().size() == position)
 				{
 					found = true;
 					position = -1;
@@ -94,14 +97,19 @@ public class PlayerView extends JFrame implements ActionListener {
 				{
 					position++;
 				}
+
+				Square prop = board.get(position);
+				System.out.println("Looking at " + prop.getName());
 			}	
 
 			// open a viewProperty window on it
 			if(position != -1)
 			{
-				Property prop = (Property)board.get(position);
+				// get ppoint to the property
+				Property prop = (Property)currentPlayer.getAllProperties().get(position);
 	         	Player curPlayer = monopoly.getPlayers().get(monopoly.getCurPlayerTurn());
-	         	PropertyView thisProperty = new PropertyView(parentMain, monopoly, prop, curPlayer);
+				System.out.println("Property " + prop.getName());
+				PropertyView thisProperty = new PropertyView(parentMain, monopoly, prop, curPlayer);
 	         	thisProperty.setVisible(true);
 			}
 
