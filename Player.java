@@ -98,16 +98,13 @@ class Player {
      * Moves up
      * @param moveUp num of squares to move
      */
-    public void moveUp(int moveUp)
-    {
+    public void moveUp(int moveUp) {
         // Checks if it passed go, and adds funds accordingly
-        if((this.position + moveUp) > 39)
-        {
-            this.money += 200;
+        if((this.position + moveUp) > 39) {
             this.position = (this.position + moveUp) - 40;
+            this.money += 200;
         }
-        else
-        {
+        else {
             this.position += moveUp;
         }
     }

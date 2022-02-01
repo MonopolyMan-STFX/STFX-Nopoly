@@ -294,6 +294,8 @@ class Game {
         dice1 = rand.nextInt(6)+1;
         dice2 = rand.nextInt(6)+1;
 
+
+
         // Calculate and return total
         int total = dice1 + dice2;
         System.out.print("Roll: " + total);
@@ -423,6 +425,7 @@ class Game {
                 // If they land on go to jail, send to jail
                 if(board.get(currentPosition).getName().equals("Go To Jail")) {
                     returnString = "inJail";
+                    setJailStatus(true);
                 }
 
                 // Land on chance or community chest
@@ -453,10 +456,12 @@ class Game {
             if(players.get(curPlayerTurn).getNumDaysInJail() < 2) {
                 returnString = "InJail";
                 players.get(curPlayerTurn).incrNumDaysInJail();
+                
             }
             // Otherwise, reset the amount days in jail, and now they're free
             else {
                 returnString = "Free";
+                setJailStatus(false);
             }
         }
         
@@ -535,8 +540,6 @@ class Game {
         return winner;
     }
 
-
-
     /*
      * End turn
      */
@@ -561,11 +564,13 @@ class Game {
             if (players.get(curPlayerTurn).checkIfInJail() == true) {
                 players.get(curPlayerTurn).resetNumDoubles();
                 returnString = "Free";
+                setJailStatus(false);
             }
 
             // If player rolls 3 doubles, go to jail
             else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
                 returnString = "inJail";
+                setJailStatus(true);
 
                 // Next player's turn
                 nextPlayerTurn();
