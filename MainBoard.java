@@ -842,7 +842,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             System.out.println(currentCard);    // TODO Something going wrong here - why \n not working?
             viewCard.setText(currentCard.getMessage());            
             System.out.println(currentCard.getMessage());
-            //viewCard.setText("1 2\n3 4\n5 6"); 
 
             this.repaint();
         }
@@ -943,7 +942,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             }
             if (pos >=0) {
                 Player curPlayer = monopoly.getPlayers().get(monopoly.getCurPlayerTurn());
-                Player player = (Player)players.get(pos);
                 PlayerView thisPlayer = new PlayerView(this, monopoly, curPlayer);
                 thisPlayer.setVisible(true);
             }
