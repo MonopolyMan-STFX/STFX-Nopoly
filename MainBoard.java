@@ -728,7 +728,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,5);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,1);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -995,6 +995,23 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         this.add(newPanel);
         playerStatPanel = newPanel;
     }
+
+    /**
+     * Update player panel stats
+     */
+    public void updatePropertyPanel(Property thisProperty) {
+        int propertyPos = board.indexOf(thisProperty);
+        JPanel oldPanel = gamePositions.get(propertyPos);
+
+        // TODO Needs to depend on position
+        JPanel newPanel = makePropertyPanelAcross(thisProperty);
+
+        newPanel.setBounds(oldPanel.getBounds());
+        this.remove(oldPanel);
+        this.add(newPanel);
+        gamePositions.set(propertyPos, newPanel);
+    }
+
 
     /**
      * Update the positions on the board

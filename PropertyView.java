@@ -99,6 +99,7 @@ public class PropertyView extends JFrame implements ActionListener {
             if (game.buyHouse(this.property)) {
                 msgLabel.setText("A House was built on the property");
                 houseLabel.setText("Number of Houses: " + property.getHousesOwned());
+                parent.updatePropertyPanel(this.property);
                 parent.updatePlayerPanel();
                 parent.repaint();
             } else {
