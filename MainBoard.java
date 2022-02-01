@@ -1003,8 +1003,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         int propertyPos = board.indexOf(thisProperty);
         JPanel oldPanel = gamePositions.get(propertyPos);
 
-        // TODO Needs to depend on position
-        JPanel newPanel = makePropertyPanelAcross(thisProperty);
+        JPanel newPanel = null;
+        if  ( (propertyPos >= 1 && propertyPos <=8)
+                || (propertyPos >= 20 && propertyPos <= 28) ) {   
+            newPanel = makePropertyPanelAcross(thisProperty);
+        }
+        else {
+            newPanel = makePropertyPanelSide(thisProperty);
+        }  
 
         newPanel.setBounds(oldPanel.getBounds());
         this.remove(oldPanel);
