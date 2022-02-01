@@ -1,9 +1,9 @@
-200,0,N/A,false,Advance to go.\n (Collect $200)
+200,0,0,false,Advance to go.\n (Collect $200)
 200,0,N/A,false,Bank error in your favour.\nCollect $200.
 45,0,N/A,false,From sale of stock\n you get $45.
 20,0,N/A,false,Income tax refund.\n Collect $20.
 100,0,N/A,false,You inherit $100.
-50,0,N/A,false,Doctor's fee pay $50
+-50,0,N/A,false,Doctor's fee pay $50
 0,0,N/A,true,Go to jail.
 -150,0,N/A,false,Pay school tax of $150.
 25,0,N/A,false,Receive for services $25.
