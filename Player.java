@@ -10,6 +10,7 @@ import java.util.*;
 class Player {
     
     // Attributes
+    private int STARTING_MONEY = 1500;
     private String name = "";
     private int money = 0;
     private ArrayList<Square> properties = new ArrayList<Square>();
@@ -17,6 +18,8 @@ class Player {
     private boolean inJail = false;
     private int numDoubles = 0;
     private int numDaysInJail = 0;
+    private boolean isBankrupt = false;
+
 
     /**
      * Constructor
@@ -26,7 +29,7 @@ class Player {
     public Player(String tokenIn, int moneyIn)
     {
         this.name = tokenIn;
-        this.money = moneyIn;
+        this.money = STARTING_MONEY;
         this.position = 0;
         this.inJail = false;
         this.numDoubles = 0;
@@ -42,17 +45,17 @@ class Player {
         this.money += moneyIn;
     }
 
-    /**
+   /**
      * Withdraws money, if false it failed
      * @param moneyOut
      * @return result
      */
-    public boolean withdraw(int moneyOut)
-    {
+    public boolean withdraw(int moneyOut) {
         boolean result;
         if(moneyOut > this.money)
         {
             result = false;
+            this.isBankrupt = true;
         }
         else
         {
@@ -61,6 +64,11 @@ class Player {
         }
 
         return result;
+    }
+
+    public boolean isBankrupt() {
+        return this.isBankrupt;
+
     }
 
     /**

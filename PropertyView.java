@@ -65,7 +65,6 @@ public class PropertyView extends JFrame implements ActionListener {
         houseButton.addActionListener(this);
         this.add(houseButton);
 
-
         // Settings for the frame
         this.setLayout(null);
     }

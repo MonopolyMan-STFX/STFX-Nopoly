@@ -3,13 +3,14 @@ import java.io.*;
 
 /**
  * Main Game Class
- * @author Kyle, Basel, Dan
+ * @author Kyle, Basel, Dan. Mr. MonopolyMan
  * @course ICS4UC
  * @date 2022/02/01
  */
 
 class Game {
     // Attributes
+    private int MONEY_TO_WIN = 2000;
     private ArrayList<Square> board = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Card> deck = new ArrayList<Card>();
@@ -458,14 +459,59 @@ class Game {
         return returnString;
     }
 
+
+    /**
+     * gameEnd when a player gets a set amount of money
+     */
+    public boolean gameEndMoney() {
+            boolean gameEnd = false;
+
+            for(Player player : players) {
+                if(player.getBalance() >= MONEY_TO_WIN) {
+                    gameEnd = true;
+                }
+            }
+            return gameEnd;
+        }
+
+
+        /**
+         * check game ends when all but one player is bankrupt
+         */
+        public boolean gameEndBankrupt() {
+            boolean gameEnd = false;
+
+            int bankruptPlayers = 0;
+            
+            for(Player player : players) {
+                if(player.isBankrupt()) {
+                    bankruptPlayers++;
+                    gameEnd = true;
+                }
+            }
+            return gameEnd;
+        }
+
+
+
+
+
     /*
      * End turn
      */
     public String endTurn() {
         System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
         String returnString = "EndOfTurn";
+
+
+        System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
+        
+        if(gameEndBankrupt() || gameEndBankrupt()) {
+            returnString = "GameOver";
+        }
+
         // Rolled a double
-        if (checkDouble() == true) {
+        else if (checkDouble() == true) {
             returnString = "Double";
             // Increment number of doubles
             players.get(curPlayerTurn).incrNumDoubles();
@@ -488,21 +534,28 @@ class Game {
         else {
             nextPlayerTurn();
         }
-        return returnString;
+        return "GameOver";
     }
 
     /*
      * Next player's turn
      */
     public void nextPlayerTurn() {
+        boolean nextPlayerFound = false;
+
         // Reset number of doubles
         players.get(curPlayerTurn).resetNumDoubles();
-        // Next player's turn
-        curPlayerTurn++;
-        // Reset to first player
-        if (curPlayerTurn > players.size()-1) {
+
+        while(!nextPlayerFound) {
+            curPlayerTurn++;
+            // Reset to first player
+            if (curPlayerTurn > players.size()-1) {
             curPlayerTurn = 0;
-        }
+            }
+            if(!players.get(curPlayerTurn).isBankrupt()) {
+                nextPlayerFound = true;
+            }
+        }  
     }
 
     /*

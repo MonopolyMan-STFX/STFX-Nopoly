@@ -876,7 +876,8 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             String resp = monopoly.endTurn();
             
             if (resp.equals("GameOver")) {
-                winnerLabel.setText("Reid");
+                // winnerLabel.setText(monopoly.getPlayers().get(curPlayerTurn).getName());
+
                 gameOverPanel.setVisible(true);
             }
             else {
