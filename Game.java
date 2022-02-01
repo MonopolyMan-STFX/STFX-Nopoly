@@ -159,11 +159,14 @@ class Game {
         
         // Check if player owns full set
         if (numColourInSet == numColourOwned) {
-            // Try to purchase house
-            if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
-                // Add house
-                property.addHouse();
-                result = true;
+            // Check if they have more than 5 houses
+            if (property.getHousesOwned() < 6) {
+                // Try to purchase house
+                if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
+                    // Add house
+                    property.addHouse();
+                    result = true;
+                }
             }
         }
         return result;
@@ -293,8 +296,6 @@ class Game {
         // Randomize value of two six-sided dice
         dice1 = rand.nextInt(6)+1;
         dice2 = rand.nextInt(6)+1;
-
-
 
         // Calculate and return total
         int total = dice1 + dice2;
@@ -469,7 +470,9 @@ class Game {
     }
 
 
-
+    /**
+     * Declare bankruptcy
+     */
     public void declareBankruptcy() {
         players.get(curPlayerTurn).declaredBankruptcy();
     }
@@ -598,6 +601,7 @@ class Game {
             if (curPlayerTurn > players.size()-1) {
             curPlayerTurn = 0;
             }
+            // Check if player is bankrupt
             if(!players.get(curPlayerTurn).isBankrupt()) {
                 nextPlayerFound = true;
             }
@@ -644,6 +648,10 @@ class Game {
         return board;
     }
 
+    /*
+     * Get current player
+     * @return current player
+     */
     public Player getCurrentPlayer() {
         return players.get(curPlayerTurn);
     }
