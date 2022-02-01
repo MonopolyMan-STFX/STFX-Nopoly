@@ -280,9 +280,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         return tempPanel;
 }
 
-/**
+    /**
      * This is for the Player Stats in the middle
-     **/
+     */
     public JPanel makePlayerPanel() {
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(null);
@@ -519,11 +519,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         return tempPanel;
     }
 
-
-
     /**
      * Constructor
-    **/
+     */
     public MainBoard() throws IOException{
 
         // Links to the game
@@ -592,11 +590,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             sqr = boardIter.next();
             if(sqr instanceof Property)
             {
-            pPanel = makePropertyPanelSide((Property)sqr);
+                pPanel = makePropertyPanelSide((Property)sqr);
             }
             else
             {
-              pPanel = makeSquarePanelSide(sqr);
+                pPanel = makeSquarePanelSide(sqr);
             }
             pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
@@ -730,7 +728,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,3);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,5);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -763,10 +761,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                     System.out.println("GUI: Buy");
                     buyPropertyPanel.setVisible(true);
                 }
-                else {
+                else if (curProp.getOwner() != players.get(num)) {
                     System.out.println("GUI: Already owned");
                     oweLabel.setText("$"+curProp.getRent());
                     rentPanel.setVisible(true);
+                } else {
+                    // We owe it - do nothing
+                    System.out.println("GUI: you owe this one");
+                    endTurnPanel.setVisible(true);
                 }
             }
             else if (curSqr instanceof CardSquare) {
@@ -778,7 +780,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 endTurnPanel.setVisible(true);
             }
             updatePlayerPanel();
-
             this.repaint();
         }
         else if (e.getSource() == buyPropertyButton) {
@@ -835,7 +836,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
 
         else if (e.getSource() == bankruptButton) {
-            // player decides to declare bankruptcy , all money goes to bank
+            // player decides to declare bankruptcy
             monopoly.declareBankruptcy();
             System.out.println("GUI: Player Declared bankruptcy");
 
@@ -907,6 +908,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             // Move on to next turn
             String resp = monopoly.endTurn();
             
+            // if the a winning condition has been satisfied
             if (resp.equals("GameOver")) {
                  winnerLabel.setText(monopoly.getWinner().getName());
                  moneyLabel.setText("$"+monopoly.getWinner().getBalance());

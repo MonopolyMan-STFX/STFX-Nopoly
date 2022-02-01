@@ -19,9 +19,6 @@ class Game {
     private int curPlayerTurn = 0;
     private String monopolyWinSituation = "";
 
-    // Discuss changing buy house rule to one per turn?... offial rule is too complex, and buying unlimited in one turn is too OP
-//    private boolean houseBuiltThisTurn
-
     // Constructor - default for testing
     public Game() throws IOException {
         // Populate default data - 40 properties
@@ -159,11 +156,14 @@ class Game {
         
         // Check if player owns full set
         if (numColourInSet == numColourOwned) {
-            // Try to purchase house
-            if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
-                // Add house
-                property.addHouse();
-                result = true;
+            // Check if they have more than 5 houses
+            if (property.getHousesOwned() < 6) {
+                // Try to purchase house
+                if (players.get(curPlayerTurn).withdraw(property.getHousesCost())) {
+                    // Add house
+                    property.addHouse();
+                    result = true;
+                }
             }
         }
         return result;
@@ -423,6 +423,7 @@ class Game {
                 // If they land on go to jail, send to jail
                 if(board.get(currentPosition).getName().equals("Go To Jail")) {
                     returnString = "inJail";
+                    setJailStatus(true);
                 }
 
                 // Land on chance or community chest
@@ -453,10 +454,12 @@ class Game {
             if(players.get(curPlayerTurn).getNumDaysInJail() < 2) {
                 returnString = "InJail";
                 players.get(curPlayerTurn).incrNumDaysInJail();
+                
             }
             // Otherwise, reset the amount days in jail, and now they're free
             else {
                 returnString = "Free";
+                setJailStatus(false);
             }
         }
         
@@ -464,7 +467,9 @@ class Game {
     }
 
 
-
+     /**
+     * Current player declares Bankruptcy
+     */
     public void declareBankruptcy() {
         players.get(curPlayerTurn).declaredBankruptcy();
     }
@@ -486,6 +491,7 @@ class Game {
     }
 
 
+
     /**
      * check if all but one player is bankrupt
      * @return is the game over
@@ -495,17 +501,18 @@ class Game {
 
             int bankruptPlayers = 0;
             
+            // check how many players are bankrupt
             for(Player player : players) {
                 if(player.isBankrupt()) {
                     bankruptPlayers++;
                 }
             }
 
+            // check if all but one player is bankrupt
             if(bankruptPlayers == players.size()-1) {
                 monopolyWinSituation = "bankrupt";
                 gameEnd = true;
             }
-
             return gameEnd;
     }
 
@@ -516,6 +523,7 @@ class Game {
     public Player getWinner() {
         Player winner = null;
 
+        // if the game ended by bankruptcy, get last player 
         if(monopolyWinSituation.equals("bankrupt")) {
             for (Player player:players) {
                 if (!player.isBankrupt()){
@@ -523,7 +531,7 @@ class Game {
                 }
             }
         }
-
+        // if the game ended, since someone reached a certain amount of money
         else if (monopolyWinSituation.equals("money")) {
             for (Player player:players) {
                 if (player.getBalance() >= MONEY_TO_WIN) {
@@ -531,11 +539,8 @@ class Game {
                 }
             }
         }
-
         return winner;
     }
-
-
 
     /*
      * End turn
@@ -561,11 +566,13 @@ class Game {
             if (players.get(curPlayerTurn).checkIfInJail() == true) {
                 players.get(curPlayerTurn).resetNumDoubles();
                 returnString = "Free";
+                setJailStatus(false);
             }
 
             // If player rolls 3 doubles, go to jail
             else if (players.get(curPlayerTurn).getNumDoubles() == 3) {
                 returnString = "inJail";
+                setJailStatus(true);
 
                 // Next player's turn
                 nextPlayerTurn();
@@ -593,6 +600,7 @@ class Game {
             if (curPlayerTurn > players.size()-1) {
             curPlayerTurn = 0;
             }
+            // Check if player is bankrupt
             if(!players.get(curPlayerTurn).isBankrupt()) {
                 nextPlayerFound = true;
             }
@@ -639,9 +647,11 @@ class Game {
         return board;
     }
 
+    /*
+     * Get current player
+     * @return current player
+     */
     public Player getCurrentPlayer() {
         return players.get(curPlayerTurn);
     }
-
-
 }

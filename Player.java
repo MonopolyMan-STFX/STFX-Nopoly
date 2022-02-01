@@ -45,34 +45,38 @@ class Player {
         this.money += moneyIn;
     }
 
-   /**
+    /**
      * Withdraws money, if false it failed
      * @param moneyOut
      * @return result
      */
     public boolean withdraw(int moneyOut) {
         boolean result;
-        if(moneyOut > this.money)
-        {
+        if(moneyOut > this.money) {
             result = false;
             this.isBankrupt = true;
+            this.money = 0;
         }
-        else
-        {
+        else {
             result = true;
             this.money -= moneyOut;
         }
-
         return result;
     }
 
+    /**
+     * Is the player bankrupt
+     */
     public boolean isBankrupt() {
         return this.isBankrupt;
 
     }
 
+    /**
+     * player decided to declare Bankruptcy
+     */
     public void declaredBankruptcy() {
-        this.money = Integer.MIN_VALUE;
+        this.money = 0;
         this.isBankrupt = true;
     }
 
@@ -98,16 +102,13 @@ class Player {
      * Moves up
      * @param moveUp num of squares to move
      */
-    public void moveUp(int moveUp)
-    {
+    public void moveUp(int moveUp) {
         // Checks if it passed go, and adds funds accordingly
-        if((this.position + moveUp) > 39)
-        {
-            this.money += 200;
+        if((this.position + moveUp) > 39) {
             this.position = (this.position + moveUp) - 40;
+            this.money += 200;
         }
-        else
-        {
+        else {
             this.position += moveUp;
         }
     }

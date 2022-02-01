@@ -28,7 +28,7 @@ class TestGame {
             System.out.println("\n" + game.getPlayers().get(game.getCurPlayerTurn()).getName()+ "'s turn:");
             
             // Roll dice and play turn
-            roll = game.rollDie(0, 1);
+            roll = game.rollDie(0, 4);
             System.out.println(" " + Arrays.toString(game.getDiceNumbers()));
             String returnStringGame = game.playTurn(roll);
 
