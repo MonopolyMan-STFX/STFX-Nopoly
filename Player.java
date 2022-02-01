@@ -72,6 +72,7 @@ class Player {
     }
 
     public void declaredBankruptcy() {
+        this.money = Integer.MIN_VALUE;
         this.isBankrupt = true;
     }
 

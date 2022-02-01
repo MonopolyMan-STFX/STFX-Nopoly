@@ -54,6 +54,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
     // Game over
     JPanel gameOverPanel = null;
     JLabel winnerLabel = null;
+    JLabel moneyLabel = null;
 
     // All the squares on the board
     ArrayList<JPanel> gamePositions = null;
@@ -489,12 +490,12 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         // Game over!!!
         JLabel tempLabel = new JLabel("GAME", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        tempLabel.setBounds(2,0,250,40);
+        tempLabel.setBounds(2,3,250,40);
         tempPanel.add(tempLabel);
 
         tempLabel = new JLabel("OVER", SwingConstants.CENTER);
         tempLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        tempLabel.setBounds(2,52,250,40);
+        tempLabel.setBounds(2,55,250,40);
         tempPanel.add(tempLabel);
 
         tempLabel = new JLabel("Winner is:", SwingConstants.CENTER);
@@ -506,6 +507,12 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 20));
         winnerLabel.setBounds(2,112,250,40);
         tempPanel.add(winnerLabel);
+
+        moneyLabel = new JLabel("", SwingConstants.CENTER);
+        moneyLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        moneyLabel.setBounds(2,142,250,40);
+        tempPanel.add(moneyLabel);
+
 
         tempPanel.setVisible(false);
 
@@ -523,7 +530,9 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         monopoly = new Game("squares.txt", "cards.txt");
         monopoly.createPlayer("Player 1");
         monopoly.createPlayer("Player 2");
-        monopoly.createPlayer("Player 3");
+
+        // 3 players not working?
+//        monopoly.createPlayer("Player 3");
         board = monopoly.getBoard();
         players = monopoly.getPlayers();
         Iterator<Square> boardIter = board.iterator();
@@ -539,7 +548,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         this.add(titleLabel);
 
         // Place for the cards to display
-        viewCard = new JTextArea();
+        viewCard = new JTextArea("");
         viewCard.setFont(new Font("Arial", Font.BOLD, 20));
         viewCard.setBounds(200,250,300,100);
         viewCard.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -721,7 +730,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,3);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,1);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -826,10 +835,23 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
         }
 
         else if (e.getSource() == bankruptButton) {
+            // player decides to declare bankruptcy , all money goes to bank
+            monopoly.declareBankruptcy();
+            System.out.println("GUI: Player Declared bankruptcy");
+
+            rentPanel.setVisible(false);
+            endTurnPanel.setVisible(true);
+
+            // Update player stats
+            updatePlayerPanel();
+
+            // Head to end turn
+            this.repaint();
 
         }
 
         else if (e.getSource() == passButton) {
+
             // Head to end turn
             buyPropertyPanel.setVisible(false);
             endTurnPanel.setVisible(true);
@@ -846,7 +868,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
 
             currentCard = monopoly.drawCard();
             System.out.println(currentCard);    // TODO Something going wrong here - why \n not working?
-            viewCard.setText(currentCard.getMessage());            
+
+            // Still not working TODO
+            String cardText = ("<html>" + currentCard.getMessage().replaceAll("\n", "<br>") + "</html>");
+            System.out.println(cardText);
+            viewCard.setText(cardText);
             System.out.println(currentCard.getMessage());
 
             this.repaint();
@@ -883,6 +909,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             
             if (resp.equals("GameOver")) {
                  winnerLabel.setText(monopoly.getWinner().getName());
+                 moneyLabel.setText("$"+monopoly.getWinner().getBalance());
 
                 gameOverPanel.setVisible(true);
             }

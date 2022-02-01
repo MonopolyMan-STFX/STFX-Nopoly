@@ -17,6 +17,10 @@ class Game {
     private int dice1 = 0;
     private int dice2 = 0;
     private int curPlayerTurn = 0;
+    private String monopolyWinSituation = "";
+
+    // Discuss changing buy house rule to one per turn?... offial rule is too complex, and buying unlimited in one turn is too OP
+//    private boolean houseBuiltThisTurn
 
     // Constructor - default for testing
     public Game() throws IOException {
@@ -147,7 +151,7 @@ class Game {
             // Check if board square is property
             if (tempProperty instanceof Property) {
                 // Increment by one if same colour as search
-                if (((Property)tempProperty).getColour() == searchColour) {
+                if (((Property)tempProperty).getColour().equals(searchColour)) {
                     numColourOwned++;
                 }
             }
@@ -465,7 +469,6 @@ class Game {
         players.get(curPlayerTurn).declaredBankruptcy();
     }
 
-
     /**
      * if a player reaches an amount of money end
      * @return is the gameover
@@ -475,14 +478,12 @@ class Game {
 
             for(Player player : players) {
                 if(player.getBalance() >= MONEY_TO_WIN) {
+                    monopolyWinSituation = "money";
                     gameEnd = true;
                 }
             }
             return gameEnd;
     }
-
-
-
 
 
     /**
@@ -497,9 +498,14 @@ class Game {
             for(Player player : players) {
                 if(player.isBankrupt()) {
                     bankruptPlayers++;
-                    gameEnd = true;
                 }
             }
+
+            if(bankruptPlayers == players.size()-1) {
+                monopolyWinSituation = "bankrupt";
+                gameEnd = true;
+            }
+
             return gameEnd;
     }
 
@@ -508,7 +514,25 @@ class Game {
      * @return winner of the game
      */
     public Player getWinner() {
-            return players.get(curPlayerTurn);
+        Player winner = null;
+
+        if(monopolyWinSituation.equals("bankrupt")) {
+            for (Player player:players) {
+                if (!player.isBankrupt()){
+                    winner = player;
+                }
+            }
+        }
+
+        else if (monopolyWinSituation.equals("money")) {
+            for (Player player:players) {
+                if (player.getBalance() >= MONEY_TO_WIN) {
+                    winner = player;
+                }
+            }
+        }
+
+        return winner;
     }
 
 
@@ -523,7 +547,7 @@ class Game {
 
         System.out.println("New Money: "+ players.get(curPlayerTurn).getBalance());
         
-        if(gameEndBankrupt() || gameEndBankrupt()) {
+        if(gameEndBankrupt() || gameEndMoney()) {
             returnString = "GameOver";
         }
 
@@ -614,4 +638,10 @@ class Game {
     public ArrayList<Square> getBoard() {
         return board;
     }
+
+    public Player getCurrentPlayer() {
+        return players.get(curPlayerTurn);
+    }
+
+
 }

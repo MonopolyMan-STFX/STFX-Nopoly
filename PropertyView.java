@@ -8,6 +8,8 @@ public class PropertyView extends JFrame implements ActionListener {
     JButton sellButton = null;
     JButton houseButton = null;
     JLabel msgLabel = null;
+    JLabel rentLabel = null;
+    JLabel houseLabel = null;
     Game game = null;
     Property property = null;
     Player player = null;
@@ -36,6 +38,17 @@ public class PropertyView extends JFrame implements ActionListener {
         label.setBounds(50,50,200,50);
         this.add(label);
 
+        // You won't get any Rent until you fix this damn door!
+        rentLabel = new JLabel("Rent Cost: $" + property.getRent());
+        rentLabel.setBounds(50, 80, 200, 50);
+        this.add(rentLabel);
+
+        // You won't get any Rent until you fix this damn door!
+        houseLabel = new JLabel("Number of Houses: " + property.getHousesOwned());
+        houseLabel.setBounds(50, 95, 200, 50);
+        this.add(houseLabel);
+
+
         // Messages
         msgLabel = new JLabel("");
         msgLabel.setBounds(50,160,200,50);
@@ -57,7 +70,7 @@ public class PropertyView extends JFrame implements ActionListener {
         this.add(sellButton);
 
         // Add house button only if it's the owner
-        houseButton = new JButton("Add House");
+        houseButton = new JButton("Buy House" + property.getHousesCost());
         houseButton.setBounds(175,200,80,50);
         if (owner == null || player != owner) {
             houseButton.setEnabled(false);
@@ -82,16 +95,15 @@ public class PropertyView extends JFrame implements ActionListener {
             this.repaint();
         }
         else if (e.getSource() == houseButton) {
-            /* TODO call game to add house
-            if (game.sellProperty(this.property.getName())) {
-                msgLabel.setText("Sold");
+            if (game.buyHouse(this.property)) {
+                msgLabel.setText("A House was built on the property");
+                houseLabel.setText("Number of Houses: " + property.getHousesOwned());
                 parent.updatePlayerPanel();
                 parent.repaint();
-                sellButton.setEnabled(false);
+                houseButton.setEnabled(false);
             } else {
-                msgLabel.setText("Error: Cannot sell");
+                msgLabel.setText("Error: Cannot Buy House");
             }
-            */
             this.repaint();
         }
         else {

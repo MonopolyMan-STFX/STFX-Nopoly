@@ -1,0 +1,14 @@
+Changes: PLZ review my code I was half-asleep writing this code BUT it works supposedly
+
+line 830 main board - player declares bankruptcy
+
+
+bankruptcy sets money to min integer value, and sets as bankrupt. Maybe change so the text is BANKRUPT in Red or something???
+
+
+I AM WRITING THIS AT 1 AM.......................................
+
+Closing Property View still crashes, check if fix was not pushed.
+
+
+3 player does not work????
