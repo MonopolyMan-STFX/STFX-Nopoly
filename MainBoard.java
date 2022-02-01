@@ -592,11 +592,11 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             sqr = boardIter.next();
             if(sqr instanceof Property)
             {
-            pPanel = makePropertyPanelSide((Property)sqr);
+                pPanel = makePropertyPanelSide((Property)sqr);
             }
             else
             {
-              pPanel = makeSquarePanelSide(sqr);
+                pPanel = makeSquarePanelSide(sqr);
             }
             pPanel.setBounds(0,tileHeight+(tileWidth*i),tileHeight,tileWidth);
             gamePositions.add(pPanel);
@@ -730,7 +730,7 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
             gamePositions.get(pos).remove(playerIcons[num]);
 
             // Roll the dice
-            int roll = monopoly.rollDie(0,1);   // args to test rolls - no args for random
+            int roll = monopoly.rollDie(0,5);   // args to test rolls - no args for random
             int[] rollVals = monopoly.getDiceNumbers();            
             rollLabel1.setIcon(diceIcons[rollVals[0]]);
             rollLabel2.setIcon(diceIcons[rollVals[1]]);
@@ -763,10 +763,14 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                     System.out.println("GUI: Buy");
                     buyPropertyPanel.setVisible(true);
                 }
-                else {
+                else if (curProp.getOwner() != players.get(num)) {
                     System.out.println("GUI: Already owned");
                     oweLabel.setText("$"+curProp.getRent());
                     rentPanel.setVisible(true);
+                } else {
+                    // We owe it - do nothing
+                    System.out.println("GUI: you owe this one");
+                    endTurnPanel.setVisible(true);
                 }
             }
             else if (curSqr instanceof CardSquare) {
@@ -778,7 +782,6 @@ public class MainBoard extends JFrame implements ActionListener, MouseListener {
                 endTurnPanel.setVisible(true);
             }
             updatePlayerPanel();
-
             this.repaint();
         }
         else if (e.getSource() == buyPropertyButton) {

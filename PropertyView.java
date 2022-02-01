@@ -79,6 +79,7 @@ public class PropertyView extends JFrame implements ActionListener {
         this.add(houseButton);
 
         // Settings for the frame
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setLayout(null);
     }
 
@@ -100,7 +101,6 @@ public class PropertyView extends JFrame implements ActionListener {
                 houseLabel.setText("Number of Houses: " + property.getHousesOwned());
                 parent.updatePlayerPanel();
                 parent.repaint();
-                houseButton.setEnabled(false);
             } else {
                 msgLabel.setText("Error: Cannot Buy House");
             }
