@@ -1,4 +1,4 @@
-# ICS4UC Quad 2 CPT 
+# Coding Club Fork of X-NOPOLY CPT Prject by 4U/C
 
 Repl.it launch commands:
 ```
